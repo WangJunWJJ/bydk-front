@@ -1,0 +1,12 @@
+{
+  "app": {
+    "name": "智能模型训练系统",
+    "description": "智能模型训练系统"
+  },
+  "user": {
+    "name": "Admin",
+    "avatar": "./assets/tmp/img/avatar.jpg",
+    "email": "cipchk@qq.com"
+  },
+  "menu": []
+}
