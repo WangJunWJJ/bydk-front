@@ -41,6 +41,7 @@
     "@delon/util": "^13.5.2",
     "ajv": "^8.10.0",
     "ajv-formats": "^2.1.1",
+    "decimal.js": "^10.4.3",
     "ng-alain": "^13.5.2",
     "ng-zorro-antd": "^13.3.2",
     "rxjs": "~7.5.0",

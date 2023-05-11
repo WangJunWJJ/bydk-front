@@ -7,5 +7,7 @@ export const environment = {
     baseUrl: './',
     refreshTokenEnabled: true,
     refreshTokenType: 'auth-refresh'
-  }
+  },
+  // 后端地址
+  BE_URL: 'http://127.0.0.1:3000'
 } as Environment;
