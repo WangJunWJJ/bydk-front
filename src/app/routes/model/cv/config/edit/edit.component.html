@@ -1,10 +1,84 @@
 <div class="modal-header">
   <div class="modal-title">编辑 {{ record.id }} 信息</div>
 </div>
-<nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
-<sf *ngIf="i" #sf mode="edit" [schema]="schema" [ui]="ui" [formData]="i" button="none">
-  <div class="modal-footer">
-    <button nz-button type="button" (click)="close()">关闭</button>
-    <button nz-button type="submit" nzType="primary" (click)="save(sf.value)" [disabled]="!sf.valid" [nzLoading]="http.loading">保存</button>
-  </div>
-</sf>
+<nz-spin *ngIf="!formData" class="modal-spin"></nz-spin>
+
+<div style="width: 100%; margin: 0 auto" *ngIf="formData">
+  <form nz-form se-container="2" #f="ngForm" [gutter]="2" [labelWidth]="210">
+    <se label="任务名称" required>
+      <input type="text" nz-input [(ngModel)]="formData.name" name="name" required placeholder="请输入任务名称" />
+    </se>
+
+    <se label="配置文件存储路径" required col="2">
+      <input type="text" nz-input [(ngModel)]="formData.path" name="path" required placeholder="请输入路径" />
+    </se>
+
+    <se label="算法类型" required col="2">
+      <nz-select [(ngModel)]="formData.model" style="width: 100px" name="model">
+        <nz-option [nzLabel]="model" [nzValue]="model" *ngFor="let model of cvModelAlgorithms"></nz-option>
+      </nz-select>
+    </se>
+
+    <se label="clean_train_data_dir" col="2" required>
+      <input
+        type="text"
+        nz-input
+        [(ngModel)]="formData.clean_train_data_dir"
+        name="clean_train_data_dir"
+        required
+        placeholder="请输入路径"
+      />
+    </se>
+
+    <se label="clean_test_data_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.clean_test_data_dir" name="clean_test_data_dir" required placeholder="请输入路径" />
+    </se>
+
+    <se label="adv_train_data_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.adv_train_data_dir" name="adv_train_data_dir" required placeholder="请输入路径" />
+    </se>
+
+    <se label="adv_test_data_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.adv_test_data_dir" name="adv_test_data_dir" required placeholder="请输入路径" />
+    </se>
+
+    <se label="label_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.label_dir" name="label_dir" required placeholder="请输入路径" />
+    </se>
+
+    <se label="patch_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.patch_dir" name="patch_dir" required placeholder="请输入路径" />
+    </se>
+
+    <se label="orig_model_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.orig_model_dir" name="orig_model_dir" required placeholder="请输入路径" />
+    </se>
+    <se label="target_mode_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.target_mode_dir" name="target_mode_dir" required placeholder="请输入路径" />
+    </se>
+
+    <se label="weather_augmentations" col="2" required>
+      <input
+        type="text"
+        nz-input
+        [(ngModel)]="formData.weather_augmentations"
+        name="weather_augmentations"
+        required
+        placeholder="请输入路径"
+      />
+    </se>
+
+    <se label="config_opts_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.config_opts_dir" name="config_opts_dir" required placeholder="请输入路径" />
+    </se>
+
+    <!-- <div class="modal-footer">
+      <button nz-button type="button" (click)="close()">关闭</button>
+      <button nz-button nzType="primary" [disabled]="form.invalid" (click)="save()"> 保存 </button>
+    </div> -->
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">关闭</button>
+  <button nz-button nzType="primary" [disabled]="!isValid" (click)="save()"> 保存 </button>
+</div>

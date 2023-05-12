@@ -2,9 +2,9 @@ import { NgModule, Optional, SkipSelf } from '@angular/core';
 import { throwIfAlreadyLoaded } from './module-import-guard';
 
 import { I18NService } from './i18n/i18n.service';
-import { AlgorithmService } from './service';
+import { ModelConfigService } from './service';
 
-const PROJECT_SERVICES = [AlgorithmService];
+const PROJECT_SERVICES = [ModelConfigService];
 
 @NgModule({
   providers: [...PROJECT_SERVICES, I18NService]

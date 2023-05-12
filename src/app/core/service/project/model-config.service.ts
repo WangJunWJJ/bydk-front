@@ -6,7 +6,7 @@ import { BE_URL } from '../constant';
 @Injectable({
   providedIn: 'root'
 })
-export class AlgorithmService {
+export class ModelConfigService {
   constructor(private httpClient: HttpClient) {
     // TODO 从url获取token 此处为mock
     this.setToken('abcabc12');
@@ -16,7 +16,7 @@ export class AlgorithmService {
    * 获取token
    *
    * @return {*}  {string}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
   getToken(): string {
     return localStorage.getItem('token') || '';
@@ -26,7 +26,7 @@ export class AlgorithmService {
    * 设置token
    *
    * @param {string} token
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
   setToken(token: string) {
     localStorage.setItem('token', token);
@@ -37,19 +37,19 @@ export class AlgorithmService {
    *
    * @param {{ path?: string; status?: MissionStatusEnum }} conditions
    * @return {*}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
   getCVMissions(conditions: { path?: string; status?: MissionStatusEnum }) {
     return this.httpClient.get<{
       total: number;
       data: IMission<ICVConfig>[];
-    }>(`/cv/get-config`, {
+    }>(`/cv/config`, {
       params: conditions,
       headers: {
         token: this.getToken()
       }
     });
-    // return this.httpClient.get<ICVConfig>(`${BE_URL}/project/cv/get-config`, {
+    // return this.httpClient.get<ICVConfig>(`${BE_URL}/project/cv/config`, {
     //   params: condition
     // });
   }
@@ -59,10 +59,10 @@ export class AlgorithmService {
    *
    * @param {string} id
    * @return {*}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
   getCVMission(id: string) {
-    return this.httpClient.get<IMission<ICVConfig>>(`/cv/get-config/${id}`, {
+    return this.httpClient.get<IMission<ICVConfig>>(`/cv/config/${id}`, {
       headers: {
         token: this.getToken()
       }
@@ -74,9 +74,9 @@ export class AlgorithmService {
    *
    * @param {ICVConfig} cvConfig
    * @return {*}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
-  createCVMission(cvConfig: ICVConfig) {
+  createCVMission(cvConfig: ICVConfig & { name: string }) {
     return this.httpClient.post<IMission<ICVConfig>>(
       `/cv/config/create`,
       {
@@ -91,11 +91,11 @@ export class AlgorithmService {
    *
    * @param {string} id
    * @return {*}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
   activeCVMission(id: string) {
     return this.httpClient.post<IMission<ICVConfig>>(
-      `/cv/config/create`,
+      `/cv/config/active-mission`,
       {
         id
       },
@@ -108,19 +108,19 @@ export class AlgorithmService {
    *
    * @param {{ path?: string; status?: MissionStatusEnum }} conditions
    * @return {*}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
   getRLMissions(conditions: { path?: string; status?: MissionStatusEnum }) {
     return this.httpClient.get<{
       total: number;
       data: IMission<IRLConfig>[];
-    }>(`/rl/get-config`, {
+    }>(`/rl/config`, {
       params: conditions,
       headers: {
         token: this.getToken()
       }
     });
-    // return this.httpClient.get<IRLConfig>(`${BE_URL}/project/rl/get-config`, {
+    // return this.httpClient.get<IRLConfig>(`${BE_URL}/project/rl/config`, {
     //   params: condition
     // });
   }
@@ -130,10 +130,10 @@ export class AlgorithmService {
    *
    * @param {string} id
    * @return {*}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
   getRLMission(id: string) {
-    return this.httpClient.get<IMission<IRLConfig>>(`/rl/get-config/${id}`, {
+    return this.httpClient.get<IMission<IRLConfig>>(`/rl/config/${id}`, {
       headers: {
         token: this.getToken()
       }
@@ -145,9 +145,9 @@ export class AlgorithmService {
    *
    * @param {IRLConfig} cvConfig
    * @return {*}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
-  createRLMission(cvConfig: IRLConfig) {
+  createRLMission(cvConfig: IRLConfig & { name: string }) {
     return this.httpClient.post<IMission<IRLConfig>>(
       `/rl/config/create`,
       {
@@ -162,11 +162,11 @@ export class AlgorithmService {
    *
    * @param {string} id
    * @return {*}
-   * @memberof AlgorithmService
+   * @memberof ModelConfigService
    */
   activeRLMission(id: string) {
     return this.httpClient.post<IMission<IRLConfig>>(
-      `/rl/config/create`,
+      `/rl/config/active-mission`,
       {
         id
       },

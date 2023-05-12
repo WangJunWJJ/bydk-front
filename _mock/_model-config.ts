@@ -35,6 +35,7 @@ function generateData(len: number = 20) {
       token: getRandomItem(mockTokens),
       path,
       status: getRandomItem(missionStatusArr),
+      name: `cv任务${i + 1}`,
       created: time,
       updated: time,
 
@@ -64,6 +65,7 @@ function generateData(len: number = 20) {
       id: nonceStr(16), // 生成随机16位id
       token: getRandomItem(mockTokens),
       path,
+      name: `rl任务${i + 1}`,
       status: getRandomItem(missionStatusArr),
       created: time,
       updated: time,
@@ -106,7 +108,7 @@ function getList({ token, type, status, path }: { type: 'cv' | 'rl'; token: stri
   if (type === 'cv') {
     const ret = cvList.filter(item => {
       // 如果筛选条件有 进行筛选 没有（==null）则跳过
-      return item.token === token && (status == null || item.status === status) && (path != null || item.path === path);
+      return item.token === token && (status == null || item.status === status) && (path == null || item.path === path);
     });
     return {
       total: ret.length,
@@ -115,7 +117,7 @@ function getList({ token, type, status, path }: { type: 'cv' | 'rl'; token: stri
   } else {
     const ret = rlList.filter(item => {
       // 如果筛选条件有 进行筛选 没有（==null）则跳过
-      return item.token === token && (status == null || item.status === status) && (path != null || item.path === path);
+      return item.token === token && (status == null || item.status === status) && (path == null || item.path === path);
     });
     return {
       total: ret.length,
@@ -172,7 +174,7 @@ export const MODEL_CONFIGS = {
     data: IMission<ICVConfig>[];
   } => {
     const token: string = req.headers.token;
-    const params: { status?: MissionStatusEnum } = req.params;
+    const params: { status?: MissionStatusEnum } = req.queryString;
     console.log({ token, params });
 
     return getList({ type: 'cv', token, ...params }) as {
@@ -186,7 +188,7 @@ export const MODEL_CONFIGS = {
   },
   'POST /cv/config/active-mission': (req: MockRequest): IMission<ICVConfig> => {
     const token: string = req.headers.token;
-    const targetMission = getOne({ type: 'cv', token, id: req.params.id });
+    const targetMission = getOne({ type: 'cv', token, id: req.body.id });
 
     // 设置任务状态为执行状态
     // TODO 开始执行任务的逻辑
@@ -197,10 +199,11 @@ export const MODEL_CONFIGS = {
   // 正常应该以create方法构建
   'POST /cv/config/create': (req: MockRequest): IMission<ICVConfig> => {
     const token: string = req.headers.token;
-    const dto = req.body as ICVConfig;
+    const dto = req.body.config as ICVConfig & { name: string };
     const time = new Date().getTime();
     const mission: IMission<ICVConfig> = {
       id: nonceStr(16), // 生成随机16位id
+      name: dto.name,
       token: token,
       path: dto.path,
       status: MissionStatusEnum.Init,
@@ -218,7 +221,7 @@ export const MODEL_CONFIGS = {
     data: IMission<IRLConfig>[];
   } => {
     const token: string = req.headers.token;
-    const params: { status?: MissionStatusEnum } = req.params;
+    const params: { status?: MissionStatusEnum } = req.queryString;
     console.log({ token, params });
 
     return getList({ type: 'rl', token, ...params }) as {
@@ -232,7 +235,7 @@ export const MODEL_CONFIGS = {
   },
   'POST /rl/config/active-mission': (req: MockRequest): IMission<IRLConfig> => {
     const token: string = req.headers.token;
-    const targetMission = getOne({ type: 'rl', token, id: req.params.id });
+    const targetMission = getOne({ type: 'rl', token, id: req.body.id });
 
     // 设置任务状态为执行状态
     // TODO 开始执行任务的逻辑
@@ -243,11 +246,13 @@ export const MODEL_CONFIGS = {
   // 正常应该以create方法构建
   'POST /rl/config/create': (req: MockRequest): IMission<IRLConfig> => {
     const token: string = req.headers.token;
-    const dto = req.body as IRLConfig;
+    const dto = req.body.config as IRLConfig & { name: string };
     const time = new Date().getTime();
+    // TODO 在创建的同时应该执行数据写入操作 将任务的config写到指定的数据位置
     const mission: IMission<IRLConfig> = {
       id: nonceStr(16), // 生成随机16位id
       token: token,
+      name: dto.name,
       path: dto.path,
       status: MissionStatusEnum.Init,
       created: time,

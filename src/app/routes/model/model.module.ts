@@ -7,11 +7,12 @@ import { ModelCVMonitorComponent } from './cv/monitor/monitor.component';
 import { ModelCVResultComponent } from './result/result.component';
 import { ModelCVResultEditComponent } from './result/edit/edit.component';
 import { ModelCVResultViewComponent } from './result/view/view.component';
+import { ModelCVConfigViewComponent } from './cv/config/view/view.component';
 
 const COMPONENTS: Array<Type<void>> = [ModelCVConfigComponent, ModelCVMonitorComponent, ModelCVResultComponent];
 const COMPONENTS_NOROUNT: Array<Type<void>> = [
-  ModelCVConfigComponent,
   ModelCVConfigEditComponent,
+  ModelCVConfigViewComponent,
   ModelCVResultEditComponent,
   ModelCVResultViewComponent
 ];
