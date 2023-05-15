@@ -1,5 +1,6 @@
 <div class="modal-header">
-  <div class="modal-title">编辑 {{ record.id }} 信息</div>
+  <div class="modal-title" *ngIf="record.id">编辑配置</div>
+  <div class="modal-title" *ngIf="!record.id">新增配置</div>
 </div>
 <nz-spin *ngIf="!formData" class="modal-spin"></nz-spin>
 

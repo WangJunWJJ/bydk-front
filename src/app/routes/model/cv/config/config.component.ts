@@ -133,10 +133,15 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
             this.modal
               .createStatic(
                 ModelCVConfigViewComponent,
-                { id: record.id },
+                {
+                  record: {
+                    id: record.id
+                  }
+                },
                 {
                   modalOptions: {
                     nzMaskClosable: false,
+                    nzStyle: { top: '20px' },
                     nzKeyboard: false
                   },
                   size: window.innerWidth * 0.8
@@ -148,6 +153,16 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
           },
           iif: (record: IMission<ICVConfig>) => {
             return record.status === MissionStatusEnum.Active;
+          }
+        },
+        {
+          text: '复制任务',
+          click: (record: IMission<ICVConfig>) => {
+            this.modelConfigService.copyCVMission(record.id).subscribe(newMission => {
+              this.searchStream$.next({ ...this.searchStream$.value });
+
+              this.msgSrv.success('复制成功');
+            });
           }
         }
       ]

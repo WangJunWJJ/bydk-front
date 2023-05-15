@@ -186,6 +186,33 @@ export const MODEL_CONFIGS = {
     const token: string = req.headers.token;
     return getOne({ type: 'cv', token, id: req.params.id }) as IMission<ICVConfig>;
   },
+  '/cv/config/copy/:id': (req: MockRequest): IMission<ICVConfig> => {
+    const token: string = req.headers.token;
+    // 找到原始任务
+    const originMission = getOne({ type: 'cv', token, id: req.params.id }) as IMission<ICVConfig>;
+
+    // 创建新任务
+    const time = new Date().getTime();
+    const newMission: IMission<ICVConfig> = {
+      ...originMission,
+      id: nonceStr(16), // 生成随机16位id,
+      name: `${originMission.name}-副本`,
+      token: token,
+      status: MissionStatusEnum.Init,
+      created: time,
+      updated: time
+    };
+    cvList.push(newMission);
+    return newMission;
+  },
+  '/cv/config/monitor-url/:id': (req: MockRequest): string => {
+    // TODO 更新url获取
+    return 'http://localhost:8080/';
+  },
+  '/cv/config/result-url/:id': (req: MockRequest): string => {
+    // TODO 更新url获取
+    return 'http://localhost:6006/';
+  },
   'POST /cv/config/active-mission': (req: MockRequest): IMission<ICVConfig> => {
     const token: string = req.headers.token;
     const targetMission = getOne({ type: 'cv', token, id: req.body.id });
@@ -232,6 +259,31 @@ export const MODEL_CONFIGS = {
   '/rl/config/:id': (req: MockRequest): IMission<IRLConfig> => {
     const token: string = req.headers.token;
     return getOne({ type: 'rl', token, id: req.params.id }) as IMission<IRLConfig>;
+  },
+  '/rl/config/copy/:id': (req: MockRequest): IMission<IRLConfig> => {
+    const token: string = req.headers.token;
+    // 找到原始任务
+    const originMission = getOne({ type: 'rl', token, id: req.params.id }) as IMission<IRLConfig>;
+
+    // 创建新任务
+    const time = new Date().getTime();
+    const newMission: IMission<IRLConfig> = {
+      ...originMission,
+      id: nonceStr(16), // 生成随机16位id,
+      name: `${originMission.name}-副本`,
+      token: token,
+      status: MissionStatusEnum.Init,
+      created: time,
+      updated: time
+    };
+    rlList.push(newMission);
+    return newMission;
+  },
+  '/rl/config/monitor-url/:id': (req: MockRequest): string => {
+    return 'http://localhost:8080/';
+  },
+  '/rl/config/result-url/:id': (req: MockRequest): string => {
+    return 'http://localhost:6006/';
   },
   'POST /rl/config/active-mission': (req: MockRequest): IMission<IRLConfig> => {
     const token: string = req.headers.token;

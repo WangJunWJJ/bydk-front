@@ -1,14 +1,15 @@
 <div class="modal-header">
   <div class="modal-title">任务监控</div>
 </div>
-<nz-spin *ngIf="!i" class="modal-spin"></nz-spin>
-<div sv-container *ngIf="i">
-  <sv label="姓名">{{ i.owner }}</sv>
-  <sv label="会员卡号">32943898021309809423</sv>
-  <sv label="身份证">3321944288191034921</sv>
-  <sv label="联系方式">18112345678</sv>
-  <sv label="联系地址">曲丽丽 18100000000 浙江省杭州市西湖区黄姑山路工专路交叉路口</sv>
-</div>
+<nz-tabset>
+  <nz-tab nzTitle="任务监控">TODO 任务监控信息</nz-tab>
+  <nz-tab nzTitle="系统监控"
+    ><div class="l-iframe-container">
+      <nz-spin *ngIf="!monitorUrl" class="modal-spin"></nz-spin>
+      <iframe *ngIf="monitorUrl" [src]="monitorUrl"></iframe> </div
+  ></nz-tab>
+</nz-tabset>
+
 <div class="modal-footer">
   <button nz-button type="button" (click)="close()">关闭</button>
 </div>

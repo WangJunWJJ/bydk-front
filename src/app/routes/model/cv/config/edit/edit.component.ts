@@ -91,6 +91,8 @@ export class ModelCVConfigEditComponent implements OnInit {
       // TODO 增加相关的后端更新逻辑
       this.modelConfigService.createCVMission(this.formData).subscribe(() => {
         this.msgSrv.success('更新成功');
+
+        this.modal.destroy(true);
       });
     }
   }

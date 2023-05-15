@@ -70,6 +70,51 @@ export class ModelConfigService {
   }
 
   /**
+   * 复制指定id的任务 并且赋予状态为初始化
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  copyCVMission(id: string) {
+    return this.httpClient.get<IMission<ICVConfig>>(`/cv/config/copy/${id}`, {
+      headers: {
+        token: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 返回对应mission的监控url
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  getCVMonitorUrl(id: string) {
+    return this.httpClient.get<string>(`/cv/config/monitor-url/${id}`, {
+      headers: {
+        token: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 返回对应mission的结果url
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  getCVResultUrl(id: string) {
+    return this.httpClient.get<string>(`/cv/config/result-url/${id}`, {
+      headers: {
+        token: this.getToken()
+      }
+    });
+  }
+
+  /**
    * 创建一个CV任务
    *
    * @param {ICVConfig} cvConfig
@@ -134,6 +179,51 @@ export class ModelConfigService {
    */
   getRLMission(id: string) {
     return this.httpClient.get<IMission<IRLConfig>>(`/rl/config/${id}`, {
+      headers: {
+        token: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 复制指定id的任务 并且赋予状态为初始化
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  copyRLMission(id: string) {
+    return this.httpClient.get<IMission<IRLConfig>>(`/rl/config/copy/${id}`, {
+      headers: {
+        token: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 返回对应mission的监控url
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  getRLMonitorUrl(id: string) {
+    return this.httpClient.get<string>(`/rl/config/monitor-url/${id}`, {
+      headers: {
+        token: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 返回对应mission的结果url
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  getRLResultUrl(id: string) {
+    return this.httpClient.get<string>(`/rl/config/result-url/${id}`, {
       headers: {
         token: this.getToken()
       }
