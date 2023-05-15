@@ -76,10 +76,10 @@ function generateData(len: number = 20) {
         algorithm_type: getRandomItem(booleanArr),
         server_num: 1, // 整型
         init_step_count: 2, // 整型
-        samples_per_insert: 1.0, // float
+        samples_per_insert: 1.2, // float
         memory_size: 16, // 整型
         collection_env_num: 2, // 整型
-        learning_rate: 2.0, // float
+        learning_rate: 0.5, // float
         batch_size: 3, // 整型
         max_episode_length: 200, // 整型
         worker_num: 10, // 整型
