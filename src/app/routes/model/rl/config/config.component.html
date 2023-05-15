@@ -1,0 +1,19 @@
+<page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button (click)="addConfig()" nz-button nzType="primary">新增配置</button>
+  </ng-template>
+</page-header>
+<nz-card>
+  <sf mode="search" [schema]="searchSchema" (formSubmit)="search($event)" (formReset)="reset($event)"></sf>
+  <st
+    #st
+    [page]="page"
+    [pi]="searchStream$.value.pi"
+    [ps]="searchStream$.value.ps"
+    [columns]="columns"
+    [total]="total"
+    [data]="missionList"
+    [columns]="columns"
+    [loading]="isLoading"
+  ></st>
+</nz-card>

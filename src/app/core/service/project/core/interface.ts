@@ -43,15 +43,15 @@ export interface IRLConfig {
   algorithm_type: boolean; //	是否on-policy
   mode?: RLModeEnum; //	deploy/ser/dev 三选一，
   server_num: number; // 整型
-  init_step_count?: number; // 整型
-  samples_per_insert: number; // float
-  memory_size?: number; // 整型
   collection_env_num: number; // 整型
-  learning_rate: number; // float
-  batch_size: number; // 整型
   max_episode_length: number; // 整型
   worker_num: number; // 整型
   env_num: number; // 整型
+  batch_size: number; // 整型
+  memory_size?: number; // 整型
+  init_step_count?: number; // 整型
+  samples_per_insert: number; // float
+  learning_rate: number; // float
   render: boolean; //	是否渲染
 }
 

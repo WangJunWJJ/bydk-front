@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <div class="modal-title">任务监控</div>
+</div>
+<div class="l-iframe-container">
+  <nz-spin *ngIf="!monitorUrl" class="modal-spin"></nz-spin>
+  <iframe *ngIf="monitorUrl" [src]="monitorUrl"></iframe>
+</div>
+
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>

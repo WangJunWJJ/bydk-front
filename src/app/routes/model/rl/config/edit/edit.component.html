@@ -1,0 +1,80 @@
+<div class="modal-header">
+  <div class="modal-title" *ngIf="record.id">编辑配置</div>
+  <div class="modal-title" *ngIf="!record.id">新增配置</div>
+</div>
+<nz-spin *ngIf="!formData" class="modal-spin"></nz-spin>
+
+<div style="width: 100%; margin: 0 auto" *ngIf="formData">
+  <form nz-form se-container="2" #f="ngForm" [gutter]="2" [labelWidth]="210">
+    <se label="任务名称" required>
+      <input type="text" nz-input [(ngModel)]="formData.name" name="name" required placeholder="请输入任务名称" />
+    </se>
+
+    <se label="配置文件存储路径" required col="2">
+      <input type="text" nz-input [(ngModel)]="formData.path" name="path" required placeholder="请输入路径" />
+    </se>
+
+    <se label="算法类型" required col="2">
+      <nz-select [(ngModel)]="formData.algorithm" style="width: 100px" name="model">
+        <nz-option [nzLabel]="model" [nzValue]="model" *ngFor="let model of rlModelAlgorithms"></nz-option>
+      </nz-select>
+    </se>
+
+    <se label="mode" col="2">
+      <nz-select [(ngModel)]="formData.algorithm" style="width: 100px" name="mode">
+        <nz-option [nzLabel]="model" [nzValue]="model" *ngFor="let model of rlModes"></nz-option>
+      </nz-select>
+    </se>
+
+    <se label="是否on-policy" required col="2">
+      <nz-select [(ngModel)]="formData.algorithm_type" style="width: 100px" name="algorithm_type">
+        <nz-option [nzLabel]="option.label" [nzValue]="option.value" *ngFor="let option of booleanOptions"></nz-option>
+      </nz-select>
+    </se>
+    <se label="是否渲染" required col="2">
+      <nz-select [(ngModel)]="formData.render" style="width: 100px" name="render">
+        <nz-option [nzLabel]="option.label" [nzValue]="option.value" *ngFor="let option of booleanOptions"></nz-option>
+      </nz-select>
+    </se>
+
+    <se label="server_num" col="2" required>
+      <nz-input-number [(ngModel)]="formData.server_num" [nzStep]="1" name="server_num"></nz-input-number>
+    </se>
+    <se label="collection_env_num" col="2" required>
+      <nz-input-number [(ngModel)]="formData.collection_env_num" [nzStep]="1" name="collection_env_num"></nz-input-number>
+    </se>
+    <se label="max_episode_length" col="2" required>
+      <nz-input-number [(ngModel)]="formData.max_episode_length" [nzStep]="1" name="max_episode_length"></nz-input-number>
+    </se>
+    <se label="worker_num" col="2" required>
+      <nz-input-number [(ngModel)]="formData.worker_num" [nzStep]="1" name="worker_num"></nz-input-number>
+    </se>
+    <se label="env_num" col="2" required>
+      <nz-input-number [(ngModel)]="formData.env_num" [nzStep]="1" name="env_num"></nz-input-number>
+    </se>
+    <se label="batch_size" col="2" required>
+      <nz-input-number [(ngModel)]="formData.batch_size" [nzStep]="1" name="batch_size"></nz-input-number>
+    </se>
+    <se label="memory_size" col="2">
+      <nz-input-number [(ngModel)]="formData.memory_size" [nzStep]="1" name="memory_size"></nz-input-number>
+    </se>
+    <se label="init_step_count" col="2">
+      <nz-input-number [(ngModel)]="formData.init_step_count" [nzStep]="1" name="init_step_count"></nz-input-number>
+    </se>
+    <se label="samples_per_insert" col="2">
+      <nz-input-number [(ngModel)]="formData.init_step_count" name="init_step_count" [nzStep]="0.1"></nz-input-number>
+    </se>
+    <se label="learning_rate" col="2">
+      <nz-input-number [(ngModel)]="formData.init_step_count" [nzStep]="0.1" name="init_step_count"></nz-input-number>
+    </se>
+
+    <!-- <div class="modal-footer">
+      <button nz-button type="button" (click)="close()">关闭</button>
+      <button nz-button nzType="primary" [disabled]="form.invalid" (click)="save()"> 保存 </button>
+    </div> -->
+  </form>
+</div>
+<div class="modal-footer">
+  <button nz-button type="button" (click)="close()">关闭</button>
+  <button nz-button nzType="primary" [disabled]="!isValid" (click)="save()"> 保存 </button>
+</div>
