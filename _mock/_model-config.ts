@@ -238,6 +238,8 @@ export const MODEL_CONFIGS = {
       updated: time,
       config: dto
     };
+
+    // TODO create时写入对应的参数到文件路径中
     cvList.push(mission);
     return mission;
   },

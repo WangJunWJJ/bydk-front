@@ -68,7 +68,8 @@ export interface IMission<T extends ICVConfig | IRLConfig> {
   token: string; // 任务token 用于根据token的索引
   created: number; // 创建时间
   updated: number; // 更新时间
-  url?: string; // 用于监控地址的url
+  monitorUrl?: string; // 用于监控地址的url
+  resultUrl?: string; // 用于结果地址的url
 
   path: string; // 对应path位置 用于索引
   status: MissionStatusEnum; // 任务是否正在执行
