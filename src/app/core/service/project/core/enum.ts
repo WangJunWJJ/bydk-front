@@ -50,3 +50,17 @@ export enum MissionStatusEnum {
   Active = 'active', // 对提交的任务点击了执行任务
   Done = 'done' // 任务已结束
 }
+
+/**
+ * cluster的日志类型
+ *
+ * @export
+ * @enum {number}
+ */
+export enum ClusterLogTypeEnum {
+  All = 'all',
+  Info = 'info',
+  Warning = 'warning',
+  Error = 'error',
+  Debug = 'debug'
+}

@@ -75,3 +75,28 @@ export interface IMission<T extends ICVConfig | IRLConfig> {
   status: MissionStatusEnum; // 任务是否正在执行
   config: T; // 对应的config信息
 }
+
+/**
+ * pycluster的返回数据
+ *
+ * @interface PyClusterResponse
+ */
+export interface PyClusterResponse {
+  // client_list: any[];
+  cluster_abstraction: ISlaveData;
+  slave_list: ISlaveData[];
+}
+
+/**
+ * 返回的系统监控数据
+ *
+ * @export
+ * @interface ISlaveData
+ */
+export interface ISlaveData {
+  cpu_count: number;
+  cpu_workload: number[];
+  ip?: string;
+  memory_size: number;
+  memory_usage: number[];
+}

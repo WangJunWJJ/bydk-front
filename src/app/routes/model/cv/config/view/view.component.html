@@ -3,11 +3,6 @@
 </div>
 <nz-tabset>
   <nz-tab nzTitle="任务监控">TODO 任务监控信息</nz-tab>
-  <nz-tab nzTitle="系统监控"
-    ><div class="l-iframe-container">
-      <nz-spin *ngIf="!monitorUrl" class="modal-spin"></nz-spin>
-      <iframe *ngIf="monitorUrl" [src]="monitorUrl"></iframe> </div
-  ></nz-tab>
 </nz-tabset>
 
 <div class="modal-footer">
