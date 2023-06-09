@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICVConfig, IMission, IRLConfig, MissionStatusEnum } from './core';
+import { ICVConfig, IMission, IRLConfig, MissionData, MissionStatusEnum } from './core';
 import { BE_URL } from '../constant';
 
 @Injectable({
@@ -108,6 +108,21 @@ export class ModelConfigService {
    */
   getCVResultUrl(id: string) {
     return this.httpClient.get<string>(`/cv/config/result-url/${id}`, {
+      headers: {
+        token: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 返回对应mission的结果url
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  getCVMissionData(id: string) {
+    return this.httpClient.get<MissionData>(`/cv/config/get-mission-data/${id}`, {
       headers: {
         token: this.getToken()
       }
@@ -224,6 +239,21 @@ export class ModelConfigService {
    */
   getRLResultUrl(id: string) {
     return this.httpClient.get<string>(`/rl/config/result-url/${id}`, {
+      headers: {
+        token: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 返回对应mission的结果url
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  getRLMissionData(id: string) {
+    return this.httpClient.get<MissionData>(`/rl/config/get-mission-data/${id}`, {
       headers: {
         token: this.getToken()
       }

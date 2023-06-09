@@ -255,6 +255,7 @@ export class ModelCVMonitorComponent implements OnInit, OnDestroy, AfterViewInit
             takeUntil(this.componentDestroyed$),
             switchMap(config => {
               return timer(0, 1000).pipe(
+                takeUntil(this.componentDestroyed$),
                 switchMap(_ => {
                   if (config === null) {
                     return this.pyClusterService.getClusterData();

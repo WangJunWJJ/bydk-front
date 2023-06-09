@@ -1,9 +1,24 @@
 <div class="modal-header">
-  <div class="modal-title">任务监控</div>
+  <div class="modal-title"
+    >任务监控 <span *ngIf="mission">-&nbsp;{{ mission.name }}</span></div
+  >
 </div>
-<nz-tabset>
-  <nz-tab nzTitle="任务监控">TODO 任务监控信息</nz-tab>
-</nz-tabset>
+
+<form nz-form se-container #f="ngForm" nzLayout="inline">
+  <se label="统计条目">
+    <nz-select
+      [ngModel]="chartTypeStream$.value"
+      style="width: 100px"
+      name="type"
+      (ngModelChange)="ngSelectChange($event)"
+      style="width: 210px"
+    >
+      <nz-option [nzLabel]="option" [nzValue]="option" *ngFor="let option of chartTypeOptions"></nz-option>
+    </nz-select>
+  </se>
+
+  <div #chartContainer id="chartContainer"> </div>
+</form>
 
 <div class="modal-footer">
   <button nz-button type="button" (click)="close()">关闭</button>

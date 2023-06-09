@@ -43,7 +43,7 @@
     <nz-tab nzTitle="日志查询">
       <form nz-form se-container #f="ngForm" nzLayout="inline">
         <se label="日志类型">
-          <nz-select [(ngModel)]="logStream$.value.type" style="width: 100px" name="type" (ngModelChange)="ngSelectChange($event)">
+          <nz-select [ngModel]="logStream$.value.type" style="width: 100px" name="type" (ngModelChange)="ngSelectChange($event)">
             <nz-option [nzLabel]="option.label" [nzValue]="option.value" *ngFor="let option of logOptions"></nz-option>
           </nz-select>
         </se>

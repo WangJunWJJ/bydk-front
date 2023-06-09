@@ -100,3 +100,21 @@ export interface ISlaveData {
   memory_size: number;
   memory_usage: number[];
 }
+
+/**
+ * 任务实时数据
+ *
+ * @export
+ * @interface MissionData
+ */
+export interface MissionData {
+  insert_total: number;
+  sample_total: number;
+  average_insert_speed: number;
+  average_sample_speed: number;
+  current_insert_speed: number;
+  current_sample_speed: number;
+  insert_block_time: number;
+  sample_block_time: number;
+  memory_usage: number;
+}
