@@ -7,6 +7,7 @@
 .prettierrc
 
 src/assets/*
+!src/assets/tensorboard
 src/index.html
 node_modules/
 .vscode/

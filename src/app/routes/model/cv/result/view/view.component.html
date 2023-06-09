@@ -3,7 +3,8 @@
 </div>
 <div class="l-iframe-container">
   <nz-spin *ngIf="!monitorUrl" class="modal-spin"></nz-spin>
-  <iframe *ngIf="monitorUrl" [src]="monitorUrl"></iframe>
+  <!-- <iframe *ngIf="monitorUrl" [src]="monitorUrl"></iframe> -->
+  <iframe *ngIf="monitorUrl" src="../../../../../../assets/tensorboard/index.html"> </iframe>
 </div>
 
 <div class="modal-footer">

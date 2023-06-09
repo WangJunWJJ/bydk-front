@@ -94,7 +94,7 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
                     nzStyle: { top: '20px' },
                     nzKeyboard: false
                   },
-                  size: window.innerWidth * 0.8
+                  size: window.innerWidth * 0.9
                 }
               )
               .subscribe(() => {

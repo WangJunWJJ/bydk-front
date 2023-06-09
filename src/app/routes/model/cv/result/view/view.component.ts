@@ -17,14 +17,12 @@ export class ModelCVResultViewComponent implements OnInit {
     id: string;
   };
   mission!: IMission<ICVConfig>;
-  monitorUrl!: SafeResourceUrl;
+  monitorUrl!: string;
 
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
-    // TODO 测试用 用于转换url 否则被识别为危险url
-    private sanitizer: DomSanitizer,
     private modelConfigService: ModelConfigService
   ) {}
 
@@ -32,7 +30,10 @@ export class ModelCVResultViewComponent implements OnInit {
     zip(this.modelConfigService.getCVMission(this.record.id), this.modelConfigService.getCVResultUrl(this.record.id)).subscribe(
       ([mission, url]) => {
         this.mission = mission;
-        this.monitorUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        // 全局设置url
+        (window as any).tensorboardOrigin = url;
+        localStorage.setItem('_tb_global_settings', JSON.stringify({ theme: 'dark' }));
+        this.monitorUrl = url;
       }
     );
   }
