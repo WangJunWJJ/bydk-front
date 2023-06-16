@@ -4,22 +4,10 @@
   >
 </div>
 
-<form nz-form se-container #f="ngForm" nzLayout="inline">
-  <se label="统计条目">
-    <nz-select
-      [ngModel]="chartTypeStream$.value"
-      style="width: 100px"
-      name="type"
-      (ngModelChange)="ngSelectChange($event)"
-      style="width: 210px"
-    >
-      <nz-option [nzLabel]="option" [nzValue]="option" *ngFor="let option of chartTypeOptions"></nz-option>
-    </nz-select>
-  </se>
-
-  <div #chartContainer id="chartContainer"> </div>
-</form>
-
-<div class="modal-footer">
-  <button nz-button type="button" (click)="close()">关闭</button>
+<div class="l-chart-container">
+  <div #chartContainer1 class="l-container-item"> </div>
+  <div #chartContainer2 class="l-container-item"> </div>
+  <div #chartContainer3 class="l-container-item"> </div>
+  <div #chartContainer4 class="l-container-item"> </div>
+  <div #chartContainer5 class="l-container-item"> </div>
 </div>
