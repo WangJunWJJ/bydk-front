@@ -21,4 +21,22 @@ export class LayoutBasicComponent {
   }
 
   constructor(private settings: SettingsService) {}
+
+  downloadHelp() {
+    console.log('downloadHelp');
+    const url = '../../../assets/files/用户手册.pdf';
+    const filename = '用户手册.pdf';
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', url, true);
+    xhr.responseType = 'blob';
+    xhr.onload = e => {
+      const tempUrl = window.URL.createObjectURL(xhr.response);
+      const a = document.createElement('a');
+      a.href = tempUrl;
+      a.download = filename;
+      a.click();
+      console.log(a);
+    };
+    xhr.send();
+  }
 }
