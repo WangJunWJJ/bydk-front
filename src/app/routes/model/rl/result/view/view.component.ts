@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl, SafeUrl } from '@angular/platform-browser';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
@@ -17,14 +16,12 @@ export class ModelRLResultViewComponent implements OnInit {
     id: string;
   };
   mission!: IMission<IRLConfig>;
-  monitorUrl!: SafeResourceUrl;
+  monitorUrl!: string;
 
   constructor(
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
-    // TODO 测试用 用于转换url 否则被识别为危险url
-    private sanitizer: DomSanitizer,
     private modelConfigService: ModelConfigService
   ) {}
 
@@ -32,7 +29,10 @@ export class ModelRLResultViewComponent implements OnInit {
     zip(this.modelConfigService.getRLMission(this.record.id), this.modelConfigService.getRLResultUrl(this.record.id)).subscribe(
       ([mission, url]) => {
         this.mission = mission;
-        this.monitorUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+        // 全局设置url
+        (window as any).tensorboardOrigin = url;
+        localStorage.setItem('_tb_global_settings', JSON.stringify({ theme: 'dark' }));
+        this.monitorUrl = url;
       }
     );
   }
