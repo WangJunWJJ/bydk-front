@@ -103,7 +103,7 @@ export class StartupService {
           {
             text: '智能感知模型学习',
             group: true,
-            icon: { type: 'icon', value: 'robot' },
+            icon: { type: 'icon', value: 'code-sandbox' },
             children: [
               { text: '训练参数配置', link: '/model/cv/config', icon: { type: 'icon', value: 'project' } },
               // { text: '系统状态监控', link: '/model/cv/monitor', icon: { type: 'icon', value: 'monitor' } },
@@ -113,7 +113,7 @@ export class StartupService {
           {
             text: '智能决策模型学习',
             group: true,
-            icon: { type: 'icon', value: 'cluster' },
+            icon: { type: 'icon', value: 'slack' },
             children: [
               { text: '训练参数配置', link: '/model/rl/config', icon: { type: 'icon', value: 'project' } },
               { text: '系统状态监控', link: '/model/rl/monitor', icon: { type: 'icon', value: 'monitor' } },
