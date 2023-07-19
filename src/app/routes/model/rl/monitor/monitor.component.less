@@ -44,13 +44,13 @@
 
     &__label {
       margin-right: 10px;
-      color: rgb(255 255 255 / 45%);
+      color: #69d4c6;
       font-size: 16px;
       line-height: 18px;
     }
 
     &__content {
-      color: rgb(255 255 255 / 65%);
+      color: #98ffed;
       font-size: 24px;
       line-height: 24px;
     }
@@ -78,5 +78,27 @@
 
   .l-log-container::-webkit-scrollbar-thumb {
     background-color: rgb(255 255 255 / 70%);
+  }
+
+  ::ng-deep {
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #98ffed;
+    }
+    .ant-tabs-ink-bar {
+      background: #98ffed;
+    }
+    .ant-tabs-tab:hover {
+      color: #98ffed;
+    }
+    // 选择样式
+    .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active,
+    .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab-active {
+      background-color: #163c3e;
+    }
+
+    // progress 文本样式
+    .ant-progress-circle .ant-progress-text {
+      color: #98ffed;
+    }
   }
 }
