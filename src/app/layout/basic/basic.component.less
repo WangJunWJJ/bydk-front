@@ -11,22 +11,6 @@
   //   }
   // }
   ::ng-deep {
-    .sidebar-nav__group-title {
-      padding: 8px 4px;
-    }
-
-    .sidebar-nav__item-link {
-      padding: 8px 28px 8px 4px;
-    }
-
-    .sidebar-nav__depth1 .sidebar-nav__item-link {
-      padding-left: 38px;
-    }
-
-    .alain-default__content {
-      margin-bottom: 0;
-    }
-
     // 控制整体背景颜色
     .alain-default {
       // background: rgba(48, 53, 59, 1);
@@ -44,17 +28,63 @@
       border: 1px solid #224e4d;
     }
 
-    // 侧边栏颜色
+    // 侧边栏
+    // 背景颜色
     .alain-default__aside-inner {
+      // width: 210px;
+
       box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
       background-color: #101522;
       border: 1px solid #224e4d;
+    }
+
+    .sidebar-nav__group-title {
+      padding: 8px 4px;
+    }
+
+    .sidebar-nav__item-link {
+      padding: 8px 28px 8px 4px;
+      margin-bottom: 2px;
+    }
+
+    .sidebar-nav__depth1 .sidebar-nav__item-link {
+      padding-left: 38px;
+    }
+
+    .alain-default__content {
+      margin-bottom: 0;
+    }
+
+    // 字体
+    // 组标题
+    .sidebar-nav__group-title {
+      color: rgb(24, 228, 177);
+      text-decoration: none;
+      font-weight: bolder;
+      font-size: 17px;
+    }
+    .sidebar-nav__item-text {
+      color: #98ffed;
+      font-size: 15px;
+    }
+    .sidebar-nav__item-icon {
+      color: #98ffed;
+    }
+    // 选择样式
+    .sidebar-nav__selected {
+      background-color: #163c3e;
+    }
+    .sidebar-nav__item-link:hover {
+      background-color: #163c3e;
     }
 
     // 选择器颜色
     .sidebar-nav__selected {
       background-color: transparent;
       border-left-color: transparent;
+    }
+    .sidebar-nav__selected > .sidebar-nav__item-link {
+      background-color: #163c3e;
     }
 
     // content header颜色
