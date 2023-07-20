@@ -1,3 +1,4 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ICVConfig, IMission, IRLConfig, MissionData, MissionStatusEnum } from './core';
@@ -7,10 +8,8 @@ import { BE_URL } from '../constant';
   providedIn: 'root'
 })
 export class ModelConfigService {
-  constructor(private httpClient: HttpClient) {
-    // TODO 从url获取token 此处为mock
-    this.setToken('abcabc12');
-  }
+  token!: string;
+  constructor(private httpClient: HttpClient, private msgSrv: NzMessageService) {}
 
   /**
    * 获取token
@@ -19,7 +18,12 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getToken(): string {
-    return localStorage.getItem('token') || '';
+    // token没有被初始化 阻止请求进行
+    if (this.token == null) {
+      this.msgSrv.warning('token还没有初始化');
+      throw new Error('token还没有初始化');
+    }
+    return this.token;
   }
 
   /**
@@ -29,7 +33,7 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   setToken(token: string) {
-    localStorage.setItem('token', token);
+    this.token = token;
   }
 
   /**
