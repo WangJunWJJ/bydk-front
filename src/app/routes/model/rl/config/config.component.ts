@@ -21,7 +21,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
     properties: {
       keyword: {
         type: 'string',
-        title: '任务名'
+        title: '任务名',
+        default: ''
       },
       status: {
         title: '任务状态',

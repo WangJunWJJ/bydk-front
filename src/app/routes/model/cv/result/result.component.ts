@@ -21,7 +21,8 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
     properties: {
       keyword: {
         type: 'string',
-        title: '任务名'
+        title: '任务名',
+        default: ''
       }
     }
   };
