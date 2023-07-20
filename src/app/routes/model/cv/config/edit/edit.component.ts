@@ -73,8 +73,8 @@ export class ModelCVConfigEditComponent implements OnInit {
         this.originMission = mission;
 
         this.formData = {
-          name: mission.name,
-          ...mission.config
+          ...mission.config,
+          name: mission.name
         };
       });
     }
@@ -88,8 +88,7 @@ export class ModelCVConfigEditComponent implements OnInit {
         this.modal.destroy(true);
       });
     } else {
-      // TODO 增加相关的后端更新逻辑
-      this.modelConfigService.createCVMission(this.formData).subscribe(() => {
+      this.modelConfigService.updateCVMission(this.record.id, this.formData).subscribe(() => {
         this.msgSrv.success('更新成功');
 
         this.modal.destroy(true);

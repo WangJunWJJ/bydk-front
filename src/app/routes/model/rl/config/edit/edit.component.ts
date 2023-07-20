@@ -101,8 +101,8 @@ export class ModelRLConfigEditComponent implements OnInit {
         this.originMission = mission;
 
         this.formData = {
-          name: mission.name,
-          ...mission.config
+          ...mission.config,
+          name: mission.name
         };
       });
     }
@@ -116,8 +116,7 @@ export class ModelRLConfigEditComponent implements OnInit {
         this.modal.destroy(true);
       });
     } else {
-      // TODO 增加相关的后端更新逻辑
-      this.modelConfigService.createRLMission(this.formData as IRLConfig & { name: string }).subscribe(() => {
+      this.modelConfigService.updateRLMission(this.record.id, this.formData as IRLConfig & { name: string }).subscribe(() => {
         this.msgSrv.success('更新成功');
 
         this.modal.destroy(true);

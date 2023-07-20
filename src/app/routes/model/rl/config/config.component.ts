@@ -1,11 +1,11 @@
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { STColumn, STComponent, STPage } from '@delon/abc/st';
+import { STChange, STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
 import { ModelRLConfigEditComponent } from './edit/edit.component';
 import { IRLConfig, IMission, MissionStatusEnum } from 'src/app/core/service/project/core';
-import { ModelConfigService } from 'src/app/core/service';
+import { ModelConfigService, missionCondition } from 'src/app/core/service';
 import { ModelRLConfigViewComponent } from './view/view.component';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
 
@@ -41,7 +41,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
   missionList: IMission<IRLConfig>[] = [];
 
   page: STPage = {
-    front: true,
+    front: false,
     show: true,
     showSize: true
   };
@@ -188,20 +188,24 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         takeUntil(this.componentDestroyed$),
         switchMap(searchConfig => {
           this.isLoading = true;
-          const status = searchConfig.status;
 
-          if (status === 'All') {
-            return this.modelConfigService.getRLMissions({});
-          } else {
-            return this.modelConfigService.getRLMissions({ status });
+          const condition: missionCondition = {
+            pi: searchConfig.pi,
+            ps: searchConfig.ps
+          };
+
+          if (searchConfig.status !== 'All') {
+            condition.status = searchConfig.status;
           }
+          if (searchConfig.keyword !== '') {
+            condition.keyword = searchConfig.keyword;
+          }
+          return this.modelConfigService.getRLMissions(condition);
         })
       )
       .subscribe(({ total, data }) => {
-        // 实际上不需要reverse 这里模仿DESC排序
-        // TODO 这里过滤应该发生在请求的筛选中
-        this.missionList = data.filter(item => item.status !== MissionStatusEnum.Done).reverse();
-        this.total = this.missionList.length;
+        this.missionList = data;
+        this.total = total;
         this.isLoading = false;
       });
   }
@@ -209,7 +213,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
   search(e: any): void {
     this.searchStream$.next({
       ...this.searchStream$.value,
-      ...e
+      ...e,
+      pi: 1
     });
   }
 
@@ -237,6 +242,26 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.searchStream$.next({ ...this.searchStream$.value });
       });
+  }
+
+  change(e: STChange) {
+    switch (e.type) {
+      case 'pi':
+        this.searchStream$.next({
+          ...this.searchStream$.value,
+          pi: e.pi
+        });
+        break;
+      case 'ps':
+        this.searchStream$.next({
+          ...this.searchStream$.value,
+          ps: e.ps
+        });
+        break;
+
+      default:
+        break;
+    }
   }
 
   ngOnDestroy(): void {
