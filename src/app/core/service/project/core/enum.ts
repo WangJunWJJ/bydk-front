@@ -1,4 +1,15 @@
 /**
+ * 任务类型
+ *
+ * @export
+ * @enum {number}
+ */
+export enum MissionTypeEnum {
+  CV = 'cv',
+  RL = 'rl'
+}
+
+/**
  * RL算法
  *
  * @export
@@ -63,4 +74,15 @@ export enum ClusterLogTypeEnum {
   Warning = 'warning',
   Error = 'error',
   Debug = 'debug'
+}
+
+/**
+ * 任务上传文件类型
+ *
+ * @export
+ * @enum {number}
+ */
+export enum ImportDataTypeEnum {
+  DATASETS = 'datasets', // 数据集
+  MODELS = 'models' // 模型文件
 }

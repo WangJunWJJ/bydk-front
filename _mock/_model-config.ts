@@ -7,6 +7,7 @@ import {
   IRLConfig,
   MissionData,
   MissionStatusEnum,
+  MissionTypeEnum,
   RLAlgorithmEnum
 } from 'src/app/core/service/project/core';
 import { nonceStr, setDigits } from 'src/app/shared/utils/utils';
@@ -47,6 +48,7 @@ function generateData(len: number = 20) {
       name: `cv任务${i + 1}`,
       created: time,
       updated: time,
+      type: MissionTypeEnum.CV,
 
       config: {
         path, //	配置文件存储路径(工程路径之下)
@@ -78,6 +80,7 @@ function generateData(len: number = 20) {
       status: getRandomItem(missionStatusArr),
       created: time,
       updated: time,
+      type: MissionTypeEnum.RL,
 
       config: {
         path, //	配置文件存储路径(工程路径之下)
@@ -271,6 +274,7 @@ export const MODEL_CONFIGS = {
       status: MissionStatusEnum.Init,
       created: time,
       updated: time,
+      type: MissionTypeEnum.CV,
       config: dto
     };
 
@@ -372,6 +376,7 @@ export const MODEL_CONFIGS = {
       status: MissionStatusEnum.Init,
       created: time,
       updated: time,
+      type: MissionTypeEnum.CV,
       config: dto
     };
     rlList.push(mission);

@@ -22,6 +22,16 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
       keyword: {
         type: 'string',
         title: '任务名'
+      },
+      status: {
+        title: '任务状态',
+        type: 'string',
+        default: 'All',
+        enum: [
+          { label: '全部', value: 'All' },
+          { label: '未执行', value: MissionStatusEnum.Init },
+          { label: '执行中', value: MissionStatusEnum.Active }
+        ]
       }
     }
   };

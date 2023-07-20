@@ -1,4 +1,5 @@
-import { CVAlgorithmEnum, MissionStatusEnum, RLAlgorithmEnum, RLModeEnum } from '.';
+import { MissionTypeEnum } from './enum';
+import { CVAlgorithmEnum, ImportDataTypeEnum, MissionStatusEnum, RLAlgorithmEnum, RLModeEnum } from '.';
 
 /**
  * 用户自定义配置信息（扩展）
@@ -68,12 +69,35 @@ export interface IMission<T extends ICVConfig | IRLConfig> {
   token: string; // 任务token 用于根据token的索引
   created: number; // 创建时间
   updated: number; // 更新时间
+
   monitorUrl?: string; // 用于监控地址的url
   resultUrl?: string; // 用于结果地址的url
 
   path: string; // 对应path位置 用于索引
   status: MissionStatusEnum; // 任务是否正在执行
+
+  type: MissionTypeEnum;
+
+  import_data?: ImportData[]; // 上传的数据集
+
   config: T; // 对应的config信息
+}
+
+/**
+ * 上传数据entity
+ * 包含数据集，模型
+ *
+ * @export
+ * @interface IMission
+ * @template T
+ */
+export interface ImportData {
+  id: string;
+  missionId: string; // 外键
+  created: number; // 创建时间
+  filename: string; // 文件名
+  type: ImportDataTypeEnum; // 上传文件类型
+  url: string; // 文件路径
 }
 
 /**
