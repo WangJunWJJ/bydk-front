@@ -1,13 +1,14 @@
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { STChange, STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
-import { ModelCVConfigEditComponent } from './edit/edit.component';
-import { ICVConfig, IMission, MissionStatusEnum } from 'src/app/core/service/project/core';
-import { ModelConfigService, missionCondition } from 'src/app/core/service';
-import { ModelCVConfigViewComponent } from './view/view.component';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
+import { ModelConfigService, missionCondition } from 'src/app/core/service';
+import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum } from 'src/app/core/service/project/core';
+import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
+import { ModelCVConfigEditComponent } from './edit/edit.component';
+import { ModelCVConfigViewComponent } from './view/view.component';
 
 @Component({
   selector: 'app-model-cv-config',
@@ -165,6 +166,65 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
               this.msgSrv.success('复制成功');
             });
           }
+        },
+        {
+          text: '更多',
+          children: [
+            {
+              text: '数据集上传下载',
+              click: (record: IMission<ICVConfig>) => {
+                this.modal
+                  .createStatic(
+                    ModelCompUploadComponent,
+                    {
+                      record: {
+                        id: record.id,
+                        type: ImportDataTypeEnum.DATASETS
+                      }
+                    },
+                    {
+                      modalOptions: {
+                        nzTitle: '数据集上传下载',
+                        nzMaskClosable: false,
+                        nzKeyboard: false,
+                        nzStyle: { top: '30px' },
+                        nzClassName: 'micro-directory',
+                        nzFooter: null
+                      },
+                      size: window.innerWidth * 0.8
+                    }
+                  )
+                  .subscribe();
+              }
+            },
+            {
+              text: '模型上传下载',
+              click: (record: IMission<ICVConfig>) => {
+                this.modal
+                  .createStatic(
+                    ModelCompUploadComponent,
+                    {
+                      record: {
+                        id: record.id,
+                        type: ImportDataTypeEnum.MODELS
+                      }
+                    },
+                    {
+                      modalOptions: {
+                        nzTitle: '模型上传下载',
+                        nzMaskClosable: false,
+                        nzKeyboard: false,
+                        nzStyle: { top: '30px' },
+                        nzClassName: 'micro-directory',
+                        nzFooter: null
+                      },
+                      size: window.innerWidth * 0.8
+                    }
+                  )
+                  .subscribe();
+              }
+            }
+          ]
         }
       ]
     }
@@ -205,6 +265,7 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ total, data }) => {
         this.missionList = data;
+
         this.total = total;
         this.isLoading = false;
       });

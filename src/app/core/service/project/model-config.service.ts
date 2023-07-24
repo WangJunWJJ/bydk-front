@@ -81,6 +81,21 @@ export class ModelConfigService {
   }
 
   /**
+   * 删除cv任务
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  deleteCVMission(id: string) {
+    return this.httpClient.delete<{ msg: string }>(`${BE_URL}/cv/config/${id}`, {
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
    * 复制指定id的任务 并且赋予状态为初始化
    *
    * @param {string} id
@@ -216,6 +231,21 @@ export class ModelConfigService {
    */
   getRLMission(id: string) {
     return this.httpClient.get<IMission<IRLConfig>>(`${BE_URL}/rl/config/${id}`, {
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 删除cv任务
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  deleteRLMission(id: string) {
+    return this.httpClient.delete<{ msg: string }>(`${BE_URL}/rl/config/${id}`, {
       headers: {
         rltoken: this.getToken()
       }

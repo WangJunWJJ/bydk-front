@@ -1,0 +1,59 @@
+<div class="l-content">
+  <div class="l-flex">
+    <div class="l-flex__label"> 文件名搜索：</div>
+    <input type="text" nz-input [(ngModel)]="searchStream$.value.keyword" name="keyword" placeholder="请输入文件名" style="width: 200px" />
+    <button nz-button nzType="primary" (click)="search()">搜索</button>
+    <button nz-button nzType="default" (click)="searchReset()">重置</button>
+
+    <button nz-button nzType="primary" style="margin-left: auto" (click)="uploadFile()">上传文件</button>
+  </div>
+
+  <st
+    #st
+    style="margin-top: 15px"
+    [data]="currFiles"
+    [page]="page"
+    [columns]="columns"
+    [pi]="pageConfig.pi"
+    [ps]="pageConfig.ps"
+    [total]="pageConfig.total"
+    [loading]="isFileLoading"
+    (change)="change($event)"
+  >
+  </st>
+
+  <nz-modal
+    [(nzVisible)]="uploadModalConfig.isOpen"
+    [nzTitle]="uploadModalConfig.type === 'datasets' ? '上传数据集' : '上传模型'"
+    (nzOnCancel)="cancelUploadModal()"
+    [nzWidth]="900"
+    [nzMaskClosable]="false"
+  >
+    <div *nzModalContent se-container col="1">
+      <se label="" labelWidth="0">
+        <nz-upload
+          nzType="drag"
+          [nzMultiple]="false"
+          [nzAction]="action"
+          [nzAccept]="fileTypes"
+          [nzFileList]="uploadModalFormData.fileList"
+          (nzChange)="ngModelChange('upload', $event)"
+          [nzTransformFile]="transformFile"
+        >
+          <p class="ant-upload-drag-icon">
+            <i nz-icon nzType="inbox"></i>
+          </p>
+          <p class="ant-upload-text">点击或拖拽文件上传</p>
+          <!-- <p class="ant-upload-hint"> 支持多文件上传 </p> -->
+        </nz-upload>
+      </se>
+    </div>
+    <div *nzModalFooter>
+      <button nz-button nzType="default" (click)="cancelUploadModal()">关闭</button>
+    </div>
+  </nz-modal>
+</div>
+
+<div *nzModalFooter>
+  <button nz-button type="button" (click)="close()">关闭</button>
+</div>
