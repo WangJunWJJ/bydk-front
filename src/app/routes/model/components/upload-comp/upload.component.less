@@ -1,0 +1,65 @@
+:host {
+  .l-content {
+    height: calc(100vh - 200px);
+    padding: 16px 26px;
+    overflow-y: auto;
+  }
+
+  .l-content::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .l-content::-webkit-scrollbar-track {
+    background-color: rgb(255 255 255 / 100%);
+  }
+
+  .l-content::-webkit-scrollbar-thumb {
+    background-color: rgb(0 0 0 / 30%);
+  }
+
+  .l-flex {
+    display: flex;
+    align-items: center;
+    height: 32px;
+    font-size: 14px;
+
+    &__label {
+      font-weight: bold;
+      text-align: right;
+    }
+
+    :nth-child(n + 1) {
+      margin-left: 10px;
+    }
+  }
+}
+
+::ng-deep {
+  // 表格
+  .ant-modal .ant-table {
+    background: transparent;
+  }
+  .ant-modal .ant-table table {
+    border: 1px solid rgba(36, 79, 100, 1);
+  }
+  .ant-modal .ant-table thead > tr > th {
+    background-color: rgb(15, 74, 102);
+    color: #b8fff9;
+    border-right: 1px solid #4f635f;
+  }
+  .ant-modal .ant-table thead > tr > th:last-child {
+    border-right: none;
+  }
+  // 表体 cell
+  .ant-modal .ant-table tbody > tr > td {
+    border-right: 1px solid #303030;
+  }
+  .ant-modal .ant-table tbody > tr > td:last-child {
+    border-right: none;
+  }
+  // 行hover
+  .ant-modal .ant-table tbody > tr.ant-table-row:hover > td,
+  .ant-modal .ant-table tbody > tr > td.ant-table-cell-row-hover {
+    background: rgba(15, 74, 102, 0.3);
+  }
+}
