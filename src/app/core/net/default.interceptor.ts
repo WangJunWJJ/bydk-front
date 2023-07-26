@@ -128,6 +128,7 @@ export class DefaultInterceptor implements HttpInterceptor {
   private reAttachToken(req: HttpRequest<any>): HttpRequest<any> {
     // 以下示例是以 NG-ALAIN 默认使用 `SimpleInterceptor`
     const token = this.tokenSrv.get()?.token;
+    debugger;
     return req.clone({
       setHeaders: {
         token: `Bearer ${token}`
@@ -199,19 +200,26 @@ export class DefaultInterceptor implements HttpInterceptor {
         //   }
         // }
         break;
-      case 401:
-        if (this.refreshTokenEnabled && this.refreshTokenType === 're-request') {
-          return this.tryRefreshToken(ev, req, next);
-        }
-        this.toLogin();
-        break;
-      case 403:
-      case 404:
-      case 500:
-        // this.goTo(`/exception/${ev.status}?url=${req.urlWithParams}`);
-        break;
+      // case 401:
+      //   // if (this.refreshTokenEnabled && this.refreshTokenType === 're-request') {
+      //   //   return this.tryRefreshToken(ev, req, next);
+      //   // }
+      //   // this.toLogin();
+      //   break;
+      // case 403:
+      // case 404:
+      // case 500:
+      //   // this.goTo(`/exception/${ev.status}?url=${req.urlWithParams}`);
+      //   break;
+
       default:
         if (ev instanceof HttpErrorResponse) {
+          if ('error' in ev && 'msg' in (ev.error as any)) {
+            const errTxt = (ev.error as { msg: string }).msg;
+            this.notification.error(`请求错误 ${ev.status}: ${ev.url}`, errTxt);
+            break;
+          }
+
           console.warn(
             '未可知错误，大部分是由于后端不支持跨域CORS或无效配置引起，请参考 https://ng-alain.com/docs/server 解决跨域问题',
             ev

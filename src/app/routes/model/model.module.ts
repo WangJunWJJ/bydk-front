@@ -15,6 +15,7 @@ import { ModelRLMonitorComponent } from './rl/monitor/monitor.component';
 import { ModelRLResultEditComponent } from './rl/result/edit/edit.component';
 import { ModelRLResultComponent } from './rl/result/result.component';
 import { ModelRLResultViewComponent } from './rl/result/view/view.component';
+import { ModelCompUploadComponent } from './components/upload-comp/upload.component';
 
 const COMPONENTS: Array<Type<void>> = [
   ModelCVConfigComponent,
@@ -32,7 +33,8 @@ const COMPONENTS_NOROUNT: Array<Type<void>> = [
   ModelRLConfigEditComponent,
   ModelRLConfigViewComponent,
   ModelRLResultEditComponent,
-  ModelRLResultViewComponent
+  ModelRLResultViewComponent,
+  ModelCompUploadComponent
 ];
 
 @NgModule({
