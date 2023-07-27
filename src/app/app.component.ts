@@ -35,6 +35,8 @@ export class AppComponent implements OnInit {
     // !test abcabc12是用来测试 后面删除
     let token = this.activatedRoute.snapshot.queryParamMap.get('jhinno_token');
     console.log(token);
+    // testtest
+    token = 'abcabc12';
     if (token) {
       localStorage.setItem('rl_token', token);
     } else {
