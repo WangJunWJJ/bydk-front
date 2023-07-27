@@ -30,17 +30,19 @@ export class AppComponent implements OnInit {
     // 获取token 写入storage
     // test
     // !test abcabc12是用来测试 后面删除
-    let token = this.activatedRoute.snapshot.queryParamMap.get('token');
+    let token = this.activatedRoute.snapshot.queryParamMap.get('jhinno_token');
     console.log(token);
+    // testtest
+    token = 'abcabc12';
     if (token) {
       localStorage.setItem('rl_token', token);
     } else {
       token = localStorage.getItem('rl_token');
       if (!token) {
         this.msgSrv.warning('没有检测到当前用户token，请重新从云门户进入当前系统');
+        // !test abcabc12是用来测试 后面删除
+        token = 'abcabc12';
       }
-      // !test abcabc12是用来测试 后面删除
-      token = 'abcabc12';
     }
     this.modelConfigService.setToken(token);
   }
