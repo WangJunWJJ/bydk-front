@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { STChange, STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
-import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum } from 'src/app/core/service/project/core';
+import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum, MissionTypeEnum } from 'src/app/core/service/project/core';
 import { ModelConfigService, missionCondition } from 'src/app/core/service';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
 import { ModelCVResultEditComponent } from './edit/edit.component';
@@ -268,6 +268,58 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  uploadDatasets() {
+    this.modal
+      .createStatic(
+        ModelCompUploadComponent,
+        {
+          record: {
+            id: null,
+            type: ImportDataTypeEnum.DATASETS,
+            missionType: MissionTypeEnum.CV
+          }
+        },
+        {
+          modalOptions: {
+            nzTitle: '数据集上传下载',
+            nzMaskClosable: false,
+            nzKeyboard: false,
+            nzStyle: { top: '30px' },
+            nzClassName: 'micro-directory',
+            nzFooter: null
+          },
+          size: window.innerWidth * 0.8
+        }
+      )
+      .subscribe();
+  }
+
+  uploadModels() {
+    this.modal
+      .createStatic(
+        ModelCompUploadComponent,
+        {
+          record: {
+            id: null,
+            type: ImportDataTypeEnum.MODELS,
+            missionType: MissionTypeEnum.CV
+          }
+        },
+        {
+          modalOptions: {
+            nzTitle: '模型上传下载',
+            nzMaskClosable: false,
+            nzKeyboard: false,
+            nzStyle: { top: '30px' },
+            nzClassName: 'micro-directory',
+            nzFooter: null
+          },
+          size: window.innerWidth * 0.8
+        }
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

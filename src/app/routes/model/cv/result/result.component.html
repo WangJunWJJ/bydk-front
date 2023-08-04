@@ -1,4 +1,10 @@
-<page-header> </page-header>
+<!-- <page-header [action]="phActionTpl">
+  <ng-template #phActionTpl>
+    <button (click)="uploadDatasets()" nz-button nzType="primary" style="margin-right: 10px">上传数据集</button>
+    <button (click)="uploadModels()" nz-button nzType="primary" style="margin-right: 10px">上传预训练模型</button>
+  </ng-template>
+</page-header> -->
+<page-header></page-header>
 <nz-card>
   <sf mode="search" [schema]="searchSchema" (formSubmit)="search($event)" (formReset)="reset($event)"></sf>
   <st

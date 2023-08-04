@@ -4,7 +4,7 @@ import { STChange, STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
 import { ModelRLConfigEditComponent } from './edit/edit.component';
-import { IRLConfig, IMission, MissionStatusEnum, ImportDataTypeEnum } from 'src/app/core/service/project/core';
+import { IRLConfig, IMission, MissionStatusEnum, ImportDataTypeEnum, MissionTypeEnum } from 'src/app/core/service/project/core';
 import { ModelConfigService, missionCondition } from 'src/app/core/service';
 import { ModelRLConfigViewComponent } from './view/view.component';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
@@ -322,6 +322,32 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  uploadModels() {
+    this.modal
+      .createStatic(
+        ModelCompUploadComponent,
+        {
+          record: {
+            id: null,
+            type: ImportDataTypeEnum.MODELS,
+            missionType: MissionTypeEnum.RL
+          }
+        },
+        {
+          modalOptions: {
+            nzTitle: '模型上传下载',
+            nzMaskClosable: false,
+            nzKeyboard: false,
+            nzStyle: { top: '30px' },
+            nzClassName: 'micro-directory',
+            nzFooter: null
+          },
+          size: window.innerWidth * 0.8
+        }
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

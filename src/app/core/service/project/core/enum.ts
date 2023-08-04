@@ -84,5 +84,5 @@ export enum ClusterLogTypeEnum {
  */
 export enum ImportDataTypeEnum {
   DATASETS = 'datasets', // 数据集
-  MODELS = 'models' // 模型文件
+  MODELS = 'models' // 预训练模型
 }

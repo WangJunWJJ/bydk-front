@@ -1,7 +1,7 @@
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICVConfig, IMission, IRLConfig, ImportData, ImportDataTypeEnum, MissionData, MissionStatusEnum } from './core';
+import { ICVConfig, IMission, IRLConfig, ImportData, ImportDataTypeEnum, MissionData, MissionStatusEnum, MissionTypeEnum } from './core';
 import { BE_URL } from '../constant';
 
 @Injectable({
@@ -17,7 +17,7 @@ export class ImportDataService {
    * @return {*}
    * @memberof ImportDataService
    */
-  getImportDataList(conditions: { missionId: string; type: ImportDataTypeEnum; keyword: string }) {
+  getImportDataList(conditions: { missionType: MissionTypeEnum; token: string; type: ImportDataTypeEnum; keyword: string }) {
     return this.httpClient.get<{
       total: number;
       data: ImportData[];

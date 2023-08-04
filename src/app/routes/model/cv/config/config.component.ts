@@ -5,7 +5,7 @@ import { ModalHelper, _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
 import { ModelConfigService, missionCondition } from 'src/app/core/service';
-import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum } from 'src/app/core/service/project/core';
+import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum, MissionTypeEnum } from 'src/app/core/service/project/core';
 import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 import { ModelCVConfigEditComponent } from './edit/edit.component';
 import { ModelCVConfigViewComponent } from './view/view.component';
@@ -323,6 +323,58 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
       default:
         break;
     }
+  }
+
+  uploadDatasets() {
+    this.modal
+      .createStatic(
+        ModelCompUploadComponent,
+        {
+          record: {
+            id: null,
+            type: ImportDataTypeEnum.DATASETS,
+            missionType: MissionTypeEnum.CV
+          }
+        },
+        {
+          modalOptions: {
+            nzTitle: '数据集上传下载',
+            nzMaskClosable: false,
+            nzKeyboard: false,
+            nzStyle: { top: '30px' },
+            nzClassName: 'micro-directory',
+            nzFooter: null
+          },
+          size: window.innerWidth * 0.8
+        }
+      )
+      .subscribe();
+  }
+
+  uploadModels() {
+    this.modal
+      .createStatic(
+        ModelCompUploadComponent,
+        {
+          record: {
+            id: null,
+            type: ImportDataTypeEnum.MODELS,
+            missionType: MissionTypeEnum.CV
+          }
+        },
+        {
+          modalOptions: {
+            nzTitle: '模型上传下载',
+            nzMaskClosable: false,
+            nzKeyboard: false,
+            nzStyle: { top: '30px' },
+            nzClassName: 'micro-directory',
+            nzFooter: null
+          },
+          size: window.innerWidth * 0.8
+        }
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

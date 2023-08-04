@@ -93,6 +93,7 @@ export interface IMission<T extends ICVConfig | IRLConfig> {
  */
 export interface ImportData {
   id: string;
+  token: string; // token用于查询是谁的模型
   missionId: string; // 外键
   created: number; // 创建时间
   filename: string; // 文件名

@@ -11,8 +11,9 @@ import { NzUploadChangeParam, NzUploadFile } from 'ng-zorro-antd/upload';
 import { BehaviorSubject, Subject, switchMap, takeUntil } from 'rxjs';
 import { ModelConfigService } from 'src/app/core/service';
 import { BE_URL } from 'src/app/core/service/constant';
-import { ImportData, ImportDataTypeEnum } from 'src/app/core/service/project/core';
+import { ImportData, ImportDataTypeEnum, MissionTypeEnum } from 'src/app/core/service/project/core';
 import { ImportDataService } from 'src/app/core/service/project/import-data.service';
+import { Clipboard } from '@angular/cdk/clipboard';
 
 @Component({
   selector: 'app-model-comp-upload',
@@ -21,8 +22,9 @@ import { ImportDataService } from 'src/app/core/service/project/import-data.serv
 })
 export class ModelCompUploadComponent implements OnInit {
   record!: {
-    id: string;
+    id: string | null; // 不一定会出现
     type: ImportDataTypeEnum;
+    missionType: MissionTypeEnum;
   };
   fileTypes = '';
 
@@ -61,6 +63,10 @@ export class ModelCompUploadComponent implements OnInit {
       title: '文件名',
       index: 'filename'
     },
+    {
+      title: '文件路径',
+      index: 'url'
+    },
     // {
     //   title: '文件大小',
     //   format: (record: ImportData) => {
@@ -97,6 +103,13 @@ export class ModelCompUploadComponent implements OnInit {
           }
         },
         {
+          text: '复制路径',
+          click: (record: ImportData) => {
+            this.clipboard.copy(record.url);
+            this.msgSrv.success('复制成功');
+          }
+        },
+        {
           text: '删除',
           className: 'text-error',
           click: (record: ImportData) => {
@@ -129,17 +142,19 @@ export class ModelCompUploadComponent implements OnInit {
 
   // 上传模态框
   action = (file: NzUploadFile) => {
-    return `${BE_URL}/import-data/upload?mission_id=${this.record.id}&import_type=${this.record.type}`;
+    return `${BE_URL}/import-data/upload?import_type=${this.record.type}&token=${this.modelConfigService.getToken()}&mission_type=${
+      this.record.missionType
+    }`;
   };
   uploadModalConfig = {
     isOpen: false,
     type: ImportDataTypeEnum.DATASETS
   };
   uploadModalFormData: {
-    id: string;
+    id: string | null;
     fileList: NzUploadFile[];
   } = {
-    id: '',
+    id: null,
     fileList: []
   };
   showUploadList = {
@@ -161,8 +176,10 @@ export class ModelCompUploadComponent implements OnInit {
     private modal: NzModalRef,
     private msgSrv: NzMessageService,
     public http: _HttpClient,
+    private clipboard: Clipboard,
     private modalSrv: NzModalService,
     private modalRef: NzModalRef,
+    private modelConfigService: ModelConfigService,
     private importDataService: ImportDataService
   ) {}
 
@@ -198,7 +215,8 @@ export class ModelCompUploadComponent implements OnInit {
           this.isFileLoading = true;
 
           return this.importDataService.getImportDataList({
-            missionId: this.record.id,
+            token: this.modelConfigService.getToken(),
+            missionType: this.record.missionType,
             type: this.record.type,
             keyword: searchConfig.keyword
           });
@@ -295,6 +313,7 @@ export class ModelCompUploadComponent implements OnInit {
     console.log(file);
     file['importType'] = this.record.type;
     file['missionId'] = this.record.id;
+    file['token'] = this.modelConfigService.getToken();
     return file;
   };
 
