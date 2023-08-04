@@ -166,65 +166,6 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
               this.msgSrv.success('复制成功');
             });
           }
-        },
-        {
-          text: '更多',
-          children: [
-            {
-              text: '数据集上传下载',
-              click: (record: IMission<ICVConfig>) => {
-                this.modal
-                  .createStatic(
-                    ModelCompUploadComponent,
-                    {
-                      record: {
-                        id: record.id,
-                        type: ImportDataTypeEnum.DATASETS
-                      }
-                    },
-                    {
-                      modalOptions: {
-                        nzTitle: '数据集上传下载',
-                        nzMaskClosable: false,
-                        nzKeyboard: false,
-                        nzStyle: { top: '30px' },
-                        nzClassName: 'micro-directory',
-                        nzFooter: null
-                      },
-                      size: window.innerWidth * 0.8
-                    }
-                  )
-                  .subscribe();
-              }
-            },
-            {
-              text: '模型上传下载',
-              click: (record: IMission<ICVConfig>) => {
-                this.modal
-                  .createStatic(
-                    ModelCompUploadComponent,
-                    {
-                      record: {
-                        id: record.id,
-                        type: ImportDataTypeEnum.MODELS
-                      }
-                    },
-                    {
-                      modalOptions: {
-                        nzTitle: '模型上传下载',
-                        nzMaskClosable: false,
-                        nzKeyboard: false,
-                        nzStyle: { top: '30px' },
-                        nzClassName: 'micro-directory',
-                        nzFooter: null
-                      },
-                      size: window.innerWidth * 0.8
-                    }
-                  )
-                  .subscribe();
-              }
-            }
-          ]
         }
       ]
     }

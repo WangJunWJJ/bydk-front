@@ -26,6 +26,7 @@ type formData = {
   worker_num: numberOrNull; // 整型
   env_num: numberOrNull; // 整型
   render: boolean; //	是否渲染
+  target_mode_dir: string; // 模型保存路径
 };
 
 @Component({
@@ -94,7 +95,8 @@ export class ModelRLConfigEditComponent implements OnInit {
         max_episode_length: null, // 整型
         worker_num: null, // 整型
         env_num: null, // 整型
-        render: true //	是否渲染
+        render: true, //	是否渲染
+        target_mode_dir: ''
       };
     } else {
       this.modelConfigService.getRLMission(this.record.id).subscribe(mission => {

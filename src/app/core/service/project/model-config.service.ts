@@ -145,6 +145,22 @@ export class ModelConfigService {
   }
 
   /**
+   * 下载生成模型
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  downloadCVTargetModels(id: string) {
+    return this.httpClient.get(`${BE_URL}/cv/config/download-models/${id}`, {
+      responseType: 'blob',
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
    * 返回对应mission的结果url
    *
    * @param {string} id mission id
@@ -355,5 +371,21 @@ export class ModelConfigService {
       },
       { headers: { rltoken: this.getToken() } }
     );
+  }
+
+  /**
+   * 下载生成模型
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  downloadRLTargetModels(id: string) {
+    return this.httpClient.get(`${BE_URL}/rl/config/download-models/${id}`, {
+      responseType: 'blob',
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
   }
 }

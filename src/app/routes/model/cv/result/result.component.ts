@@ -112,65 +112,19 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
             });
           }
         },
-
         {
-          text: '更多',
-          children: [
-            {
-              text: '数据集上传下载',
-              click: (record: IMission<ICVConfig>) => {
-                this.modal
-                  .createStatic(
-                    ModelCompUploadComponent,
-                    {
-                      record: {
-                        id: record.id,
-                        type: ImportDataTypeEnum.DATASETS
-                      }
-                    },
-                    {
-                      modalOptions: {
-                        nzTitle: '数据集上传下载',
-                        nzMaskClosable: false,
-                        nzKeyboard: false,
-                        nzStyle: { top: '30px' },
-                        nzClassName: 'micro-directory',
-                        nzFooter: null
-                      },
-                      size: window.innerWidth * 0.8
-                    }
-                  )
-                  .subscribe();
-              }
-            },
-            {
-              text: '模型上传下载',
-              click: (record: IMission<ICVConfig>) => {
-                this.modal
-                  .createStatic(
-                    ModelCompUploadComponent,
-                    {
-                      record: {
-                        id: record.id,
-                        type: ImportDataTypeEnum.MODELS
-                      }
-                    },
-                    {
-                      modalOptions: {
-                        nzTitle: '模型上传下载',
-                        nzMaskClosable: false,
-                        nzKeyboard: false,
-                        nzStyle: { top: '30px' },
-                        nzClassName: 'micro-directory',
-                        nzFooter: null
-                      },
-                      size: window.innerWidth * 0.8
-                    }
-                  )
-                  .subscribe();
-              }
-            }
-          ]
+          text: '下载模型',
+          click: (record: IMission<ICVConfig>) => {
+            // 下载功能
+            this.modelConfigService.downloadCVTargetModels(record.id).subscribe(blob => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `${record.name}模型.zip`;
+              a.click();
+              window.URL.revokeObjectURL(url);
+            });
+          }
         }
       ]
     }

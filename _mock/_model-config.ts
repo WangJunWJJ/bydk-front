@@ -96,7 +96,8 @@ function generateData(len: number = 20) {
         max_episode_length: 200, // 整型
         worker_num: 10, // 整型
         env_num: 5, // 整型
-        render: getRandomItem(booleanArr) //	是否渲染
+        render: getRandomItem(booleanArr), //	是否渲染
+        target_mode_dir: ''
       }
     });
   }

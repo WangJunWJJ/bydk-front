@@ -67,6 +67,9 @@
     <se label="learning_rate" col="2">
       <nz-input-number [(ngModel)]="formData.learning_rate" [nzStep]="0.1" name="learning_rate"></nz-input-number>
     </se>
+    <se label="target_mode_dir" col="2" required>
+      <input type="text" nz-input [(ngModel)]="formData.target_mode_dir" name="target_mode_dir" required placeholder="请输入路径" />
+    </se>
 
     <!-- <div class="modal-footer">
       <button nz-button type="button" (click)="close()">关闭</button>

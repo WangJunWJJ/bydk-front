@@ -54,6 +54,7 @@ export interface IRLConfig {
   samples_per_insert: number; // float
   learning_rate: number; // float
   render: boolean; //	是否渲染
+  target_mode_dir: string; //	路径信息
 }
 
 /**
