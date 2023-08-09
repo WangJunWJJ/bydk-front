@@ -1,12 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControlDirective, NgForm } from '@angular/forms';
-import { SEComponent } from '@delon/abc/se';
-import { SFSchema, SFUISchema } from '@delon/form';
+import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { ModelConfigService } from 'src/app/core/service';
-import { RLAlgorithmEnum, IRLConfig, IMission, RLModeEnum } from 'src/app/core/service/project/core';
+import { IMission, IRLConfig, RLAlgorithmEnum, RLModeEnum } from 'src/app/core/service/project/core';
 
 type numberOrNull = number | null;
 type formData = {

@@ -163,7 +163,6 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ total, data }) => {
         // 实际上不需要reverse 这里模仿DESC排序
-        // TODO 这里过滤应该发生在请求的筛选中
         this.missionList = data.reverse();
         this.total = total;
         this.isLoading = false;

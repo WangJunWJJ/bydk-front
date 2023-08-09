@@ -1,14 +1,13 @@
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { STChange, STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
-import { IRLConfig, IMission, MissionStatusEnum, ImportDataTypeEnum } from 'src/app/core/service/project/core';
-import { ModelConfigService, missionCondition } from 'src/app/core/service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
+import { ModelConfigService, missionCondition } from 'src/app/core/service';
+import { IMission, IRLConfig, MissionStatusEnum } from 'src/app/core/service/project/core';
 import { ModelRLResultEditComponent } from './edit/edit.component';
 import { ModelRLResultViewComponent } from './view/view.component';
-import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 
 @Component({
   selector: 'app-model-rl-result',
@@ -163,7 +162,6 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
       )
       .subscribe(({ total, data }) => {
         // 实际上不需要reverse 这里模仿DESC排序
-        // TODO 这里过滤应该发生在请求的筛选中
         this.missionList = data.reverse();
         this.total = total;
         this.isLoading = false;

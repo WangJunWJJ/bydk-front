@@ -22,7 +22,6 @@ const routes: Routes = [
     path: 'rl',
     children: [
       { path: '', redirectTo: 'config', pathMatch: 'full' },
-      // TODO 替换对应模块
       { path: 'config', component: ModelRLConfigComponent, data: { title: '训练参数配置' } },
       { path: 'monitor', component: ModelRLMonitorComponent, data: { title: '系统状态监控' } },
       { path: 'result', component: ModelRLResultComponent, data: { title: '训练结果分析' } }

@@ -229,7 +229,7 @@ export const MODEL_CONFIGS = {
   '/cv/config/get-mission-data/:id': (req: MockRequest): MissionData => {
     const token: string = req.headers.token;
     /**
-     * 生成随机书
+     * 生成随机数
      *
      * @param {number} min 最小值
      * @param {number} max 最大值
@@ -330,7 +330,7 @@ export const MODEL_CONFIGS = {
   '/rl/config/get-mission-data/:id': (req: MockRequest): MissionData => {
     const token: string = req.headers.token;
     /**
-     * 生成随机书
+     * 生成随机数
      *
      * @param {number} min 最小值
      * @param {number} max 最大值

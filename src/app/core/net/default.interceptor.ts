@@ -156,7 +156,7 @@ export class DefaultInterceptor implements HttpInterceptor {
       .subscribe(
         res => {
           // TODO: Mock expired value
-          res.expired = +new Date() + 1000 * 60 * 5;
+          res.expired = +new Date() + 1000 * 1000 * 60 * 5;
           this.refreshToking = false;
           this.tokenSrv.set(res);
         },

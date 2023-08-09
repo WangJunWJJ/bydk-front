@@ -3,10 +3,9 @@ import { _HttpClient } from '@delon/theme';
 import * as echarts from 'echarts';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { BehaviorSubject, Subject, debounceTime, filter, switchMap, take, takeUntil, timer, zip } from 'rxjs';
+import { BehaviorSubject, Subject, filter, switchMap, take, takeUntil, timer } from 'rxjs';
 import { ModelConfigService } from 'src/app/core/service';
 import { ICVConfig, IMission, MissionData } from 'src/app/core/service/project/core';
-import { setDigits } from 'src/app/shared/utils/utils';
 
 type chartType = keyof MissionData;
 
@@ -532,34 +531,6 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
 
   // 加载任务数据 直接写入 不做处理
   loadData() {
-    // const randomGenerate = (min: number, max: number, isInt = true) => {
-    //   const ret = min + Math.random() * (max - min);
-    //   return isInt ? Math.floor(ret) : setDigits(ret);
-    // };
-
-    // const test = () => {
-    //   const ret: MissionData[] = [];
-    //   for (let i = 0; i < 10000; i++) {
-    //     ret.push({
-    //       insert_total: randomGenerate(10000, 20000),
-    //       sample_total: randomGenerate(40000, 80000),
-    //       average_insert_speed: randomGenerate(200, 500),
-    //       average_sample_speed: randomGenerate(1000, 3000),
-    //       current_insert_speed: randomGenerate(0, 2000),
-    //       current_sample_speed: randomGenerate(0, 1000),
-    //       insert_block_time: randomGenerate(0, 100),
-    //       sample_block_time: randomGenerate(0, 100),
-    //       memory_usage: randomGenerate(0.1, 0.6, false)
-    //     });
-    //   }
-    //   return ret;
-    // };
-    // this.missionData = test();
-    // this.chartTypeStream$.next(this.chartTypeStream$.value);
-    // return;
-
-    // this.chartTypeStream$.next(this.chartTypeStream$.value);
-    // 1s获取一次数据 存入missionData数组中
     timer(0, 1000)
       .pipe(
         takeUntil(this.componentDestroyed$),
@@ -585,9 +556,6 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
           const dLen = this.missionData.length; // 数据长度
           const chartLen = 60 * 3; // 渲染长度 展示时间3分钟
           // 渲染的数据
-          // const chartData: number[] = this.missionData.slice(dLen > chartLen ? dLen - chartLen : 0, dLen).map(item => {
-          //   return item[chartType];
-          // });
           const handledData = this.missionData.slice(dLen > chartLen ? dLen - chartLen : 0, dLen);
 
           // 将每一项作为数组填入chartData

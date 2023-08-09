@@ -286,10 +286,6 @@ export class ModelCompUploadComponent implements OnInit {
       case 'ps':
         this.pageConfig.ps = e.ps;
         break;
-        // case 'checkbox':
-        //   this.checkList = e.checkbox as ImportData[];
-
-        break;
 
       default:
         break;
@@ -316,14 +312,6 @@ export class ModelCompUploadComponent implements OnInit {
     file['token'] = this.modelConfigService.getToken();
     return file;
   };
-
-  // beforeUpload = (file: NzUploadFile): FormData => {
-  //   const formData = new FormData();
-  //   formData.append('file', file as any);
-  //   formData.append('missionId', this.record.id);
-  //   formData.append('importType', this.record.type);
-  //   return formData;
-  // };
 
   cancelUploadModal() {
     this.uploadModalConfig.isOpen = false;
