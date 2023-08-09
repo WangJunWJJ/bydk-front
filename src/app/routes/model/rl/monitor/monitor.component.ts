@@ -21,7 +21,6 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
   chart!: echarts.ECharts;
   chartCompletedSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false as boolean);
 
-  monitorUrl!: string;
   componentDestroyed$: Subject<void> = new Subject();
 
   renderData!: ISlaveData;
@@ -65,9 +64,7 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
     public http: _HttpClient,
     private modelConfigService: ModelConfigService,
     private pyClusterService: PyClusterService
-  ) {
-    this.monitorUrl = 'http://localhost:8080/';
-  }
+  ) {}
 
   ngOnInit(): void {
     this.loadClusterData();

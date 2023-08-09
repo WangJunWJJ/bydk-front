@@ -1,9 +1,5 @@
 <div class="l-page">
-  <!-- <div class="l-iframe-container">
-    <iframe *ngIf="monitorUrl" [src]="monitorUrl"></iframe>
-  </div> -->
   <nz-tabset nzCentered>
-    <!-- <nz-tab nzTitle="任务监控">TODO 任务监控信息</nz-tab> -->
     <nz-tab nzTitle="负载监控">
       <nz-tabset nzType="card" (nzSelectedIndexChange)="tabChange($event)">
         <nz-tab [nzTitle]="tab" *ngFor="let tab of ipTabs"></nz-tab>

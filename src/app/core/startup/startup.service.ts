@@ -106,7 +106,7 @@ export class StartupService {
             icon: { type: 'icon', value: 'code-sandbox' },
             children: [
               { text: '训练参数配置', link: '/model/cv/config', icon: { type: 'icon', value: 'project' } },
-              // { text: '系统状态监控', link: '/model/cv/monitor', icon: { type: 'icon', value: 'monitor' } },
+              { text: '系统状态监控', link: '/model/cv/monitor', icon: { type: 'icon', value: 'monitor' } },
               { text: '训练结果分析', link: '/model/cv/result', icon: { type: 'icon', value: 'fund' } }
             ]
           },
