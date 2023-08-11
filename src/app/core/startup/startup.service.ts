@@ -101,7 +101,7 @@ export class StartupService {
         hideInBreadcrumb: true,
         children: [
           {
-            text: '智能感知模型学习',
+            text: '智能感知模型训练',
             group: true,
             icon: { type: 'icon', value: 'code-sandbox' },
             children: [
@@ -111,7 +111,7 @@ export class StartupService {
             ]
           },
           {
-            text: '智能决策模型学习',
+            text: '智能决策模型训练',
             group: true,
             icon: { type: 'icon', value: 'slack' },
             children: [
