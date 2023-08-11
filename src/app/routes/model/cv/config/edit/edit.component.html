@@ -10,17 +10,17 @@
       <input type="text" nz-input [(ngModel)]="formData.name" name="name" required placeholder="请输入任务名称" />
     </se>
 
-    <se label="配置文件存储路径" required col="2">
+    <se [label]="labels.path.cn" required col="2" optionalHelp="属性名: path">
       <input type="text" nz-input [(ngModel)]="formData.path" name="path" required placeholder="请输入路径" />
     </se>
 
-    <se label="算法类型" required col="2">
+    <se [label]="labels.model.cn" required col="2" optionalHelp="属性名: model">
       <nz-select [(ngModel)]="formData.model" style="width: 100px" name="model">
         <nz-option [nzLabel]="model" [nzValue]="model" *ngFor="let model of cvModelAlgorithms"></nz-option>
       </nz-select>
     </se>
 
-    <se label="clean_train_data_dir" col="2" required>
+    <se [label]="labels.clean_train_data_dir.cn" col="2" required optionalHelp="属性名: clean_train_data_dir">
       <input
         type="text"
         nz-input
@@ -31,34 +31,34 @@
       />
     </se>
 
-    <se label="clean_test_data_dir" col="2" required>
+    <se [label]="labels.clean_test_data_dir.cn" col="2" required optionalHelp="属性名: clean_test_data_dir">
       <input type="text" nz-input [(ngModel)]="formData.clean_test_data_dir" name="clean_test_data_dir" required placeholder="请输入路径" />
     </se>
 
-    <se label="adv_train_data_dir" col="2" required>
+    <se [label]="labels.adv_train_data_dir.cn" col="2" required optionalHelp="属性名: adv_train_data_dir">
       <input type="text" nz-input [(ngModel)]="formData.adv_train_data_dir" name="adv_train_data_dir" required placeholder="请输入路径" />
     </se>
 
-    <se label="adv_test_data_dir" col="2" required>
+    <se [label]="labels.adv_test_data_dir.cn" col="2" required optionalHelp="属性名: adv_test_data_dir">
       <input type="text" nz-input [(ngModel)]="formData.adv_test_data_dir" name="adv_test_data_dir" required placeholder="请输入路径" />
     </se>
 
-    <se label="label_dir" col="2" required>
+    <se [label]="labels.label_dir.cn" col="2" required optionalHelp="属性名: label_dir">
       <input type="text" nz-input [(ngModel)]="formData.label_dir" name="label_dir" required placeholder="请输入路径" />
     </se>
 
-    <se label="patch_dir" col="2" required>
+    <se [label]="labels.patch_dir.cn" col="2" required optionalHelp="属性名: patch_dir">
       <input type="text" nz-input [(ngModel)]="formData.patch_dir" name="patch_dir" required placeholder="请输入路径" />
     </se>
 
-    <se label="orig_model_dir" col="2" required>
+    <se [label]="labels.orig_model_dir.cn" col="2" required optionalHelp="属性名: orig_model_dir">
       <input type="text" nz-input [(ngModel)]="formData.orig_model_dir" name="orig_model_dir" required placeholder="请输入路径" />
     </se>
-    <se label="target_mode_dir" col="2" required>
+    <se [label]="labels.target_mode_dir.cn" col="2" required optionalHelp="属性名: target_mode_dir">
       <input type="text" nz-input [(ngModel)]="formData.target_mode_dir" name="target_mode_dir" required placeholder="请输入路径" />
     </se>
 
-    <se label="weather_augmentations" col="2" required>
+    <se [label]="labels.weather_augmentations.cn" col="2" required optionalHelp="属性名: weather_augmentations">
       <input
         type="text"
         nz-input
@@ -69,7 +69,7 @@
       />
     </se>
 
-    <se label="config_opts_dir" col="2" required>
+    <se [label]="labels.config_opts_dir.cn" col="2" required optionalHelp="属性名: config_opts_dir">
       <input type="text" nz-input [(ngModel)]="formData.config_opts_dir" name="config_opts_dir" required placeholder="请输入路径" />
     </se>
   </form>

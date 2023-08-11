@@ -89,12 +89,14 @@ export class ModelCompUploadComponent implements OnInit {
     // },
     {
       title: '上传时间',
+      width: '180px',
       index: 'created',
       type: 'date',
       dateFormat: 'yyyy-MM-dd HH:mm:ss'
     },
     {
       title: '操作',
+      width: '180px',
       buttons: [
         {
           text: '下载',

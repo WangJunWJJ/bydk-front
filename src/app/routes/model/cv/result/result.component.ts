@@ -54,9 +54,10 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     { title: '任务名', index: 'name' },
     { title: '配置路径', index: 'path' },
-    { title: '算法类型', index: 'config.model' },
+    { title: '算法类型', index: 'config.model', width: '90px' },
     {
       title: '状态',
+      width: '90px',
       format: (record: IMission<ICVConfig>) => {
         const status = record.status;
 
@@ -73,11 +74,10 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm' },
-    // TODO 可能增加任务结束时间
-    // { title: '任务结束时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm' },
+    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
     {
       title: '操作',
+      width: '260px',
       buttons: [
         {
           text: '训练结果',

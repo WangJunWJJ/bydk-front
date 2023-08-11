@@ -64,9 +64,10 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     { title: '任务名', index: 'name' },
     { title: '配置路径', index: 'path' },
-    { title: '算法类型', index: 'config.algorithm' },
+    { title: '算法类型', index: 'config.algorithm', width: '90px' },
     {
       title: '状态',
+      width: '90px',
       format: (record: IMission<IRLConfig>) => {
         const status = record.status;
 
@@ -83,9 +84,10 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm' },
+    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
     {
       title: '操作',
+      width: '200px',
       buttons: [
         {
           text: '编辑',
@@ -166,65 +168,6 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
               this.msgSrv.success('复制成功');
             });
           }
-        },
-        {
-          text: '更多',
-          children: [
-            {
-              text: '数据集上传下载',
-              click: (record: IMission<IRLConfig>) => {
-                this.modal
-                  .createStatic(
-                    ModelCompUploadComponent,
-                    {
-                      record: {
-                        id: record.id,
-                        type: ImportDataTypeEnum.DATASETS
-                      }
-                    },
-                    {
-                      modalOptions: {
-                        nzTitle: '数据集上传下载',
-                        nzMaskClosable: false,
-                        nzKeyboard: false,
-                        nzStyle: { top: '30px' },
-                        nzClassName: 'micro-directory',
-                        nzFooter: null
-                      },
-                      size: window.innerWidth * 0.8
-                    }
-                  )
-                  .subscribe();
-              }
-            },
-            {
-              text: '模型上传下载',
-              click: (record: IMission<IRLConfig>) => {
-                this.modal
-                  .createStatic(
-                    ModelCompUploadComponent,
-                    {
-                      record: {
-                        id: record.id,
-                        type: ImportDataTypeEnum.MODELS
-                      }
-                    },
-                    {
-                      modalOptions: {
-                        nzTitle: '模型上传下载',
-                        nzMaskClosable: false,
-                        nzKeyboard: false,
-                        nzStyle: { top: '30px' },
-                        nzClassName: 'micro-directory',
-                        nzFooter: null
-                      },
-                      size: window.innerWidth * 0.8
-                    }
-                  )
-                  .subscribe();
-              }
-            }
-          ]
         }
       ]
     }
