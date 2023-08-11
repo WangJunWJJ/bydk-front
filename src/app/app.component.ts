@@ -6,6 +6,8 @@ import { environment } from '@env/environment';
 import { NzModalService } from 'ng-zorro-antd/modal';
 import { VERSION as VERSION_ZORRO } from 'ng-zorro-antd/version';
 import { ModelConfigService } from './core/service';
+import { StartupService } from './core/startup/startup.service';
+import { MissionTypeEnum } from './core/service/project/core';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +22,8 @@ export class AppComponent implements OnInit {
     private modelConfigService: ModelConfigService,
     private readonly activatedRoute: ActivatedRoute,
     private msgSrv: NzMessageService,
-    private modalSrv: NzModalService
+    private modalSrv: NzModalService,
+    private startupService: StartupService
   ) {
     renderer.setAttribute(el.nativeElement, 'ng-alain-version', VERSION_ALAIN.full);
     renderer.setAttribute(el.nativeElement, 'ng-zorro-version', VERSION_ZORRO.full);
@@ -50,6 +53,17 @@ export class AppComponent implements OnInit {
 
     let configLoad = false;
     this.router.events.subscribe(ev => {
+      if ('url' in ev) {
+        const url = ev.url;
+
+        // 触发环境设置
+        if (url.includes('/cv/')) {
+          this.startupService.modeSubject$.next(MissionTypeEnum.CV);
+        } else if (url.includes('/rl/')) {
+          this.startupService.modeSubject$.next(MissionTypeEnum.RL);
+        }
+      }
+
       if (ev instanceof RouteConfigLoadStart) {
         configLoad = true;
       }

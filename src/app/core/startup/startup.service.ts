@@ -1,23 +1,27 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable, Inject, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { DA_SERVICE_TOKEN, ITokenService } from '@delon/auth';
 import { ALAIN_I18N_TOKEN, MenuService, SettingsService, TitleService } from '@delon/theme';
 import { ACLService } from '@delon/acl';
 import { I18NService } from '../i18n/i18n.service';
-import { Observable, zip, of, catchError, map } from 'rxjs';
+import { Observable, zip, of, catchError, map, BehaviorSubject, skip, distinct } from 'rxjs';
 import type { NzSafeAny } from 'ng-zorro-antd/core/types';
 import { NzIconService } from 'ng-zorro-antd/icon';
 
 import { ICONS } from '../../../style-icons';
 import { ICONS_AUTO } from '../../../style-icons-auto';
+import { MissionTypeEnum } from '../service/project/core';
 
 /**
  * Used for application startup
  * Generally used to get the basic data of the application, like: Menu Data, User Data, etc.
  */
 @Injectable()
-export class StartupService {
+export class StartupService implements OnDestroy {
+  // 用来控制全局的状态
+  modeSubject$: BehaviorSubject<MissionTypeEnum> = new BehaviorSubject(MissionTypeEnum.CV as MissionTypeEnum);
+
   constructor(
     iconSrv: NzIconService,
     private menuService: MenuService,
@@ -94,35 +98,49 @@ export class StartupService {
     // ACL: Set the permissions to full, https://ng-alain.com/acl/getting-started
     this.aclService.setFull(true);
     // Menu data, https://ng-alain.com/theme/menu
-    this.menuService.add([
-      {
-        text: '训练目录',
-        group: true,
-        hideInBreadcrumb: true,
-        children: [
-          {
-            text: '智能感知模型训练',
-            group: true,
-            icon: { type: 'icon', value: 'code-sandbox' },
-            children: [
-              { text: '训练参数配置', link: '/model/cv/config', icon: { type: 'icon', value: 'project' } },
-              { text: '系统状态监控', link: '/model/cv/monitor', icon: { type: 'icon', value: 'monitor' } },
-              { text: '训练结果分析', link: '/model/cv/result', icon: { type: 'icon', value: 'fund' } }
-            ]
-          },
-          {
-            text: '智能决策模型训练',
-            group: true,
-            icon: { type: 'icon', value: 'slack' },
-            children: [
-              { text: '训练参数配置', link: '/model/rl/config', icon: { type: 'icon', value: 'project' } },
-              { text: '系统状态监控', link: '/model/rl/monitor', icon: { type: 'icon', value: 'monitor' } },
-              { text: '训练结果分析', link: '/model/rl/result', icon: { type: 'icon', value: 'fund' } }
-            ]
-          }
-        ]
+
+    // 控制基础的mode状态 更新tab栏
+    this.modeSubject$.pipe(skip(1), distinct()).subscribe(missionType => {
+      switch (missionType) {
+        case MissionTypeEnum.CV:
+          this.menuService.clear();
+
+          this.menuService.add([
+            {
+              text: '智能感知模型训练',
+              group: true,
+              hideInBreadcrumb: true,
+              children: [
+                { text: '训练参数配置', link: '/model/cv/config', icon: { type: 'icon', value: 'project' } },
+                { text: '系统状态监控', link: '/model/cv/monitor', icon: { type: 'icon', value: 'monitor' } },
+                { text: '训练结果分析', link: '/model/cv/result', icon: { type: 'icon', value: 'fund' } }
+              ]
+            }
+          ]);
+          break;
+
+        case MissionTypeEnum.RL:
+          this.menuService.clear();
+
+          this.menuService.add([
+            {
+              text: '智能决策模型训练',
+              group: true,
+              hideInBreadcrumb: true,
+              children: [
+                { text: '训练参数配置', link: '/model/rl/config', icon: { type: 'icon', value: 'project' } },
+                { text: '系统状态监控', link: '/model/rl/monitor', icon: { type: 'icon', value: 'monitor' } },
+                { text: '训练结果分析', link: '/model/rl/result', icon: { type: 'icon', value: 'fund' } }
+              ]
+            }
+          ]);
+          break;
+
+        default:
+          throw new Error('Wrong mission type!');
       }
-    ]);
+    });
+
     // Can be set page suffix title, https://ng-alain.com/theme/title
     this.titleService.suffix = app.name;
 
@@ -135,5 +153,9 @@ export class StartupService {
     // mock: Don’t use it in a production environment. ViaMock is just to simulate some data to make the scaffolding work normally
     // mock：请勿在生产环境中这么使用，viaMock 单纯只是为了模拟一些数据使脚手架一开始能正常运行
     return this.viaMockI18n();
+  }
+
+  ngOnDestroy(): void {
+    this.modeSubject$.unsubscribe();
   }
 }
