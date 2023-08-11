@@ -113,18 +113,37 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
           }
         },
         {
-          text: '下载模型',
-          click: (record: IMission<ICVConfig>) => {
-            // 下载功能
-            this.modelConfigService.downloadCVTargetModels(record.id).subscribe(blob => {
-              const url = window.URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = `${record.name}模型.zip`;
-              a.click();
-              window.URL.revokeObjectURL(url);
-            });
-          }
+          text: '下载',
+          children: [
+            {
+              text: '下载数据集',
+              click: (record: IMission<ICVConfig>) => {
+                // 下载功能
+                this.modelConfigService.downloadCVDatasets(record.id).subscribe(blob => {
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${record.name}数据集.zip`;
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                });
+              }
+            },
+            {
+              text: '下载模型',
+              click: (record: IMission<ICVConfig>) => {
+                // 下载功能
+                this.modelConfigService.downloadCVTargetModels(record.id).subscribe(blob => {
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${record.name}模型.zip`;
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                });
+              }
+            }
+          ]
         }
       ]
     }

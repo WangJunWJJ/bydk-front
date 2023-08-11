@@ -161,6 +161,22 @@ export class ModelConfigService {
   }
 
   /**
+   * 下载生成数据集
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  downloadCVDatasets(id: string) {
+    return this.httpClient.get(`${BE_URL}/cv/config/download-datasets/${id}`, {
+      responseType: 'blob',
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
    * 返回对应mission的结果url
    *
    * @param {string} id mission id
