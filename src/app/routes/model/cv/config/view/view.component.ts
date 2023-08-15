@@ -91,8 +91,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         }
       },
       legend: {
-        left: 'center',
-        bottom: 0,
+        left: 'right',
+        top: 0,
         padding: 10,
         textStyle: {
           fontSize: 14,
@@ -178,8 +178,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         }
       },
       legend: {
-        left: 'center',
-        bottom: 0,
+        left: 'right',
+        top: 0,
         padding: 10,
         textStyle: {
           fontSize: 14,
@@ -265,8 +265,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         }
       },
       legend: {
-        left: 'center',
-        bottom: 0,
+        left: 'right',
+        top: 0,
         padding: 10,
         textStyle: {
           fontSize: 14,
@@ -352,8 +352,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         }
       },
       legend: {
-        left: 'center',
-        bottom: 0,
+        left: 'right',
+        top: 0,
         padding: 10,
         textStyle: {
           fontSize: 14,
@@ -439,8 +439,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         }
       },
       legend: {
-        left: 'center',
-        bottom: 0,
+        left: 'right',
+        top: 0,
         padding: 10,
         textStyle: {
           fontSize: 14,

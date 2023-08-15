@@ -96,7 +96,7 @@ export class ModelCVMonitorComponent implements OnInit, OnDestroy, AfterViewInit
         left: 'center',
         bottom: 0,
         padding: 10,
-        // itemHeight: 30,
+        itemGap: 30,
         textStyle: {
           fontSize: 14,
           color: 'rgba(255,255,255,0.8)'
