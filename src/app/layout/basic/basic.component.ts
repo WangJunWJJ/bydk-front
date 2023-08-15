@@ -14,7 +14,7 @@ import { MissionTypeEnum } from 'src/app/core/service/project/core';
 export class LayoutBasicComponent implements OnInit, OnDestroy {
   options: LayoutDefaultOptions = {
     logoExpanded: `./assets/logo-full.svg`,
-    logoCollapsed: `./assets/boyilogo.svg`,
+    logoCollapsed: `./assets/logo-collapse.svg`,
     hideAside: false
   };
   searchToggleStatus = false;
