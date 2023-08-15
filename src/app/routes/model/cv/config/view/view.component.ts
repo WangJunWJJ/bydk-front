@@ -6,6 +6,7 @@ import { NzModalRef } from 'ng-zorro-antd/modal';
 import { BehaviorSubject, Subject, filter, switchMap, take, takeUntil, timer } from 'rxjs';
 import { ModelConfigService } from 'src/app/core/service';
 import { ICVConfig, IMission, MissionData } from 'src/app/core/service/project/core';
+import { setDigits } from 'src/app/shared/utils/utils';
 
 type chartType = keyof MissionData;
 
@@ -83,10 +84,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
       color: colors,
       animation: false,
       title: {
-        text: '总值状态监控',
+        text: '插入/采样累积次数',
         textStyle: {
           color: 'rgba(255,255,255,0.65)',
-          fontSize: 20
+          fontSize: 17
         }
       },
       legend: {
@@ -106,9 +107,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         left: '0%',
         right: '2%',
         top: '15%',
-        bottom: '10%'
+        bottom: '13%'
       },
-
       xAxis: {
         type: 'category',
         axisTick: {
@@ -124,7 +124,7 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         axisPointer: {
           label: {
             formatter: function (params: any) {
-              return `时间  ${params.value}`;
+              return `时间: 第${params.value}秒`;
             }
           }
         }
@@ -136,10 +136,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
             color: '#ffffff',
             fontSize: 13
           },
-          minInterval: 0.2,
           axisLabel: {
             color: 'rgba(255,255,255,0.8)'
           },
+          splitNumber: 5,
           splitLine: {
             show: true,
             lineStyle: {
@@ -171,10 +171,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
       color: colors,
       animation: false,
       title: {
-        text: '均值状态监控',
+        text: '插入/采样平均次数',
         textStyle: {
           color: 'rgba(255,255,255,0.65)',
-          fontSize: 20
+          fontSize: 17
         }
       },
       legend: {
@@ -194,9 +194,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         left: '0%',
         right: '2%',
         top: '15%',
-        bottom: '10%'
+        bottom: '13%'
       },
-
       xAxis: {
         type: 'category',
         axisTick: {
@@ -212,7 +211,7 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         axisPointer: {
           label: {
             formatter: function (params: any) {
-              return `时间  ${params.value}`;
+              return `时间: 第${params.value}秒`;
             }
           }
         }
@@ -224,10 +223,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
             color: '#ffffff',
             fontSize: 13
           },
-          minInterval: 0.2,
           axisLabel: {
             color: 'rgba(255,255,255,0.8)'
           },
+          splitNumber: 5,
           splitLine: {
             show: true,
             lineStyle: {
@@ -259,10 +258,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
       color: colors,
       animation: false,
       title: {
-        text: '当前状态监控',
+        text: '插入/采样当前次数',
         textStyle: {
           color: 'rgba(255,255,255,0.65)',
-          fontSize: 20
+          fontSize: 17
         }
       },
       legend: {
@@ -282,9 +281,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         left: '0%',
         right: '2%',
         top: '15%',
-        bottom: '10%'
+        bottom: '13%'
       },
-
       xAxis: {
         type: 'category',
         axisTick: {
@@ -300,7 +298,7 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         axisPointer: {
           label: {
             formatter: function (params: any) {
-              return `时间  ${params.value}`;
+              return `时间: 第${params.value}秒`;
             }
           }
         }
@@ -312,10 +310,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
             color: '#ffffff',
             fontSize: 13
           },
-          minInterval: 0.2,
           axisLabel: {
             color: 'rgba(255,255,255,0.8)'
           },
+          splitNumber: 5,
           splitLine: {
             show: true,
             lineStyle: {
@@ -347,10 +345,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
       color: colors,
       animation: false,
       title: {
-        text: 'block状态监控',
+        text: '插入/采样阻塞时间',
         textStyle: {
           color: 'rgba(255,255,255,0.65)',
-          fontSize: 20
+          fontSize: 17
         }
       },
       legend: {
@@ -370,9 +368,8 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         left: '0%',
         right: '2%',
         top: '15%',
-        bottom: '10%'
+        bottom: '13%'
       },
-
       xAxis: {
         type: 'category',
         axisTick: {
@@ -388,7 +385,7 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         axisPointer: {
           label: {
             formatter: function (params: any) {
-              return `时间  ${params.value}`;
+              return `时间: 第${params.value}秒`;
             }
           }
         }
@@ -400,10 +397,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
             color: '#ffffff',
             fontSize: 13
           },
-          minInterval: 0.2,
           axisLabel: {
             color: 'rgba(255,255,255,0.8)'
           },
+          splitNumber: 5,
           splitLine: {
             show: true,
             lineStyle: {
@@ -435,10 +432,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
       color: colors,
       animation: false,
       title: {
-        text: '内存状态监控',
+        text: '数据仓库内存使用率',
         textStyle: {
           color: 'rgba(255,255,255,0.65)',
-          fontSize: 20
+          fontSize: 17
         }
       },
       legend: {
@@ -451,16 +448,18 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         }
       },
       tooltip: {
-        trigger: 'axis'
+        trigger: 'axis',
+        valueFormatter: (n: number) => {
+          return `${setDigits(n, 1)}%`;
+        }
       },
       grid: {
         containLabel: true,
         left: '0%',
         right: '2%',
         top: '15%',
-        bottom: '10%'
+        bottom: '13%'
       },
-
       xAxis: {
         type: 'category',
         axisTick: {
@@ -476,7 +475,7 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         axisPointer: {
           label: {
             formatter: function (params: any) {
-              return `时间  ${params.value}`;
+              return `时间: 第${params.value}秒`;
             }
           }
         }
@@ -488,10 +487,12 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
             color: '#ffffff',
             fontSize: 13
           },
-          minInterval: 0.2,
+          min: 0,
+          max: 100,
           axisLabel: {
             color: 'rgba(255,255,255,0.8)'
           },
+          splitNumber: 5,
           splitLine: {
             show: true,
             lineStyle: {
@@ -604,7 +605,14 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
             ]
           });
           this.chart5.setOption({
-            series: [{ name: 'memory_usage', data: chartData.memory_usage }]
+            series: [
+              {
+                name: 'memory_usage',
+                data: chartData.memory_usage.map(n => {
+                  return n * 100;
+                })
+              }
+            ]
           });
         });
       });

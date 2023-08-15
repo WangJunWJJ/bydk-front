@@ -6,6 +6,7 @@ import { BehaviorSubject, Subject, debounceTime, filter, switchMap, take, takeUn
 import { ModelConfigService } from 'src/app/core/service';
 import { ClusterLogTypeEnum, ISlaveData, PyClusterResponse } from 'src/app/core/service/project/core';
 import { PyClusterService } from 'src/app/core/service/project/pycluster.service';
+import { setDigits } from 'src/app/shared/utils/utils';
 
 @Component({
   selector: 'app-model-rl-monitor',
@@ -101,10 +102,10 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
         }
       },
       tooltip: {
-        trigger: 'axis'
-        // axisPointer: {
-        //   type: 'cross'
-        // }
+        trigger: 'axis',
+        valueFormatter: (n: number) => {
+          return `${setDigits(n, 1)}%`;
+        }
       },
       grid: {
         containLabel: true,
@@ -129,7 +130,7 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
         axisPointer: {
           label: {
             formatter: function (params: any) {
-              return `时间  ${params.value}`;
+              return `时间: 第${params.value}秒`;
             }
           }
         },
@@ -203,18 +204,18 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
             color: '#ffffff',
             fontSize: 13
           },
-          minInterval: 0.2,
+          min: 0,
+          max: 100,
           axisLabel: {
             color: 'rgba(255,255,255,0.8)'
           },
+          splitNumber: 5,
           splitLine: {
             show: true,
             lineStyle: {
               color: 'rgba(255,255,255,0.3)'
             }
-          },
-          min: 0,
-          max: 1
+          }
         }
       ],
       series: [
@@ -357,8 +358,8 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
 
     this.chart.setOption({
       series: [
-        { name: 'CPU', data: renderData.cpu_workload },
-        { name: '内存', data: renderData.memory_usage }
+        { name: 'CPU', data: renderData.cpu_workload.map(n => n * 100) },
+        { name: '内存', data: renderData.memory_usage.map(n => n * 100) }
       ]
     });
   }
