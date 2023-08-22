@@ -1,6 +1,16 @@
 import { MockRequest } from '@delon/mock';
-import { CVAlgorithmEnum, ICVConfig, IMission, IRLConfig, MissionStatusEnum, RLAlgorithmEnum } from 'src/app/core/service/project/core';
-import { nonceStr } from 'src/app/shared/utils/utils';
+import Decimal from 'decimal.js';
+import {
+  CVAlgorithmEnum,
+  ICVConfig,
+  IMission,
+  IRLConfig,
+  MissionData,
+  MissionStatusEnum,
+  MissionTypeEnum,
+  RLAlgorithmEnum
+} from 'src/app/core/service/project/core';
+import { nonceStr, setDigits } from 'src/app/shared/utils/utils';
 
 const cvList: IMission<ICVConfig>[] = [];
 const rlList: IMission<IRLConfig>[] = [];
@@ -38,6 +48,7 @@ function generateData(len: number = 20) {
       name: `cv任务${i + 1}`,
       created: time,
       updated: time,
+      type: MissionTypeEnum.CV,
 
       config: {
         path, //	配置文件存储路径(工程路径之下)
@@ -69,6 +80,7 @@ function generateData(len: number = 20) {
       status: getRandomItem(missionStatusArr),
       created: time,
       updated: time,
+      type: MissionTypeEnum.RL,
 
       config: {
         path, //	配置文件存储路径(工程路径之下)
@@ -84,7 +96,8 @@ function generateData(len: number = 20) {
         max_episode_length: 200, // 整型
         worker_num: 10, // 整型
         env_num: 5, // 整型
-        render: getRandomItem(booleanArr) //	是否渲染
+        render: getRandomItem(booleanArr), //	是否渲染
+        target_mode_dir: ''
       }
     });
   }
@@ -213,6 +226,32 @@ export const MODEL_CONFIGS = {
     // TODO 更新url获取
     return 'http://localhost:6006/';
   },
+  '/cv/config/get-mission-data/:id': (req: MockRequest): MissionData => {
+    const token: string = req.headers.token;
+    /**
+     * 生成随机数
+     *
+     * @param {number} min 最小值
+     * @param {number} max 最大值
+     * @param {boolean} [isInt=false] 是否整数
+     */
+    const randomGenerate = (min: number, max: number, isInt = true) => {
+      const ret = min + Math.random() * (max - min);
+      return isInt ? Math.floor(ret) : setDigits(ret);
+    };
+
+    return {
+      insert_total: randomGenerate(10000, 20000),
+      sample_total: randomGenerate(40000, 80000),
+      average_insert_speed: randomGenerate(200, 500),
+      average_sample_speed: randomGenerate(1000, 3000),
+      current_insert_speed: randomGenerate(0, 2000),
+      current_sample_speed: randomGenerate(0, 1000),
+      insert_block_time: randomGenerate(0, 100),
+      sample_block_time: randomGenerate(0, 100),
+      memory_usage: randomGenerate(0.1, 0.6, false)
+    };
+  },
   'POST /cv/config/active-mission': (req: MockRequest): IMission<ICVConfig> => {
     const token: string = req.headers.token;
     const targetMission = getOne({ type: 'cv', token, id: req.body.id });
@@ -236,6 +275,7 @@ export const MODEL_CONFIGS = {
       status: MissionStatusEnum.Init,
       created: time,
       updated: time,
+      type: MissionTypeEnum.CV,
       config: dto
     };
 
@@ -287,6 +327,32 @@ export const MODEL_CONFIGS = {
   '/rl/config/result-url/:id': (req: MockRequest): string => {
     return 'http://localhost:6006/';
   },
+  '/rl/config/get-mission-data/:id': (req: MockRequest): MissionData => {
+    const token: string = req.headers.token;
+    /**
+     * 生成随机数
+     *
+     * @param {number} min 最小值
+     * @param {number} max 最大值
+     * @param {boolean} [isInt=false] 是否整数
+     */
+    const randomGenerate = (min: number, max: number, isInt = true) => {
+      const ret = min + Math.random() * (max - min);
+      return isInt ? Math.floor(ret) : setDigits(ret);
+    };
+
+    return {
+      insert_total: randomGenerate(10000, 20000),
+      sample_total: randomGenerate(40000, 80000),
+      average_insert_speed: randomGenerate(200, 500),
+      average_sample_speed: randomGenerate(1000, 3000),
+      current_insert_speed: randomGenerate(0, 2000),
+      current_sample_speed: randomGenerate(0, 1000),
+      insert_block_time: randomGenerate(0, 100),
+      sample_block_time: randomGenerate(0, 100),
+      memory_usage: randomGenerate(0.1, 0.6, false)
+    };
+  },
   'POST /rl/config/active-mission': (req: MockRequest): IMission<IRLConfig> => {
     const token: string = req.headers.token;
     const targetMission = getOne({ type: 'rl', token, id: req.body.id });
@@ -311,6 +377,7 @@ export const MODEL_CONFIGS = {
       status: MissionStatusEnum.Init,
       created: time,
       updated: time,
+      type: MissionTypeEnum.CV,
       config: dto
     };
     rlList.push(mission);

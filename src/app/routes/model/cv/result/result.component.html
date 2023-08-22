@@ -1,4 +1,4 @@
-<page-header> </page-header>
+<page-header></page-header>
 <nz-card>
   <sf mode="search" [schema]="searchSchema" (formSubmit)="search($event)" (formReset)="reset($event)"></sf>
   <st
@@ -11,5 +11,6 @@
     [data]="missionList"
     [columns]="columns"
     [loading]="isLoading"
+    (change)="change($event)"
   ></st>
 </nz-card>

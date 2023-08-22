@@ -53,5 +53,10 @@
     "titleBar.inactiveBackground": "#1890ff99",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": ">rgba(24, 144, 255, 0.2)"
+  "peacock.color": ">rgba(24, 144, 255, 0.2)",
+  "cSpell.words": [
+    "pycluster",
+    "rltoken",
+    "tensorboard"
+  ]
 }

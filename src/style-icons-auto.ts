@@ -55,8 +55,17 @@ import {
   FundOutline,
   ProjectOutline,
   RobotOutline,
+  RobotFill,
   ClusterOutline,
-  MonitorOutline
+  MonitorOutline,
+  QuestionCircleOutline,
+  CodeSandboxOutline,
+  CodeSandboxSquareFill,
+  CodeSandboxCircleFill,
+  SlackCircleFill,
+  SlackOutline,
+  SlackSquareFill,
+  CodepenOutline
 } from '@ant-design/icons-angular/icons';
 
 export const ICONS_AUTO = [
@@ -111,6 +120,15 @@ export const ICONS_AUTO = [
   ProjectOutline,
   MonitorOutline,
   RobotOutline,
+  RobotFill,
   ClusterOutline,
-  FundOutline
+  FundOutline,
+  QuestionCircleOutline,
+  CodeSandboxOutline,
+  CodeSandboxSquareFill,
+  CodeSandboxCircleFill,
+  SlackCircleFill,
+  SlackOutline,
+  SlackSquareFill,
+  CodepenOutline
 ];

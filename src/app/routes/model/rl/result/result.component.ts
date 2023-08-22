@@ -1,11 +1,11 @@
-import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { STColumn, STComponent, STPage } from '@delon/abc/st';
+import { STChange, STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
-import { IRLConfig, IMission, MissionStatusEnum } from 'src/app/core/service/project/core';
-import { ModelConfigService } from 'src/app/core/service';
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
+import { ModelConfigService, missionCondition } from 'src/app/core/service';
+import { IMission, IRLConfig, MissionStatusEnum } from 'src/app/core/service/project/core';
 import { ModelRLResultEditComponent } from './edit/edit.component';
 import { ModelRLResultViewComponent } from './view/view.component';
 
@@ -21,7 +21,8 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
     properties: {
       keyword: {
         type: 'string',
-        title: '任务名'
+        title: '任务名',
+        default: ''
       }
     }
   };
@@ -30,7 +31,7 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
   missionList: IMission<IRLConfig>[] = [];
 
   page: STPage = {
-    front: true,
+    front: false,
     show: true,
     showSize: true
   };
@@ -52,9 +53,10 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     { title: '任务名', index: 'name' },
     { title: '配置路径', index: 'path' },
-    { title: '算法类型', index: 'config.algorithm' },
+    { title: '算法类型', index: 'config.algorithm', width: '90px' },
     {
       title: '状态',
+      width: '90px',
       format: (record: IMission<IRLConfig>) => {
         const status = record.status;
 
@@ -71,11 +73,10 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm' },
-    // TODO 可能增加任务结束时间
-    // { title: '任务结束时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm' },
+    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
     {
       title: '操作',
+      width: '300px',
       buttons: [
         {
           text: '训练结果',
@@ -109,6 +110,20 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
               this.msgSrv.success('复制成功');
             });
           }
+        },
+        {
+          text: '下载模型',
+          click: (record: IMission<IRLConfig>) => {
+            // 下载功能
+            this.modelConfigService.downloadRLTargetModels(record.id).subscribe(blob => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `${record.name}模型.zip`;
+              a.click();
+              window.URL.revokeObjectURL(url);
+            });
+          }
         }
       ]
     }
@@ -132,20 +147,23 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
         takeUntil(this.componentDestroyed$),
         switchMap(searchConfig => {
           this.isLoading = true;
-          const status = searchConfig.status;
 
-          if (status === 'All') {
-            return this.modelConfigService.getRLMissions({});
-          } else {
-            return this.modelConfigService.getRLMissions({ status });
+          const condition: missionCondition = {
+            pi: searchConfig.pi,
+            ps: searchConfig.ps,
+            status: MissionStatusEnum.Done
+          };
+
+          if (searchConfig.keyword !== '') {
+            condition.keyword = searchConfig.keyword;
           }
+          return this.modelConfigService.getRLMissions(condition);
         })
       )
       .subscribe(({ total, data }) => {
         // 实际上不需要reverse 这里模仿DESC排序
-        // TODO 这里过滤应该发生在请求的筛选中
         this.missionList = data.reverse();
-        this.total = this.missionList.length;
+        this.total = total;
         this.isLoading = false;
       });
   }
@@ -153,7 +171,8 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
   search(e: any): void {
     this.searchStream$.next({
       ...this.searchStream$.value,
-      ...e
+      ...e,
+      pi: 1
     });
   }
 
@@ -181,6 +200,26 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.searchStream$.next({ ...this.searchStream$.value });
       });
+  }
+
+  change(e: STChange) {
+    switch (e.type) {
+      case 'pi':
+        this.searchStream$.next({
+          ...this.searchStream$.value,
+          pi: e.pi
+        });
+        break;
+      case 'ps':
+        this.searchStream$.next({
+          ...this.searchStream$.value,
+          ps: e.ps
+        });
+        break;
+
+      default:
+        break;
+    }
   }
 
   ngOnDestroy(): void {

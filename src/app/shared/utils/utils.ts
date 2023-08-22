@@ -58,3 +58,14 @@ export function nonceStr(length: number = 32, chars: string = 'abcdefghijklmnopq
   }
   return result;
 }
+
+/**
+ * 判断数据是否为空
+ *
+ * @export
+ * @param {*} target
+ * @return {*}
+ */
+export function isNull(target: any) {
+  return target == null || target === '';
+}

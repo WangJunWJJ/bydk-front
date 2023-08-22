@@ -1,4 +1,15 @@
 /**
+ * 任务类型
+ *
+ * @export
+ * @enum {number}
+ */
+export enum MissionTypeEnum {
+  CV = 'cv',
+  RL = 'rl'
+}
+
+/**
  * RL算法
  *
  * @export
@@ -49,4 +60,29 @@ export enum MissionStatusEnum {
   Init = 'init', // 初始化 提交了任务config 还没有执行
   Active = 'active', // 对提交的任务点击了执行任务
   Done = 'done' // 任务已结束
+}
+
+/**
+ * cluster的日志类型
+ *
+ * @export
+ * @enum {number}
+ */
+export enum ClusterLogTypeEnum {
+  All = 'all',
+  Info = 'info',
+  Warning = 'warning',
+  Error = 'error',
+  Debug = 'debug'
+}
+
+/**
+ * 任务上传文件类型
+ *
+ * @export
+ * @enum {number}
+ */
+export enum ImportDataTypeEnum {
+  DATASETS = 'datasets', // 数据集
+  MODELS = 'models' // 预训练模型
 }

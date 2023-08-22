@@ -1,3 +1,4 @@
+import { NzToolTipModule } from 'ng-zorro-antd/tooltip';
 /* eslint-disable import/order */
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
@@ -34,14 +35,12 @@ const HEADERCOMPONENTS = [
   HeaderFullScreenComponent,
   HeaderI18nComponent,
   HeaderClearStorageComponent,
-  HeaderUserComponent,
+  HeaderUserComponent
 ];
 
 // passport
 import { LayoutPassportComponent } from './passport/passport.component';
-const PASSPORT = [
-  LayoutPassportComponent
-];
+const PASSPORT = [LayoutPassportComponent];
 
 @NgModule({
   imports: [
@@ -63,8 +62,9 @@ const PASSPORT = [
     NzBadgeModule,
     NzAvatarModule,
     NzIconModule,
+    NzToolTipModule
   ],
   declarations: [...COMPONENTS, ...HEADERCOMPONENTS, ...PASSPORT],
-  exports: [...COMPONENTS, ...PASSPORT],
+  exports: [...COMPONENTS, ...PASSPORT]
 })
-export class LayoutModule { }
+export class LayoutModule {}

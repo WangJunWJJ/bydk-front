@@ -10,20 +10,22 @@ import { UserLoginComponent } from './passport/login/login.component';
 import { UserRegisterResultComponent } from './passport/register-result/register-result.component';
 import { UserRegisterComponent } from './passport/register/register.component';
 import { RouteRoutingModule } from './routes-routing.module';
+import { HomePageComponent } from './homepage/home.component';
 
 const COMPONENTS: Array<Type<void>> = [
   DashboardComponent,
+  HomePageComponent,
   // passport pages
   UserLoginComponent,
   UserRegisterComponent,
   UserRegisterResultComponent,
   // single pages
   CallbackComponent,
-  UserLockComponent,
+  UserLockComponent
 ];
 
 @NgModule({
   imports: [SharedModule, RouteRoutingModule],
-  declarations: COMPONENTS,
+  declarations: COMPONENTS
 })
 export class RoutesModule {}

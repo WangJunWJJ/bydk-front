@@ -14,18 +14,19 @@ import { UserLoginComponent } from './passport/login/login.component';
 import { UserRegisterResultComponent } from './passport/register-result/register-result.component';
 import { UserRegisterComponent } from './passport/register/register.component';
 import { LayoutBasicComponent } from '../layout/basic/basic.component';
+import { HomePageComponent } from './homepage/home.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: LayoutBasicComponent,
     canActivate: [SimpleGuard],
     children: [
-      { path: '', redirectTo: 'model', pathMatch: 'full' },
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
+      { path: 'home', component: HomePageComponent, data: { title: '模块选择' } },
       { path: 'dashboard', component: DashboardComponent, data: { title: '仪表盘' } },
       { path: 'exception', loadChildren: () => import('./exception/exception.module').then(m => m.ExceptionModule) },
       // 业务子模块
-      { path: 'model', loadChildren: () => import('./model/model.module').then(m => m.ModelModule) }
+      { path: 'model', component: LayoutBasicComponent, loadChildren: () => import('./model/model.module').then(m => m.ModelModule) }
     ]
   },
   // 空白布局

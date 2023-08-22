@@ -1,16 +1,22 @@
+import { NzMessageService } from 'ng-zorro-antd/message';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ICVConfig, IMission, IRLConfig, MissionStatusEnum } from './core';
+import { ICVConfig, IMission, IRLConfig, MissionData, MissionStatusEnum } from './core';
 import { BE_URL } from '../constant';
+
+export type missionCondition = {
+  ps: number;
+  pi: number;
+  keyword?: string;
+  status?: MissionStatusEnum;
+};
 
 @Injectable({
   providedIn: 'root'
 })
 export class ModelConfigService {
-  constructor(private httpClient: HttpClient) {
-    // TODO 从url获取token 此处为mock
-    this.setToken('abcabc12');
-  }
+  rltoken!: string;
+  constructor(private httpClient: HttpClient, private msgSrv: NzMessageService) {}
 
   /**
    * 获取token
@@ -19,7 +25,12 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getToken(): string {
-    return localStorage.getItem('token') || '';
+    // token没有被初始化 阻止请求进行
+    if (this.rltoken == null) {
+      this.msgSrv.warning('token还没有初始化');
+      throw new Error('token还没有初始化');
+    }
+    return this.rltoken;
   }
 
   /**
@@ -29,7 +40,7 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   setToken(token: string) {
-    localStorage.setItem('token', token);
+    this.rltoken = token;
   }
 
   /**
@@ -39,17 +50,17 @@ export class ModelConfigService {
    * @return {*}
    * @memberof ModelConfigService
    */
-  getCVMissions(conditions: { path?: string; status?: MissionStatusEnum }) {
+  getCVMissions(conditions: missionCondition) {
     return this.httpClient.get<{
       total: number;
       data: IMission<ICVConfig>[];
-    }>(`/cv/config`, {
+    }>(`${BE_URL}/cv/config`, {
       params: conditions,
       headers: {
-        token: this.getToken()
+        rltoken: this.getToken()
       }
     });
-    // return this.httpClient.get<ICVConfig>(`${BE_URL}/project/cv/config`, {
+    // return this.httpClient.get<ICVConfig>(`${BE_URL}/project${BE_URL}/cv/config`, {
     //   params: condition
     // });
   }
@@ -62,9 +73,24 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getCVMission(id: string) {
-    return this.httpClient.get<IMission<ICVConfig>>(`/cv/config/${id}`, {
+    return this.httpClient.get<IMission<ICVConfig>>(`${BE_URL}/cv/config/${id}`, {
       headers: {
-        token: this.getToken()
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 删除cv任务
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  deleteCVMission(id: string) {
+    return this.httpClient.delete<{ msg: string }>(`${BE_URL}/cv/config/${id}`, {
+      headers: {
+        rltoken: this.getToken()
       }
     });
   }
@@ -77,11 +103,15 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   copyCVMission(id: string) {
-    return this.httpClient.get<IMission<ICVConfig>>(`/cv/config/copy/${id}`, {
-      headers: {
-        token: this.getToken()
+    return this.httpClient.post<IMission<ICVConfig>>(
+      `${BE_URL}/cv/config/copy`,
+      { id },
+      {
+        headers: {
+          rltoken: this.getToken()
+        }
       }
-    });
+    );
   }
 
   /**
@@ -92,9 +122,9 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getCVMonitorUrl(id: string) {
-    return this.httpClient.get<string>(`/cv/config/monitor-url/${id}`, {
+    return this.httpClient.get<string>(`${BE_URL}/cv/config/monitor-url/${id}`, {
       headers: {
-        token: this.getToken()
+        rltoken: this.getToken()
       }
     });
   }
@@ -107,28 +137,82 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getCVResultUrl(id: string) {
-    return this.httpClient.get<string>(`/cv/config/result-url/${id}`, {
+    return this.httpClient.get<string>(`${BE_URL}/cv/config/result-url/${id}`, {
       headers: {
-        token: this.getToken()
+        rltoken: this.getToken()
       }
     });
   }
 
   /**
-   * 创建一个CV任务
+   * 下载生成模型
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  downloadCVTargetModels(id: string) {
+    return this.httpClient.get(`${BE_URL}/cv/config/download-models/${id}`, {
+      responseType: 'blob',
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 下载生成数据集
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  downloadCVDatasets(id: string) {
+    return this.httpClient.get(`${BE_URL}/cv/config/download-datasets/${id}`, {
+      responseType: 'blob',
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 返回对应mission的结果url
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  getCVMissionData(id: string) {
+    return this.httpClient.get<MissionData>(`${BE_URL}/cv/config/get-mission-data/${id}`, {
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 创建RL任务
    *
    * @param {ICVConfig} cvConfig
    * @return {*}
    * @memberof ModelConfigService
    */
   createCVMission(cvConfig: ICVConfig & { name: string }) {
-    return this.httpClient.post<IMission<ICVConfig>>(
-      `/cv/config/create`,
-      {
-        config: cvConfig
-      },
-      { headers: { token: this.getToken() } }
-    );
+    return this.httpClient.post<IMission<ICVConfig>>(`${BE_URL}/cv/config`, cvConfig, { headers: { rltoken: this.getToken() } });
+  }
+
+  /**
+   * 更新任务
+   *
+   * @param {ICVConfig} cvConfig
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  updateCVMission(id: string, cvConfig: ICVConfig & { name: string }) {
+    return this.httpClient.put<IMission<ICVConfig>>(`${BE_URL}/cv/config/${id}`, cvConfig, {
+      headers: { rltoken: this.getToken() }
+    });
   }
 
   /**
@@ -140,11 +224,11 @@ export class ModelConfigService {
    */
   activeCVMission(id: string) {
     return this.httpClient.post<IMission<ICVConfig>>(
-      `/cv/config/active-mission`,
+      `${BE_URL}/cv/config/active-mission`,
       {
         id
       },
-      { headers: { token: this.getToken() } }
+      { headers: { rltoken: this.getToken() } }
     );
   }
 
@@ -155,17 +239,17 @@ export class ModelConfigService {
    * @return {*}
    * @memberof ModelConfigService
    */
-  getRLMissions(conditions: { path?: string; status?: MissionStatusEnum }) {
+  getRLMissions(conditions: missionCondition) {
     return this.httpClient.get<{
       total: number;
       data: IMission<IRLConfig>[];
-    }>(`/rl/config`, {
+    }>(`${BE_URL}/rl/config`, {
       params: conditions,
       headers: {
-        token: this.getToken()
+        rltoken: this.getToken()
       }
     });
-    // return this.httpClient.get<IRLConfig>(`${BE_URL}/project/rl/config`, {
+    // return this.httpClient.get<IRLConfig>(`${BE_URL}/project${BE_URL}/rl/config`, {
     //   params: condition
     // });
   }
@@ -178,9 +262,24 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getRLMission(id: string) {
-    return this.httpClient.get<IMission<IRLConfig>>(`/rl/config/${id}`, {
+    return this.httpClient.get<IMission<IRLConfig>>(`${BE_URL}/rl/config/${id}`, {
       headers: {
-        token: this.getToken()
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 删除cv任务
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  deleteRLMission(id: string) {
+    return this.httpClient.delete<{ msg: string }>(`${BE_URL}/rl/config/${id}`, {
+      headers: {
+        rltoken: this.getToken()
       }
     });
   }
@@ -193,11 +292,15 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   copyRLMission(id: string) {
-    return this.httpClient.get<IMission<IRLConfig>>(`/rl/config/copy/${id}`, {
-      headers: {
-        token: this.getToken()
+    return this.httpClient.post<IMission<IRLConfig>>(
+      `${BE_URL}/rl/config/copy`,
+      { id },
+      {
+        headers: {
+          rltoken: this.getToken()
+        }
       }
-    });
+    );
   }
 
   /**
@@ -208,9 +311,9 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getRLMonitorUrl(id: string) {
-    return this.httpClient.get<string>(`/rl/config/monitor-url/${id}`, {
+    return this.httpClient.get<string>(`${BE_URL}/rl/config/monitor-url/${id}`, {
       headers: {
-        token: this.getToken()
+        rltoken: this.getToken()
       }
     });
   }
@@ -223,28 +326,50 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getRLResultUrl(id: string) {
-    return this.httpClient.get<string>(`/rl/config/result-url/${id}`, {
+    return this.httpClient.get<string>(`${BE_URL}/rl/config/result-url/${id}`, {
       headers: {
-        token: this.getToken()
+        rltoken: this.getToken()
       }
     });
   }
 
   /**
-   * 创建一个RL任务
+   * 返回对应mission的结果url
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  getRLMissionData(id: string) {
+    return this.httpClient.get<MissionData>(`${BE_URL}/rl/config/get-mission-data/${id}`, {
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
+  }
+
+  /**
+   * 创建RL任务
    *
    * @param {IRLConfig} cvConfig
    * @return {*}
    * @memberof ModelConfigService
    */
   createRLMission(cvConfig: IRLConfig & { name: string }) {
-    return this.httpClient.post<IMission<IRLConfig>>(
-      `/rl/config/create`,
-      {
-        config: cvConfig
-      },
-      { headers: { token: this.getToken() } }
-    );
+    return this.httpClient.post<IMission<IRLConfig>>(`${BE_URL}/rl/config`, cvConfig, { headers: { rltoken: this.getToken() } });
+  }
+
+  /**
+   * 更新任务
+   *
+   * @param {IRLConfig} cvConfig
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  updateRLMission(id: string, cvConfig: IRLConfig & { name: string }) {
+    return this.httpClient.put<IMission<IRLConfig>>(`${BE_URL}/rl/config/${id}`, cvConfig, {
+      headers: { rltoken: this.getToken() }
+    });
   }
 
   /**
@@ -256,11 +381,27 @@ export class ModelConfigService {
    */
   activeRLMission(id: string) {
     return this.httpClient.post<IMission<IRLConfig>>(
-      `/rl/config/active-mission`,
+      `${BE_URL}/rl/config/active-mission`,
       {
         id
       },
-      { headers: { token: this.getToken() } }
+      { headers: { rltoken: this.getToken() } }
     );
+  }
+
+  /**
+   * 下载生成模型
+   *
+   * @param {string} id mission id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  downloadRLTargetModels(id: string) {
+    return this.httpClient.get(`${BE_URL}/rl/config/download-models/${id}`, {
+      responseType: 'blob',
+      headers: {
+        rltoken: this.getToken()
+      }
+    });
   }
 }

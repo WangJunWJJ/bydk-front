@@ -1,13 +1,14 @@
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { STColumn, STComponent, STPage } from '@delon/abc/st';
+import { STChange, STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
 import { ModelRLConfigEditComponent } from './edit/edit.component';
-import { IRLConfig, IMission, MissionStatusEnum } from 'src/app/core/service/project/core';
-import { ModelConfigService } from 'src/app/core/service';
+import { IRLConfig, IMission, MissionStatusEnum, ImportDataTypeEnum, MissionTypeEnum } from 'src/app/core/service/project/core';
+import { ModelConfigService, missionCondition } from 'src/app/core/service';
 import { ModelRLConfigViewComponent } from './view/view.component';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
+import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 
 @Component({
   selector: 'app-model-rl-config',
@@ -21,7 +22,18 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
     properties: {
       keyword: {
         type: 'string',
-        title: '任务名'
+        title: '任务名',
+        default: ''
+      },
+      status: {
+        title: '任务状态',
+        type: 'string',
+        default: 'All',
+        enum: [
+          { label: '全部', value: 'All' },
+          { label: '未执行', value: MissionStatusEnum.Init },
+          { label: '执行中', value: MissionStatusEnum.Active }
+        ]
       }
     }
   };
@@ -30,7 +42,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
   missionList: IMission<IRLConfig>[] = [];
 
   page: STPage = {
-    front: true,
+    front: false,
     show: true,
     showSize: true
   };
@@ -52,9 +64,10 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     { title: '任务名', index: 'name' },
     { title: '配置路径', index: 'path' },
-    { title: '算法类型', index: 'config.algorithm' },
+    { title: '算法类型', index: 'config.algorithm', width: '90px' },
     {
       title: '状态',
+      width: '90px',
       format: (record: IMission<IRLConfig>) => {
         const status = record.status;
 
@@ -71,9 +84,10 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm' },
+    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
     {
       title: '操作',
+      width: '200px',
       buttons: [
         {
           text: '编辑',
@@ -134,7 +148,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
                     nzStyle: { top: '20px' },
                     nzKeyboard: false
                   },
-                  size: window.innerWidth * 0.8
+                  size: window.innerWidth * 0.9
                 }
               )
               .subscribe(() => {
@@ -177,20 +191,24 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         takeUntil(this.componentDestroyed$),
         switchMap(searchConfig => {
           this.isLoading = true;
-          const status = searchConfig.status;
 
-          if (status === 'All') {
-            return this.modelConfigService.getRLMissions({});
-          } else {
-            return this.modelConfigService.getRLMissions({ status });
+          const condition: missionCondition = {
+            pi: searchConfig.pi,
+            ps: searchConfig.ps
+          };
+
+          if (searchConfig.status !== 'All') {
+            condition.status = searchConfig.status;
           }
+          if (searchConfig.keyword !== '') {
+            condition.keyword = searchConfig.keyword;
+          }
+          return this.modelConfigService.getRLMissions(condition);
         })
       )
       .subscribe(({ total, data }) => {
-        // 实际上不需要reverse 这里模仿DESC排序
-        // TODO 这里过滤应该发生在请求的筛选中
-        this.missionList = data.filter(item => item.status !== MissionStatusEnum.Done).reverse();
-        this.total = this.missionList.length;
+        this.missionList = data;
+        this.total = total;
         this.isLoading = false;
       });
   }
@@ -198,7 +216,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
   search(e: any): void {
     this.searchStream$.next({
       ...this.searchStream$.value,
-      ...e
+      ...e,
+      pi: 1
     });
   }
 
@@ -226,6 +245,52 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.searchStream$.next({ ...this.searchStream$.value });
       });
+  }
+
+  change(e: STChange) {
+    switch (e.type) {
+      case 'pi':
+        this.searchStream$.next({
+          ...this.searchStream$.value,
+          pi: e.pi
+        });
+        break;
+      case 'ps':
+        this.searchStream$.next({
+          ...this.searchStream$.value,
+          ps: e.ps
+        });
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  uploadModels() {
+    this.modal
+      .createStatic(
+        ModelCompUploadComponent,
+        {
+          record: {
+            id: null,
+            type: ImportDataTypeEnum.MODELS,
+            missionType: MissionTypeEnum.RL
+          }
+        },
+        {
+          modalOptions: {
+            nzTitle: '模型上传下载',
+            nzMaskClosable: false,
+            nzKeyboard: false,
+            nzStyle: { top: '30px' },
+            nzClassName: 'micro-directory',
+            nzFooter: null
+          },
+          size: window.innerWidth * 0.8
+        }
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

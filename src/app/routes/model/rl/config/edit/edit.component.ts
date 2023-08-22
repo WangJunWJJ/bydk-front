@@ -1,12 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { AbstractControlDirective, NgForm } from '@angular/forms';
-import { SEComponent } from '@delon/abc/se';
-import { SFSchema, SFUISchema } from '@delon/form';
+import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
 import { ModelConfigService } from 'src/app/core/service';
-import { RLAlgorithmEnum, IRLConfig, IMission, RLModeEnum } from 'src/app/core/service/project/core';
+import { IMission, IRLConfig, RLAlgorithmEnum, RLModeEnum } from 'src/app/core/service/project/core';
+import { isNull } from 'src/app/shared/utils/utils';
 
 type numberOrNull = number | null;
 type formData = {
@@ -26,6 +24,7 @@ type formData = {
   worker_num: numberOrNull; // 整型
   env_num: numberOrNull; // 整型
   render: boolean; //	是否渲染
+  target_mode_dir: string; // 模型保存路径
 };
 
 @Component({
@@ -50,6 +49,25 @@ export class ModelRLConfigEditComponent implements OnInit {
       value: false
     }
   ];
+  labels: Record<keyof formData, { en: string; cn: string }> = {
+    name: { en: 'name', cn: '任务名称' },
+    path: { en: 'path', cn: '配置文件存储路径' }, //	配置文件存储路径(工程路径之下)
+    algorithm: { en: 'algorithm', cn: '算法选择' }, //	算法类型(六种RL算法中选择)
+    algorithm_type: { en: 'algorithm_type', cn: '算法类型' }, //	是否on-policy
+    mode: { en: 'mode', cn: '执行模式' }, //	deploy/ser/dev 三选一，
+    server_num: { en: 'server_num', cn: '存储节点数量' }, // 整型
+    init_step_count: { en: 'init_step_count', cn: '初始步骤计数' }, // 整型
+    samples_per_insert: { en: 'samples_per_insert', cn: '插入样本数' }, // float
+    memory_size: { en: 'memory_size', cn: '内存大小' }, // 整型
+    collection_env_num: { en: 'collection_env_num', cn: '采集节点数量' }, // 整型
+    learning_rate: { en: 'learning_rate', cn: '算法学习率' }, // float
+    batch_size: { en: 'batch_size', cn: '批大小' }, // 整型
+    max_episode_length: { en: 'max_episode_length', cn: '最大游戏步数' }, // 整型
+    worker_num: { en: 'worker_num', cn: '数据加载进程数量' }, // 整型
+    env_num: { en: 'env_num', cn: '评估进程数量' }, // 整型
+    render: { en: 'render', cn: '渲染开关' }, //	是否渲染
+    target_mode_dir: { en: 'target_mode_dir', cn: '目标模型路径' } // 模型保存路径
+  };
 
   get isValid(): boolean {
     if (this.formData == null) {
@@ -57,15 +75,16 @@ export class ModelRLConfigEditComponent implements OnInit {
     }
 
     return !(
-      this.formData.name === '' ||
-      this.formData.path === '' ||
-      this.formData.server_num == null ||
-      this.formData.samples_per_insert == null ||
-      this.formData.collection_env_num == null ||
-      this.formData.learning_rate == null ||
-      this.formData.batch_size == null ||
-      this.formData.worker_num == null ||
-      this.formData.env_num == null
+      isNull(this.formData.name) ||
+      isNull(this.formData.path) ||
+      isNull(this.formData.server_num) ||
+      isNull(this.formData.samples_per_insert) ||
+      isNull(this.formData.collection_env_num) ||
+      isNull(this.formData.learning_rate) ||
+      isNull(this.formData.batch_size) ||
+      isNull(this.formData.worker_num) ||
+      isNull(this.formData.env_num) ||
+      isNull(this.formData.target_mode_dir)
     );
   }
 
@@ -94,15 +113,16 @@ export class ModelRLConfigEditComponent implements OnInit {
         max_episode_length: null, // 整型
         worker_num: null, // 整型
         env_num: null, // 整型
-        render: true //	是否渲染
+        render: true, //	是否渲染
+        target_mode_dir: ''
       };
     } else {
       this.modelConfigService.getRLMission(this.record.id).subscribe(mission => {
         this.originMission = mission;
 
         this.formData = {
-          name: mission.name,
-          ...mission.config
+          ...mission.config,
+          name: mission.name
         };
       });
     }
@@ -116,8 +136,7 @@ export class ModelRLConfigEditComponent implements OnInit {
         this.modal.destroy(true);
       });
     } else {
-      // TODO 增加相关的后端更新逻辑
-      this.modelConfigService.createRLMission(this.formData as IRLConfig & { name: string }).subscribe(() => {
+      this.modelConfigService.updateRLMission(this.record.id, this.formData as IRLConfig & { name: string }).subscribe(() => {
         this.msgSrv.success('更新成功');
 
         this.modal.destroy(true);

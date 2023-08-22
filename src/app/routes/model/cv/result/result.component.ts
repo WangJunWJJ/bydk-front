@@ -1,13 +1,14 @@
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { STColumn, STComponent, STPage } from '@delon/abc/st';
+import { STChange, STColumn, STComponent, STPage } from '@delon/abc/st';
 import { SFSchema } from '@delon/form';
 import { ModalHelper, _HttpClient } from '@delon/theme';
-import { ICVConfig, IMission, MissionStatusEnum } from 'src/app/core/service/project/core';
-import { ModelConfigService } from 'src/app/core/service';
+import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum, MissionTypeEnum } from 'src/app/core/service/project/core';
+import { ModelConfigService, missionCondition } from 'src/app/core/service';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
 import { ModelCVResultEditComponent } from './edit/edit.component';
 import { ModelCVResultViewComponent } from './view/view.component';
+import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 
 @Component({
   selector: 'app-model-cv-result',
@@ -21,7 +22,8 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
     properties: {
       keyword: {
         type: 'string',
-        title: '任务名'
+        title: '任务名',
+        default: ''
       }
     }
   };
@@ -30,7 +32,7 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
   missionList: IMission<ICVConfig>[] = [];
 
   page: STPage = {
-    front: true,
+    front: false,
     show: true,
     showSize: true
   };
@@ -52,9 +54,10 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     { title: '任务名', index: 'name' },
     { title: '配置路径', index: 'path' },
-    { title: '算法类型', index: 'config.model' },
+    { title: '算法类型', index: 'config.model', width: '90px' },
     {
       title: '状态',
+      width: '90px',
       format: (record: IMission<ICVConfig>) => {
         const status = record.status;
 
@@ -71,11 +74,10 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm' },
-    // TODO 可能增加任务结束时间
-    // { title: '任务结束时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm' },
+    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
     {
       title: '操作',
+      width: '260px',
       buttons: [
         {
           text: '训练结果',
@@ -94,7 +96,7 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
                     nzStyle: { top: '20px' },
                     nzKeyboard: false
                   },
-                  size: window.innerWidth * 0.8
+                  size: window.innerWidth * 0.9
                 }
               )
               .subscribe(() => {
@@ -109,6 +111,39 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
               this.msgSrv.success('复制成功');
             });
           }
+        },
+        {
+          text: '下载',
+          children: [
+            {
+              text: '下载数据集',
+              click: (record: IMission<ICVConfig>) => {
+                // 下载功能
+                this.modelConfigService.downloadCVDatasets(record.id).subscribe(blob => {
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${record.name}数据集.zip`;
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                });
+              }
+            },
+            {
+              text: '下载模型',
+              click: (record: IMission<ICVConfig>) => {
+                // 下载功能
+                this.modelConfigService.downloadCVTargetModels(record.id).subscribe(blob => {
+                  const url = window.URL.createObjectURL(blob);
+                  const a = document.createElement('a');
+                  a.href = url;
+                  a.download = `${record.name}模型.zip`;
+                  a.click();
+                  window.URL.revokeObjectURL(url);
+                });
+              }
+            }
+          ]
         }
       ]
     }
@@ -132,20 +167,23 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
         takeUntil(this.componentDestroyed$),
         switchMap(searchConfig => {
           this.isLoading = true;
-          const status = searchConfig.status;
 
-          if (status === 'All') {
-            return this.modelConfigService.getCVMissions({});
-          } else {
-            return this.modelConfigService.getCVMissions({ status });
+          const condition: missionCondition = {
+            pi: searchConfig.pi,
+            ps: searchConfig.ps,
+            status: MissionStatusEnum.Done
+          };
+
+          if (searchConfig.keyword !== '') {
+            condition.keyword = searchConfig.keyword;
           }
+          return this.modelConfigService.getCVMissions(condition);
         })
       )
       .subscribe(({ total, data }) => {
         // 实际上不需要reverse 这里模仿DESC排序
-        // TODO 这里过滤应该发生在请求的筛选中
         this.missionList = data.reverse();
-        this.total = this.missionList.length;
+        this.total = total;
         this.isLoading = false;
       });
   }
@@ -153,7 +191,8 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
   search(e: any): void {
     this.searchStream$.next({
       ...this.searchStream$.value,
-      ...e
+      ...e,
+      pi: 1
     });
   }
 
@@ -181,6 +220,78 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
       .subscribe(() => {
         this.searchStream$.next({ ...this.searchStream$.value });
       });
+  }
+
+  change(e: STChange) {
+    switch (e.type) {
+      case 'pi':
+        this.searchStream$.next({
+          ...this.searchStream$.value,
+          pi: e.pi
+        });
+        break;
+      case 'ps':
+        this.searchStream$.next({
+          ...this.searchStream$.value,
+          ps: e.ps
+        });
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  uploadDatasets() {
+    this.modal
+      .createStatic(
+        ModelCompUploadComponent,
+        {
+          record: {
+            id: null,
+            type: ImportDataTypeEnum.DATASETS,
+            missionType: MissionTypeEnum.CV
+          }
+        },
+        {
+          modalOptions: {
+            nzTitle: '数据集上传下载',
+            nzMaskClosable: false,
+            nzKeyboard: false,
+            nzStyle: { top: '30px' },
+            nzClassName: 'micro-directory',
+            nzFooter: null
+          },
+          size: window.innerWidth * 0.8
+        }
+      )
+      .subscribe();
+  }
+
+  uploadModels() {
+    this.modal
+      .createStatic(
+        ModelCompUploadComponent,
+        {
+          record: {
+            id: null,
+            type: ImportDataTypeEnum.MODELS,
+            missionType: MissionTypeEnum.CV
+          }
+        },
+        {
+          modalOptions: {
+            nzTitle: '模型上传下载',
+            nzMaskClosable: false,
+            nzKeyboard: false,
+            nzStyle: { top: '30px' },
+            nzClassName: 'micro-directory',
+            nzFooter: null
+          },
+          size: window.innerWidth * 0.8
+        }
+      )
+      .subscribe();
   }
 
   ngOnDestroy(): void {

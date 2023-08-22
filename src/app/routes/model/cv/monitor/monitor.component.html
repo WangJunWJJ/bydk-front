@@ -1,5 +1,69 @@
 <div class="l-page">
-  <div class="l-iframe-container">
-    <iframe *ngIf="monitorUrl" [src]="monitorUrl"></iframe>
-  </div>
+  <nz-tabset nzCentered>
+    <nz-tab nzTitle="负载监控">
+      <nz-tabset nzType="card" (nzSelectedIndexChange)="tabChange($event)">
+        <nz-tab [nzTitle]="tab" *ngFor="let tab of ipTabs"></nz-tab>
+      </nz-tabset>
+
+      <div class="l-data">
+        <div #chartContainer id="chartContainer"> </div>
+        <div class="l-left">
+          <div class="l-abc">
+            <div class="l-form">
+              <div class="l-form__label"> 内存大小 </div>
+              <div class="l-form__content">
+                {{ renderData?.memory_size ?? '' }}
+              </div>
+            </div>
+
+            <nz-progress [nzPercent]="memoryRate" nzType="circle" nzStrokeColor="rgb(24, 228, 177)" class="l-process"></nz-progress>
+          </div>
+
+          <div class="l-abc">
+            <div class="l-form">
+              <div class="l-form__label"> CPU核心数 </div>
+              <div class="l-form__content">
+                {{ renderData?.cpu_count ?? '' }}
+              </div>
+            </div>
+
+            <nz-progress [nzPercent]="cpuRate" nzType="circle" nzStrokeColor="rgb(24, 228, 177)" class="l-process"></nz-progress>
+          </div>
+        </div>
+      </div>
+    </nz-tab>
+    <nz-tab nzTitle="日志查询">
+      <form nz-form se-container #f="ngForm" nzLayout="inline">
+        <se label="日志类型">
+          <nz-select [ngModel]="logStream$.value.type" style="width: 100px" name="type" (ngModelChange)="ngSelectChange($event)">
+            <nz-option [nzLabel]="option.label" [nzValue]="option.value" *ngFor="let option of logOptions"></nz-option>
+          </nz-select>
+        </se>
+      </form>
+
+      <div class="l-log-container" (scroll)="onScroll($event)" #scroll>
+        <ng-container *ngFor="let log of logs">
+          <nz-alert
+            nzType="warning"
+            [nzMessage]="log.time"
+            [nzDescription]="log.content"
+            nzShowIcon
+            *ngIf="log.type == 'warning'"
+          ></nz-alert>
+          <nz-alert nzType="info" [nzMessage]="log.time" [nzDescription]="log.content" nzShowIcon *ngIf="log.type == 'info'"></nz-alert>
+          <nz-alert nzType="error" [nzMessage]="log.time" [nzDescription]="log.content" nzShowIcon *ngIf="log.type == 'error'"></nz-alert>
+          <nz-alert
+            nzType="success"
+            [nzMessage]="log.time"
+            [nzDescription]="log.content"
+            [nzIconType]="'tool'"
+            nzShowIcon
+            *ngIf="log.type == 'debug'"
+          ></nz-alert>
+        </ng-container>
+        <nz-spin nzSimple style="margin: 0 auto" *ngIf="nextFlag"></nz-spin>
+        <nz-alert nzType="success" [nzMessage]="'已到底'" *ngIf="isAllLoading"></nz-alert>
+      </div>
+    </nz-tab>
+  </nz-tabset>
 </div>
