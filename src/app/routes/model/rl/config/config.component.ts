@@ -32,7 +32,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         enum: [
           { label: '全部', value: 'All' },
           { label: '未执行', value: MissionStatusEnum.Init },
-          { label: '执行中', value: MissionStatusEnum.Active }
+          { label: '运行中', value: MissionStatusEnum.Active }
         ]
       }
     }
@@ -75,7 +75,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
           case MissionStatusEnum.Init:
             return '未执行';
           case MissionStatusEnum.Active:
-            return '执行中';
+            return '运行中';
           case MissionStatusEnum.Done:
             return '已完成';
 

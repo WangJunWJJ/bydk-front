@@ -38,7 +38,20 @@ export class ModelRLConfigEditComponent implements OnInit {
   originMission!: IMission<IRLConfig>;
   formData!: formData;
   rlModelAlgorithms = Object.values(RLAlgorithmEnum);
-  rlModes = Object.values(RLModeEnum);
+  rlModes = [
+    {
+      label: '分布式',
+      value: 'deploy'
+    },
+    {
+      label: '串行',
+      value: 'ser'
+    },
+    {
+      label: '调试',
+      value: 'dev'
+    }
+  ];
   booleanOptions = [
     {
       label: '是',
@@ -49,24 +62,34 @@ export class ModelRLConfigEditComponent implements OnInit {
       value: false
     }
   ];
+  algorithmTypeOptions = [
+    {
+      label: 'DNN',
+      value: true
+    },
+    {
+      label: 'RNN',
+      value: false
+    }
+  ];
   labels: Record<keyof formData, { en: string; cn: string }> = {
-    name: { en: 'name', cn: '任务名称' },
-    path: { en: 'path', cn: '配置文件存储路径' }, //	配置文件存储路径(工程路径之下)
-    algorithm: { en: 'algorithm', cn: '算法选择' }, //	算法类型(六种RL算法中选择)
-    algorithm_type: { en: 'algorithm_type', cn: '算法类型' }, //	是否on-policy
-    mode: { en: 'mode', cn: '执行模式' }, //	deploy/ser/dev 三选一，
+    name: { en: 'name', cn: '训练任务名称' },
+    path: { en: 'path', cn: '训练对象路径' }, //	配置文件存储路径(工程路径之下)
+    algorithm_type: { en: 'algorithm_type', cn: '神经网络类型' }, // TODO	是否on-policy  FC,MLP,DNN,RNN
+    algorithm: { en: 'algorithm', cn: '智能决策算法' }, //	算法类型(六种RL算法中选择)
+    mode: { en: 'mode', cn: '任务执行模式' }, //	TODO 分布式，串行，调试  deploy/ser/dev 三选一，
+    collection_env_num: { en: 'collection_env_num', cn: '计算节点数量' }, // 整型
     server_num: { en: 'server_num', cn: '存储节点数量' }, // 整型
-    init_step_count: { en: 'init_step_count', cn: '初始步骤计数' }, // 整型
-    samples_per_insert: { en: 'samples_per_insert', cn: '插入样本数' }, // float
-    memory_size: { en: 'memory_size', cn: '内存大小' }, // 整型
-    collection_env_num: { en: 'collection_env_num', cn: '采集节点数量' }, // 整型
-    learning_rate: { en: 'learning_rate', cn: '算法学习率' }, // float
-    batch_size: { en: 'batch_size', cn: '批大小' }, // 整型
-    max_episode_length: { en: 'max_episode_length', cn: '最大游戏步数' }, // 整型
-    worker_num: { en: 'worker_num', cn: '数据加载进程数量' }, // 整型
+    memory_size: { en: 'memory_size', cn: '节点内存大小' }, // 整型
+    worker_num: { en: 'worker_num', cn: '训练进程数量' }, // 整型
+    init_step_count: { en: 'init_step_count', cn: '训练起始步数' }, // 整型
     env_num: { en: 'env_num', cn: '评估进程数量' }, // 整型
-    render: { en: 'render', cn: '渲染开关' }, //	是否渲染
-    target_mode_dir: { en: 'target_mode_dir', cn: '目标模型路径' } // 模型保存路径
+    render: { en: 'render', cn: '环境渲染开关' }, //	是否渲染
+    max_episode_length: { en: 'max_episode_length', cn: '最大环境步数' }, // 整型
+    target_mode_dir: { en: 'target_mode_dir', cn: '目标模型路径' }, // 模型保存路径
+    batch_size: { en: 'batch_size', cn: '训练批大小' }, // 整型
+    learning_rate: { en: 'learning_rate', cn: '算法学习率' }, // float
+    samples_per_insert: { en: 'samples_per_insert', cn: '数据复用率' } // float
   };
 
   get isValid(): boolean {

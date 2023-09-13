@@ -65,7 +65,7 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
           case MissionStatusEnum.Init:
             return '未执行';
           case MissionStatusEnum.Active:
-            return '执行中';
+            return '运行中';
           case MissionStatusEnum.Done:
             return '已完成';
 

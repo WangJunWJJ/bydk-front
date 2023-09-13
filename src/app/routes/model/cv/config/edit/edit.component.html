@@ -1,23 +1,26 @@
 <div class="modal-header">
-  <div class="modal-title" *ngIf="record.id">编辑配置</div>
-  <div class="modal-title" *ngIf="!record.id">新增配置</div>
+  <div class="modal-title" *ngIf="record.id">训练参数配置</div>
+  <div class="modal-title" *ngIf="!record.id">训练参数配置</div>
 </div>
 <nz-spin *ngIf="!formData" class="modal-spin"></nz-spin>
 
 <div style="width: 100%; margin: 0 auto" *ngIf="formData">
   <form nz-form se-container="2" #f="ngForm" [gutter]="2" [labelWidth]="210">
-    <se label="任务名称" required>
+    <se label="训练任务名称" required optionalHelp="属性名: name" col="2">
       <input type="text" nz-input [(ngModel)]="formData.name" name="name" required placeholder="请输入任务名称" />
     </se>
-
-    <se [label]="labels.path.cn" required col="2" optionalHelp="属性名: path">
-      <input type="text" nz-input [(ngModel)]="formData.path" name="path" required placeholder="请输入路径" />
-    </se>
+    <se label=""> </se>
 
     <se [label]="labels.model.cn" required col="2" optionalHelp="属性名: model">
-      <nz-select [(ngModel)]="formData.model" style="width: 100px" name="model">
-        <nz-option [nzLabel]="model" [nzValue]="model" *ngFor="let model of cvModelAlgorithms"></nz-option>
+      <nz-select [(ngModel)]="formData.model" name="model" style="width: 100%">
+        <ng-container *ngFor="let model of cvModelAlgorithms">
+          <nz-option [nzLabel]="'AdvGAN'" [nzValue]="model" *ngIf="model == 'advgan'"></nz-option>
+          <nz-option [nzLabel]="model.toUpperCase()" [nzValue]="model" *ngIf="model != 'advgan'"></nz-option>
+        </ng-container>
       </nz-select>
+    </se>
+    <se [label]="labels.path.cn" required col="2" optionalHelp="属性名: path">
+      <input type="text" nz-input [(ngModel)]="formData.path" name="path" required placeholder="请输入路径" />
     </se>
 
     <se [label]="labels.clean_train_data_dir.cn" col="2" required optionalHelp="属性名: clean_train_data_dir">
@@ -39,9 +42,9 @@
       <input type="text" nz-input [(ngModel)]="formData.adv_train_data_dir" name="adv_train_data_dir" required placeholder="请输入路径" />
     </se>
 
-    <se [label]="labels.adv_test_data_dir.cn" col="2" required optionalHelp="属性名: adv_test_data_dir">
+    <!-- <se [label]="labels.adv_test_data_dir.cn" col="2" required optionalHelp="属性名: adv_test_data_dir">
       <input type="text" nz-input [(ngModel)]="formData.adv_test_data_dir" name="adv_test_data_dir" required placeholder="请输入路径" />
-    </se>
+    </se> -->
 
     <se [label]="labels.label_dir.cn" col="2" required optionalHelp="属性名: label_dir">
       <input type="text" nz-input [(ngModel)]="formData.label_dir" name="label_dir" required placeholder="请输入路径" />
@@ -69,9 +72,9 @@
       />
     </se>
 
-    <se [label]="labels.config_opts_dir.cn" col="2" required optionalHelp="属性名: config_opts_dir">
+    <!-- <se [label]="labels.config_opts_dir.cn" col="2" required optionalHelp="属性名: config_opts_dir">
       <input type="text" nz-input [(ngModel)]="formData.config_opts_dir" name="config_opts_dir" required placeholder="请输入路径" />
-    </se>
+    </se> -->
   </form>
 </div>
 <div class="modal-footer">
