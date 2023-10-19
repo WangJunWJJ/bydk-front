@@ -181,8 +181,7 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(({ total, data }) => {
-        // 实际上不需要reverse 这里模仿DESC排序
-        this.missionList = data.reverse();
+        this.missionList = data;
         this.total = total;
         this.isLoading = false;
       });
