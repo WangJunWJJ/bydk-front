@@ -38,6 +38,6 @@ export class ModelRLResultViewComponent implements OnInit {
   }
 
   close(): void {
-    this.modal.destroy();
+    this.modal.close(true);
   }
 }

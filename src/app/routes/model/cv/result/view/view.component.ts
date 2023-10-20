@@ -38,6 +38,6 @@ export class ModelCVResultViewComponent implements OnInit {
   }
 
   close(): void {
-    this.modal.destroy();
+    this.modal.close(true);
   }
 }

@@ -94,13 +94,18 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
                   modalOptions: {
                     nzMaskClosable: false,
                     nzStyle: { top: '20px' },
-                    nzKeyboard: false
+                    nzKeyboard: false,
+                    nzCloseOnNavigation: true,
+                    nzOnCancel: () => {
+                      this.modelConfigService.closeCVTensorboard(record.id).subscribe();
+                    }
                   },
-                  size: window.innerWidth * 0.9
+                  size: window.innerWidth * 0.8
                 }
               )
               .subscribe(() => {
-                this.searchStream$.next({ ...this.searchStream$.value });
+                // 更新任务时间
+                this.modelConfigService.closeCVTensorboard(record.id).subscribe();
               });
           }
         },

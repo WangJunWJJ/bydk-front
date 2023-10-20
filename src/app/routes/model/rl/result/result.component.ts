@@ -93,13 +93,18 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
                   modalOptions: {
                     nzMaskClosable: false,
                     nzStyle: { top: '20px' },
-                    nzKeyboard: false
+                    nzKeyboard: false,
+                    nzCloseOnNavigation: true,
+                    nzOnCancel: () => {
+                      this.modelConfigService.closeCVTensorboard(record.id).subscribe();
+                    }
                   },
                   size: window.innerWidth * 0.8
                 }
               )
               .subscribe(() => {
-                this.searchStream$.next({ ...this.searchStream$.value });
+                // 更新任务时间
+                this.modelConfigService.closeCVTensorboard(record.id).subscribe();
               });
           }
         },
@@ -161,7 +166,6 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(({ total, data }) => {
-        // 实际上不需要reverse 这里模仿DESC排序
         this.missionList = data;
         this.total = total;
         this.isLoading = false;
