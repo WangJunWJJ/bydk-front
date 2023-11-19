@@ -9,6 +9,7 @@ import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum, MissionType
 import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 import { ModelCVConfigEditComponent } from './edit/edit.component';
 import { ModelCVConfigViewComponent } from './view/view.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-model-cv-config',
@@ -170,6 +171,28 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
               this.msgSrv.success('复制成功');
             });
           }
+        },
+        {
+          text: '删除任务',
+          className: 'text-error',
+          click: (record: IMission<ICVConfig>) => {
+            this.modalSrv.confirm({
+              nzTitle: '删除确认',
+              nzContent: `删除任务后无法恢复，确认删除吗？`,
+              nzOkText: '确认',
+              nzOkType: 'primary',
+              nzOkDanger: true,
+              nzOnOk: () => {
+                this.modelConfigService.deleteRLMission(record.id).subscribe(newMission => {
+                  this.searchStream$.next({ ...this.searchStream$.value });
+
+                  this.msgSrv.success('删除成功');
+                });
+              },
+              nzCancelText: '取消',
+              nzOnCancel: () => {}
+            });
+          }
         }
       ]
     }
@@ -178,6 +201,7 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
   constructor(
     private http: _HttpClient,
     private modal: ModalHelper,
+    private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private modelConfigService: ModelConfigService
   ) {}

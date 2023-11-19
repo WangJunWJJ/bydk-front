@@ -8,6 +8,7 @@ import { ModelConfigService, missionCondition } from 'src/app/core/service';
 import { IMission, IRLConfig, MissionStatusEnum } from 'src/app/core/service/project/core';
 import { ModelRLResultEditComponent } from './edit/edit.component';
 import { ModelRLResultViewComponent } from './view/view.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-model-rl-result',
@@ -129,6 +130,28 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
               window.URL.revokeObjectURL(url);
             });
           }
+        },
+        {
+          text: '删除任务',
+          className: 'text-error',
+          click: (record: IMission<IRLConfig>) => {
+            this.modalSrv.confirm({
+              nzTitle: '删除确认',
+              nzContent: `删除任务后无法恢复，确认删除吗？`,
+              nzOkText: '确认',
+              nzOkType: 'primary',
+              nzOkDanger: true,
+              nzOnOk: () => {
+                this.modelConfigService.deleteRLMission(record.id).subscribe(newMission => {
+                  this.searchStream$.next({ ...this.searchStream$.value });
+
+                  this.msgSrv.success('删除成功');
+                });
+              },
+              nzCancelText: '取消',
+              nzOnCancel: () => {}
+            });
+          }
         }
       ]
     }
@@ -137,6 +160,7 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
   constructor(
     private http: _HttpClient,
     private modal: ModalHelper,
+    private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private modelConfigService: ModelConfigService
   ) {}
