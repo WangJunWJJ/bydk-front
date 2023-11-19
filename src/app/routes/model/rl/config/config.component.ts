@@ -119,6 +119,12 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         {
           text: '执行',
           click: (record: IMission<IRLConfig>) => {
+            this.msgSrv.success('开始执行');
+            setTimeout(() => {
+              // ?没有触发iif检查机制
+              this.tempActiveIdSets.add(record.id);
+            }, 0);
+
             this.modelConfigService.activeRLMission(record.id).subscribe(() => {
               // 改变当前任务状态
               this.searchStream$.next(this.searchStream$.value);
@@ -128,7 +134,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
             });
           },
           iif: (record: IMission<IRLConfig>) => {
-            return record.status === MissionStatusEnum.Init;
+            return record.status === MissionStatusEnum.Init && !this.tempActiveIdSets.has(record.id);
           }
         },
         {
@@ -172,6 +178,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
       ]
     }
   ];
+  // 用于保存已经执行的任务id 防止重复点击active按钮
+  tempActiveIdSets: Set<string> = new Set();
 
   constructor(
     private http: _HttpClient,

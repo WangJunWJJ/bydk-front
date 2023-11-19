@@ -119,6 +119,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         {
           text: '执行',
           click: (record: IMission<ICVConfig>) => {
+            this.msgSrv.success('开始执行');
+
             this.modelConfigService.activeCVMission(record.id).subscribe(() => {
               // 改变当前任务状态
               this.searchStream$.next(this.searchStream$.value);

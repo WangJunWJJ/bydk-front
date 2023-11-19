@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { NzModalRef } from 'ng-zorro-antd/modal';
-import { zip } from 'rxjs';
+import { delay, zip } from 'rxjs';
 import { ModelConfigService } from 'src/app/core/service';
 import { IRLConfig, IMission } from 'src/app/core/service/project/core';
 
@@ -26,15 +26,16 @@ export class ModelRLResultViewComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    zip(this.modelConfigService.getRLMission(this.record.id), this.modelConfigService.getRLResultUrl(this.record.id)).subscribe(
-      ([mission, url]) => {
-        this.mission = mission;
-        // 全局设置url
-        (window as any).tensorboardOrigin = url;
-        localStorage.setItem('_tb_global_settings', JSON.stringify({ theme: 'dark' }));
-        this.monitorUrl = url;
-      }
-    );
+    zip(
+      this.modelConfigService.getRLMission(this.record.id),
+      this.modelConfigService.getRLResultUrl(this.record.id).pipe(delay(2000))
+    ).subscribe(([mission, url]) => {
+      this.mission = mission;
+      // 全局设置url
+      (window as any).tensorboardOrigin = url;
+      localStorage.setItem('_tb_global_settings', JSON.stringify({ theme: 'dark' }));
+      this.monitorUrl = url;
+    });
   }
 
   close(): void {
