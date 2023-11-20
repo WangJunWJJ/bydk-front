@@ -9,6 +9,7 @@ import { ModelConfigService, missionCondition } from 'src/app/core/service';
 import { ModelRLConfigViewComponent } from './view/view.component';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
 import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-model-rl-config',
@@ -32,7 +33,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         enum: [
           { label: '全部', value: 'All' },
           { label: '未执行', value: MissionStatusEnum.Init },
-          { label: '执行中', value: MissionStatusEnum.Active }
+          { label: '运行中', value: MissionStatusEnum.Active }
         ]
       }
     }
@@ -75,7 +76,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
           case MissionStatusEnum.Init:
             return '未执行';
           case MissionStatusEnum.Active:
-            return '执行中';
+            return '运行中';
           case MissionStatusEnum.Done:
             return '已完成';
 
@@ -119,6 +120,12 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         {
           text: '执行',
           click: (record: IMission<IRLConfig>) => {
+            this.msgSrv.success('开始执行');
+            setTimeout(() => {
+              // ?没有触发iif检查机制
+              this.tempActiveIdSets.add(record.id);
+            }, 0);
+
             this.modelConfigService.activeRLMission(record.id).subscribe(() => {
               // 改变当前任务状态
               this.searchStream$.next(this.searchStream$.value);
@@ -128,7 +135,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
             });
           },
           iif: (record: IMission<IRLConfig>) => {
-            return record.status === MissionStatusEnum.Init;
+            return record.status === MissionStatusEnum.Init && !this.tempActiveIdSets.has(record.id);
           }
         },
         {
@@ -168,14 +175,39 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
               this.msgSrv.success('复制成功');
             });
           }
+        },
+        {
+          text: '删除任务',
+          className: 'text-error',
+          click: (record: IMission<IRLConfig>) => {
+            this.modalSrv.confirm({
+              nzTitle: '删除确认',
+              nzContent: `删除任务后无法恢复，确认删除吗？`,
+              nzOkText: '确认',
+              nzOkType: 'primary',
+              nzOkDanger: true,
+              nzOnOk: () => {
+                this.modelConfigService.deleteRLMission(record.id).subscribe(newMission => {
+                  this.searchStream$.next({ ...this.searchStream$.value });
+
+                  this.msgSrv.success('删除成功');
+                });
+              },
+              nzCancelText: '取消',
+              nzOnCancel: () => {}
+            });
+          }
         }
       ]
     }
   ];
+  // 用于保存已经执行的任务id 防止重复点击active按钮
+  tempActiveIdSets: Set<string> = new Set();
 
   constructor(
     private http: _HttpClient,
     private modal: ModalHelper,
+    private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private modelConfigService: ModelConfigService
   ) {}

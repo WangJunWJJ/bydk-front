@@ -13,9 +13,9 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class PageService implements OnDestroy {
   // 暂时未启用
-  // 用于保存cv的选择状态 选择的为执行中的任务 默认未选择
+  // 用于保存cv的选择状态 选择的为运行中的任务 默认未选择
   cvUrlSubject: BehaviorSubject<string> = new BehaviorSubject('');
-  // 用于保存rl的选择状态 选择的为执行中的任务 默认未选择
+  // 用于保存rl的选择状态 选择的为运行中的任务 默认未选择
   rlUrlSubject: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor() {}

@@ -233,6 +233,23 @@ export class ModelConfigService {
   }
 
   /**
+   * 关闭任务结果 重新激活时间
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  closeCVTensorboard(id: string) {
+    return this.httpClient.post<{ msg: string }>(
+      `${BE_URL}/cv/config/close-tensorboard`,
+      {
+        id
+      },
+      { headers: { rltoken: this.getToken() } }
+    );
+  }
+
+  /**
    * 获取RL任务 筛选条件为path和status 如果没有筛选条件 返回全部
    *
    * @param {{ path?: string; status?: MissionStatusEnum }} conditions
@@ -382,6 +399,23 @@ export class ModelConfigService {
   activeRLMission(id: string) {
     return this.httpClient.post<IMission<IRLConfig>>(
       `${BE_URL}/rl/config/active-mission`,
+      {
+        id
+      },
+      { headers: { rltoken: this.getToken() } }
+    );
+  }
+
+  /**
+   * 关闭任务结果 重新激活时间
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  closeRLTensorboard(id: string) {
+    return this.httpClient.post<{ msg: string }>(
+      `${BE_URL}/rl/config/close-tensorboard`,
       {
         id
       },

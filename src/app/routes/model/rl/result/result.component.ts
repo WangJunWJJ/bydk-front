@@ -8,6 +8,7 @@ import { ModelConfigService, missionCondition } from 'src/app/core/service';
 import { IMission, IRLConfig, MissionStatusEnum } from 'src/app/core/service/project/core';
 import { ModelRLResultEditComponent } from './edit/edit.component';
 import { ModelRLResultViewComponent } from './view/view.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-model-rl-result',
@@ -64,7 +65,7 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
           case MissionStatusEnum.Init:
             return '未执行';
           case MissionStatusEnum.Active:
-            return '执行中';
+            return '运行中';
           case MissionStatusEnum.Done:
             return '已完成';
 
@@ -93,13 +94,18 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
                   modalOptions: {
                     nzMaskClosable: false,
                     nzStyle: { top: '20px' },
-                    nzKeyboard: false
+                    nzKeyboard: false,
+                    nzCloseOnNavigation: true,
+                    nzOnCancel: () => {
+                      this.modelConfigService.closeCVTensorboard(record.id).subscribe();
+                    }
                   },
                   size: window.innerWidth * 0.8
                 }
               )
               .subscribe(() => {
-                this.searchStream$.next({ ...this.searchStream$.value });
+                // 更新任务时间
+                this.modelConfigService.closeCVTensorboard(record.id).subscribe();
               });
           }
         },
@@ -124,6 +130,28 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
               window.URL.revokeObjectURL(url);
             });
           }
+        },
+        {
+          text: '删除任务',
+          className: 'text-error',
+          click: (record: IMission<IRLConfig>) => {
+            this.modalSrv.confirm({
+              nzTitle: '删除确认',
+              nzContent: `删除任务后无法恢复，确认删除吗？`,
+              nzOkText: '确认',
+              nzOkType: 'primary',
+              nzOkDanger: true,
+              nzOnOk: () => {
+                this.modelConfigService.deleteRLMission(record.id).subscribe(newMission => {
+                  this.searchStream$.next({ ...this.searchStream$.value });
+
+                  this.msgSrv.success('删除成功');
+                });
+              },
+              nzCancelText: '取消',
+              nzOnCancel: () => {}
+            });
+          }
         }
       ]
     }
@@ -132,6 +160,7 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
   constructor(
     private http: _HttpClient,
     private modal: ModalHelper,
+    private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private modelConfigService: ModelConfigService
   ) {}
@@ -161,8 +190,7 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe(({ total, data }) => {
-        // 实际上不需要reverse 这里模仿DESC排序
-        this.missionList = data.reverse();
+        this.missionList = data;
         this.total = total;
         this.isLoading = false;
       });

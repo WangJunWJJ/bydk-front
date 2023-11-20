@@ -9,6 +9,7 @@ import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum, MissionType
 import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 import { ModelCVConfigEditComponent } from './edit/edit.component';
 import { ModelCVConfigViewComponent } from './view/view.component';
+import { NzModalService } from 'ng-zorro-antd/modal';
 
 @Component({
   selector: 'app-model-cv-config',
@@ -32,7 +33,7 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         enum: [
           { label: '全部', value: 'All' },
           { label: '未执行', value: MissionStatusEnum.Init },
-          { label: '执行中', value: MissionStatusEnum.Active }
+          { label: '运行中', value: MissionStatusEnum.Active }
         ]
       }
     }
@@ -75,7 +76,7 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
           case MissionStatusEnum.Init:
             return '未执行';
           case MissionStatusEnum.Active:
-            return '执行中';
+            return '运行中';
           case MissionStatusEnum.Done:
             return '已完成';
 
@@ -119,6 +120,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         {
           text: '执行',
           click: (record: IMission<ICVConfig>) => {
+            this.msgSrv.success('开始执行');
+
             this.modelConfigService.activeCVMission(record.id).subscribe(() => {
               // 改变当前任务状态
               this.searchStream$.next(this.searchStream$.value);
@@ -168,6 +171,28 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
               this.msgSrv.success('复制成功');
             });
           }
+        },
+        {
+          text: '删除任务',
+          className: 'text-error',
+          click: (record: IMission<ICVConfig>) => {
+            this.modalSrv.confirm({
+              nzTitle: '删除确认',
+              nzContent: `删除任务后无法恢复，确认删除吗？`,
+              nzOkText: '确认',
+              nzOkType: 'primary',
+              nzOkDanger: true,
+              nzOnOk: () => {
+                this.modelConfigService.deleteRLMission(record.id).subscribe(newMission => {
+                  this.searchStream$.next({ ...this.searchStream$.value });
+
+                  this.msgSrv.success('删除成功');
+                });
+              },
+              nzCancelText: '取消',
+              nzOnCancel: () => {}
+            });
+          }
         }
       ]
     }
@@ -176,6 +201,7 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
   constructor(
     private http: _HttpClient,
     private modal: ModalHelper,
+    private modalSrv: NzModalService,
     private msgSrv: NzMessageService,
     private modelConfigService: ModelConfigService
   ) {}
