@@ -358,7 +358,7 @@ export class ModelConfigService {
    * @memberof ModelConfigService
    */
   getRLMissionData(id: string) {
-    return this.httpClient.get<MissionData>(`${BE_URL}/rl/config/get-mission-data/${id}`, {
+    return this.httpClient.get<MissionData[]>(`${BE_URL}/rl/config/get-mission-data/${id}`, {
       headers: {
         rltoken: this.getToken()
       }

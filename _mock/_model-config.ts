@@ -243,13 +243,14 @@ export const MODEL_CONFIGS = {
     return {
       insert_total: randomGenerate(10000, 20000),
       sample_total: randomGenerate(40000, 80000),
-      average_insert_speed: randomGenerate(200, 500),
-      average_sample_speed: randomGenerate(1000, 3000),
-      current_insert_speed: randomGenerate(0, 2000),
-      current_sample_speed: randomGenerate(0, 1000),
+      ave_insert_speed: randomGenerate(200, 500),
+      ave_sample_speed: randomGenerate(1000, 3000),
+      cur_insert_speed: randomGenerate(0, 2000),
+      cur_sample_speed: randomGenerate(0, 1000),
       insert_block_time: randomGenerate(0, 100),
       sample_block_time: randomGenerate(0, 100),
-      memory_usage: randomGenerate(0.1, 0.6, false)
+      memory_usage: randomGenerate(0.1, 0.6, false),
+      time: 0
     };
   },
   'POST /cv/config/active-mission': (req: MockRequest): IMission<ICVConfig> => {
@@ -344,13 +345,14 @@ export const MODEL_CONFIGS = {
     return {
       insert_total: randomGenerate(10000, 20000),
       sample_total: randomGenerate(40000, 80000),
-      average_insert_speed: randomGenerate(200, 500),
-      average_sample_speed: randomGenerate(1000, 3000),
-      current_insert_speed: randomGenerate(0, 2000),
-      current_sample_speed: randomGenerate(0, 1000),
+      ave_insert_speed: randomGenerate(200, 500),
+      ave_sample_speed: randomGenerate(1000, 3000),
+      cur_insert_speed: randomGenerate(0, 2000),
+      cur_sample_speed: randomGenerate(0, 1000),
       insert_block_time: randomGenerate(0, 100),
       sample_block_time: randomGenerate(0, 100),
-      memory_usage: randomGenerate(0.1, 0.6, false)
+      memory_usage: randomGenerate(0.1, 0.6, false),
+      time: 0
     };
   },
   'POST /rl/config/active-mission': (req: MockRequest): IMission<IRLConfig> => {

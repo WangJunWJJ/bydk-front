@@ -23,10 +23,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
   chartTypeOptions = [
     'insert_total',
     'sample_total',
-    'average_insert_speed',
-    'average_sample_speed',
-    'current_insert_speed',
-    'current_sample_speed',
+    'ave_insert_speed',
+    'ave_sample_speed',
+    'cur_insert_speed',
+    'cur_sample_speed',
     'insert_block_time',
     'sample_block_time',
     'memory_usage'
@@ -565,10 +565,10 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
             [
               'insert_total',
               'sample_total',
-              'average_insert_speed',
-              'average_sample_speed',
-              'current_insert_speed',
-              'current_sample_speed',
+              'ave_insert_speed',
+              'ave_sample_speed',
+              'cur_insert_speed',
+              'cur_sample_speed',
               'insert_block_time',
               'sample_block_time',
               'memory_usage'
@@ -588,14 +588,14 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
           });
           this.chart2.setOption({
             series: [
-              { name: 'average_insert_speed', data: chartData.average_insert_speed },
-              { name: 'average_sample_speed', data: chartData.average_sample_speed }
+              { name: 'average_insert_speed', data: chartData.ave_insert_speed },
+              { name: 'average_sample_speed', data: chartData.ave_sample_speed }
             ]
           });
           this.chart3.setOption({
             series: [
-              { name: 'current_insert_speed', data: chartData.current_insert_speed },
-              { name: 'current_sample_speed', data: chartData.current_sample_speed }
+              { name: 'current_insert_speed', data: chartData.cur_insert_speed },
+              { name: 'current_sample_speed', data: chartData.cur_sample_speed }
             ]
           });
           this.chart4.setOption({
