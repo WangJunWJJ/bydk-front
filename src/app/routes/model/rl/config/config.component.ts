@@ -153,6 +153,9 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
                   modalOptions: {
                     nzMaskClosable: false,
                     nzStyle: { top: '20px' },
+                    nzOnCancel: () => {
+                      this.searchStream$.next({ ...this.searchStream$.value });
+                    },
                     nzKeyboard: false
                   },
                   size: window.innerWidth * 0.9

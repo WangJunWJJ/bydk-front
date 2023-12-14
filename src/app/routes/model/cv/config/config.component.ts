@@ -104,7 +104,10 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
                 {
                   modalOptions: {
                     nzMaskClosable: false,
-                    nzKeyboard: false
+                    nzKeyboard: false,
+                    nzOnCancel: () => {
+                      this.searchStream$.next({ ...this.searchStream$.value });
+                    }
                   },
                   size: window.innerWidth * 0.8
                 }

@@ -540,6 +540,15 @@ export class ModelCVConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         })
       )
       .subscribe(missionData => {
+        // 任务已经结束
+        if ('msg' in missionData) {
+          if (missionData.msg === 'Mission done') {
+            this.componentDestroyed$.next(); // 结束数据流
+            this.msgSrv.info('任务已结束');
+          }
+          return;
+        }
+
         this.missionData.push(missionData);
         this.chartTypeStream$.next(this.chartTypeStream$.value);
       });

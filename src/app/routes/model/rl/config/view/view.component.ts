@@ -541,6 +541,13 @@ export class ModelRLConfigViewComponent implements OnInit, OnDestroy, AfterViewI
         })
       )
       .subscribe(missionData => {
+        // 任务已经结束
+        if ('msg' in missionData && missionData.msg === 'Mission done') {
+          this.componentDestroyed$.next(); // 结束数据流
+          this.msgSrv.info('任务已结束');
+          return;
+        }
+
         // 数据不正常
         if (!Array.isArray(missionData)) {
           return;
