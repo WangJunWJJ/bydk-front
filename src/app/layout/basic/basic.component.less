@@ -13,9 +13,7 @@
   ::ng-deep {
     // 控制整体背景颜色
     .alain-default {
-      // background: rgba(48, 53, 59, 1);
-      // background: rgba(0, 0, 0, 0.6);
-      background: #101522;
+      background: #152637;
     }
 
     // header颜色
@@ -23,9 +21,7 @@
       position: fixed;
       top: 0;
       left: 0;
-      box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
-      background-color: rgba(27, 61, 78, 0.2);
-      // border: 1px solid #224e4d;
+      background-color: #152637;
       background-size: 100% 100%;
     }
 
@@ -36,22 +32,31 @@
       background-image: url('../../../assets/智能决策模型训练.png');
     }
 
-    // icon
-    .alain-default__nav-item {
-      color: #98ffed;
+    // top-icon
+    .alain-default__header-logo {
+      display: none;
     }
+
+    .alain-default__nav-wrap {
+      position: absolute;
+      left: 10px;
+      top: calc(100vh - 50px);
+    }
+
+    // icon
+    // .alain-default__nav-item {
+    //   color: #98ffed;
+    // }
     .alain-default__nav-item:hover {
-      background-color: #163c3e !important;
+      color: #04d9f9;
+      background: transparent !important;
     }
 
     // 侧边栏
     // 背景颜色
     .alain-default__aside-inner {
       // width: 210px;
-
-      box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
-      background-color: #101522;
-      border: 1px solid #224e4d;
+      background: linear-gradient(0deg, #24354e 0%, #1b5767 100%);
     }
 
     .sidebar-nav__group-title {
@@ -73,25 +78,32 @@
 
     // 字体
     // 组标题
+
     .sidebar-nav__group-title {
-      color: rgb(24, 228, 177);
-      text-decoration: none;
-      font-weight: bolder;
-      font-size: 17px;
+      font-weight: bold;
+      font-size: 18px;
+      letter-spacing: 1px;
+      color: #1ddbff;
+      user-select: none;
     }
     .sidebar-nav__item-text {
-      color: #98ffed;
-      font-size: 15px;
+      font-size: 17px;
     }
     .sidebar-nav__item-icon {
-      color: #98ffed;
+      color: #fff;
     }
+    .alain-default__collapsed .sidebar-nav:not(.sidebar-nav__sub) .sidebar-nav__item-link {
+      padding: 12px 0;
+    }
+
     // 选择样式
     .sidebar-nav__selected {
-      background-color: #163c3e;
+      color: #04d9f9;
+      // background: transparent !important;
     }
     .sidebar-nav__item-link:hover {
-      background-color: #163c3e;
+      color: #04d9f9;
+      // background: transparent !important;
     }
 
     // 选择器颜色
@@ -99,8 +111,14 @@
       background-color: transparent;
       border-left-color: transparent;
     }
-    .sidebar-nav__selected > .sidebar-nav__item-link {
-      background-color: #163c3e;
+    .sidebar-nav__selected .sidebar-nav__item-link {
+      background-color: transparent;
+    }
+    .sidebar-nav__item-link {
+      font-size: 17px;
+    }
+    .sidebar-nav__selected .sidebar-nav__item-icon {
+      color: #04d9f9;
     }
 
     // content header颜色

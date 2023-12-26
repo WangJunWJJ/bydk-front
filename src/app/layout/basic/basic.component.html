@@ -2,14 +2,15 @@
   [options]="options"
   [content]="contentTpl"
   [customError]="null"
+  [asideUser]="null"
   [ngClass]="{ 'cv-mission': type == 'cv', 'rl-mission': type == 'rl' }"
 >
-  <layout-default-header-item direction="right" hidden="mobile">
+  <!-- <layout-default-header-item direction="right" hidden="mobile">
     <div layout-default-header-item-trigger nz-tooltip nzTooltipTitle="帮助" nzTooltipPlacement="bottom" (click)="downloadHelp()">
       <i nz-icon nzType="question-circle"></i>
     </div>
-  </layout-default-header-item>
-  <layout-default-header-item direction="right" hidden="mobile">
+  </layout-default-header-item> -->
+  <!-- <layout-default-header-item direction="right" hidden="mobile">
     <div layout-default-header-item-trigger nz-dropdown [nzDropdownMenu]="settingsMenu" nzTrigger="click" nzPlacement="bottomRight">
       <i nz-icon nzType="setting"></i>
     </div>
@@ -18,12 +19,9 @@
         <div nz-menu-item>
           <header-fullscreen></header-fullscreen>
         </div>
-        <!-- <div nz-menu-item>
-          <header-clear-storage></header-clear-storage>
-        </div> -->
       </div>
     </nz-dropdown-menu>
-  </layout-default-header-item>
+  </layout-default-header-item> -->
   <!-- <layout-default-header-item direction="right">
     <header-user></header-user>
   </layout-default-header-item> -->
