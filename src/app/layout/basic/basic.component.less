@@ -25,6 +25,10 @@
       background-size: 100% 100%;
     }
 
+    .alain-default__header {
+      box-shadow: none;
+    }
+
     .cv-mission .alain-default__header {
       background-image: url('../../../assets/智能感知模型训练.png');
     }
@@ -123,14 +127,14 @@
 
     // content header颜色
     .alain-default .page-header {
-      box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
+      box-shadow: inset 0 0 25px 0 #1d506d;
       background-color: #101522;
       border: 1px solid #224e4d;
     }
 
     // card样式
     .ant-card-body {
-      box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
+      box-shadow: inset 0 0 25px 0 #1d506d;
       background-color: #101522;
       border: 1px solid #224e4d;
     }
@@ -159,20 +163,22 @@
       background: transparent;
     }
     .ant-table table {
-      border: 1px solid rgba(36, 79, 100, 1);
+      border: 1px solid #1d506d;
     }
     // 表头
     .ant-table-thead > tr > th {
-      background-color: rgb(15, 74, 102);
-      color: #b8fff9;
-      border-right: 1px solid #4f635f;
+      background-color: #0a3d58;
+      color: #b0fffa;
+      border-right: none;
     }
+
     .ant-table-thead > tr > th:last-child {
       border-right: none;
     }
     // 表体 cell
     .ant-table-tbody > tr > td {
-      border-right: 1px solid #303030;
+      border-right: 1px solid none;
+      border-bottom: solid 1px #1d506d;
     }
     .ant-table-tbody > tr > td:last-child {
       border-right: none;
@@ -182,12 +188,20 @@
     .ant-table-tbody > tr > td.ant-table-cell-row-hover {
       background: rgba(15, 74, 102, 0.3);
     }
+
+    // 行高
+    .ant-table-thead > tr > th,
+    .ant-table-tbody > tr > td,
+    .ant-table tfoot > tr > th,
+    .ant-table tfoot > tr > td {
+      padding: 10px 12px;
+    }
   }
 }
 
 ::ng-deep {
   .modal-header {
-    box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
+    box-shadow: inset 0 0 25px 0 #1d506d;
     background-color: #101522;
     border: 1px solid #224e4d;
   }
@@ -197,7 +211,7 @@
     font-weight: bold;
   }
   .ant-modal-header {
-    box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
+    box-shadow: inset 0 0 25px 0 #1d506d;
     background-color: #101522;
     border: 1px solid #224e4d;
   }
@@ -208,24 +222,24 @@
   }
 
   .ant-modal-body {
-    box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
+    box-shadow: inset 0 0 25px 0 #1d506d;
     background-color: #101522;
     border: 1px solid #224e4d;
   }
   .ant-modal-footer {
-    box-shadow: inset 0 0 25px 0 rgba(36, 79, 100, 1);
+    box-shadow: inset 0 0 25px 0 #1d506d;
     background-color: #101522;
     border: 1px solid #224e4d;
   }
 
   // 表单 修改
   .se__horizontal > .se__item .se__label-text {
-    color: #69d4c6;
+    color: #04d9f9;
     font-size: 16px;
     font-weight: bold;
   }
   .ant-form-item-label > label {
-    color: #69d4c6;
+    color: #04d9f9;
     font-size: 16px;
     font-weight: bold;
   }

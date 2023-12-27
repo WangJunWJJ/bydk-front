@@ -1,16 +1,30 @@
-<page-header> </page-header>
-<nz-card>
-  <sf mode="search" [schema]="searchSchema" (formSubmit)="search($event)" (formReset)="reset($event)"></sf>
-  <st
-    #st
-    [page]="page"
-    [pi]="searchStream$.value.pi"
-    [ps]="searchStream$.value.ps"
-    [columns]="columns"
-    [total]="total"
-    [data]="missionList"
-    [columns]="columns"
-    [loading]="isLoading"
-    (change)="change($event)"
-  ></st>
-</nz-card>
+<div class="l-page">
+  <div class="l-header">
+    <div class="l-header__bar"> </div>
+    <div>训练结果分析</div>
+  </div>
+
+  <div>
+    <div class="l-btns" style="justify-content: flex-end">
+      <sf mode="search" [schema]="searchSchema" (formSubmit)="search($event)" (formReset)="reset($event)"></sf>
+    </div>
+    <st
+      #st
+      [page]="page"
+      [pi]="searchStream$.value.pi"
+      [ps]="searchStream$.value.ps"
+      [columns]="columns"
+      [total]="total"
+      [data]="missionList"
+      [columns]="columns"
+      [loading]="isLoading"
+      (change)="change($event)"
+    >
+      <ng-template st-row="status-badge" let-item>
+        <div class="c-rl-status-badge c-rl-status-badge_init" *ngIf="item.status == 'init'">未执行</div>
+        <div class="c-rl-status-badge c-rl-status-badge_init" *ngIf="item.status == 'active'">运行中</div>
+        <div class="c-rl-status-badge c-rl-status-badge_init" *ngIf="item.status == 'done'">已完成</div>
+      </ng-template>
+    </st>
+  </div>
+</div>

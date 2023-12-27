@@ -10,6 +10,7 @@ import { ModelCompUploadComponent } from '../../components/upload-comp/upload.co
 import { ModelCVConfigEditComponent } from './edit/edit.component';
 import { ModelCVConfigViewComponent } from './view/view.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-model-cv-config',
@@ -69,6 +70,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
     {
       title: '状态',
       width: '90px',
+      render: 'status-badge',
+      index: 'status',
       format: (record: IMission<ICVConfig>) => {
         const status = record.status;
 
@@ -85,7 +88,14 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
+    {
+      title: '创建时间',
+      index: 'created',
+      format: (record: IMission<ICVConfig>) => {
+        return format(new Date(record.created), 'yyyy-MM-dd HH:mm');
+      },
+      width: '180px'
+    },
     {
       title: '操作',
       width: '200px',
