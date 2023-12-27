@@ -102,6 +102,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
       buttons: [
         {
           text: '编辑',
+          icon: 'edit',
+          className: ['st-btn', 'st-btn_edit'],
           click: (record: IMission<ICVConfig>) => {
             this.modal
               .createStatic(
@@ -132,6 +134,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '执行',
+          icon: 'caret-right',
+          className: ['st-btn', 'st-btn_active'],
           click: (record: IMission<ICVConfig>) => {
             this.msgSrv.success('开始执行');
 
@@ -149,6 +153,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '任务监控',
+          className: ['st-btn', 'st-btn_monitor'],
+          icon: 'fund',
           click: (record: IMission<ICVConfig>) => {
             this.modal
               .createStatic(
@@ -177,6 +183,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '复制任务',
+          icon: 'copy',
+          className: ['st-btn', 'st-btn_copy'],
           click: (record: IMission<ICVConfig>) => {
             this.modelConfigService.copyCVMission(record.id).subscribe(newMission => {
               this.searchStream$.next({ ...this.searchStream$.value });
@@ -187,7 +195,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '删除任务',
-          className: 'text-error',
+          icon: 'delete',
+          className: ['st-btn', 'st-btn_delete'],
           click: (record: IMission<ICVConfig>) => {
             this.modalSrv.confirm({
               nzTitle: '删除确认',

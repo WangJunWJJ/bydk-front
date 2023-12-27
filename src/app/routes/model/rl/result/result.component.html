@@ -22,8 +22,8 @@
     >
       <ng-template st-row="status-badge" let-item>
         <div class="c-rl-status-badge c-rl-status-badge_init" *ngIf="item.status == 'init'">未执行</div>
-        <div class="c-rl-status-badge c-rl-status-badge_init" *ngIf="item.status == 'active'">运行中</div>
-        <div class="c-rl-status-badge c-rl-status-badge_init" *ngIf="item.status == 'done'">已完成</div>
+        <div class="c-rl-status-badge c-rl-status-badge_active" *ngIf="item.status == 'active'">运行中</div>
+        <div class="c-rl-status-badge c-rl-status-badge_done" *ngIf="item.status == 'done'">已完成</div>
       </ng-template>
     </st>
   </div>

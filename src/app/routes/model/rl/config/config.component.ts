@@ -102,6 +102,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
       buttons: [
         {
           text: '编辑',
+          icon: 'edit',
+          className: ['st-btn', 'st-btn_edit'],
           click: (record: IMission<IRLConfig>) => {
             this.modal
               .createStatic(
@@ -129,6 +131,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '执行',
+          icon: 'caret-right',
+          className: ['st-btn', 'st-btn_active'],
           click: (record: IMission<IRLConfig>) => {
             this.msgSrv.success('开始执行');
             setTimeout(() => {
@@ -150,6 +154,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '任务监控',
+          className: ['st-btn', 'st-btn_monitor'],
+          icon: 'fund',
           click: (record: IMission<IRLConfig>) => {
             this.modal
               .createStatic(
@@ -181,6 +187,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '复制任务',
+          icon: 'copy',
+          className: ['st-btn', 'st-btn_copy'],
           click: (record: IMission<IRLConfig>) => {
             this.modelConfigService.copyRLMission(record.id).subscribe(newMission => {
               this.searchStream$.next({ ...this.searchStream$.value });
@@ -191,7 +199,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '删除任务',
-          className: 'text-error',
+          icon: 'delete',
+          className: ['st-btn', 'st-btn_delete'],
           click: (record: IMission<IRLConfig>) => {
             this.modalSrv.confirm({
               nzTitle: '删除确认',
