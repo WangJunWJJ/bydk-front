@@ -86,7 +86,7 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
       title: {
         text: '系统状态监控',
         textStyle: {
-          color: 'rgba(24, 228, 177, 0.8)',
+          color: '#1ddbff',
           fontSize: 24
         },
         left: 'center'

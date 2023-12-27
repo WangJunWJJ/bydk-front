@@ -1,7 +1,12 @@
 <div class="l-page">
-  <nz-tabset nzCentered>
+  <div class="l-header">
+    <div class="l-header__bar"> </div>
+    <div>训练任务管理</div>
+  </div>
+
+  <nz-tabset nzType="card" nzCentered>
     <nz-tab nzTitle="负载监控">
-      <nz-tabset nzType="card" (nzSelectedIndexChange)="tabChange($event)">
+      <nz-tabset (nzSelectedIndexChange)="tabChange($event)" class="ip-tabs">
         <nz-tab [nzTitle]="tab" *ngFor="let tab of ipTabs"></nz-tab>
       </nz-tabset>
 
