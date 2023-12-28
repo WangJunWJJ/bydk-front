@@ -13,26 +13,22 @@
       <div class="l-data">
         <div #chartContainer id="chartContainer"> </div>
         <div class="l-left">
-          <div class="l-abc">
-            <div class="l-form">
-              <div class="l-form__label"> 内存大小 </div>
-              <div class="l-form__content">
-                {{ renderData?.memory_size ?? '' }}
-              </div>
-            </div>
+          <div #chartContainer1 id="chartContainer1"> </div>
 
-            <nz-progress [nzPercent]="memoryRate" nzType="circle" nzStrokeColor="rgb(24, 228, 177)" class="l-process"></nz-progress>
+          <div class="l-form">
+            <div class="l-form__label"> 总量： </div>
+            <div class="l-form__content"> {{ renderData?.memory_size ?? '' }}G </div>
+          </div>
+          <div class="l-form">
+            <div class="l-form__label"> 空闲： </div>
+            <div class="l-form__content"> {{ memoryUnused }}G </div>
           </div>
 
-          <div class="l-abc">
-            <div class="l-form">
-              <div class="l-form__label"> CPU核心数 </div>
-              <div class="l-form__content">
-                {{ renderData?.cpu_count ?? '' }}
-              </div>
-            </div>
+          <div #chartContainer2 id="chartContainer2"> </div>
 
-            <nz-progress [nzPercent]="cpuRate" nzType="circle" nzStrokeColor="rgb(24, 228, 177)" class="l-process"></nz-progress>
+          <div class="l-form">
+            <div class="l-form__label"> 利用率： </div>
+            <div class="l-form__content"> {{ cpuRate }}% </div>
           </div>
         </div>
       </div>
