@@ -26,7 +26,7 @@ export class HomePageComponent implements OnInit, OnDestroy {
       const now = new Date();
 
       this.clockTime = format(now, 'HH:mm:ss');
-      this.dateString = format(now, 'yyyy-MM-dd');
+      this.dateString = format(now, 'yyyy/MM/dd');
       const weekZh = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
       this.weekString = weekZh[getDay(now)];
     });
