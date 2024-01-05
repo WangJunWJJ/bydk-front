@@ -11,24 +11,26 @@
       </nz-tabset>
 
       <div class="l-data">
-        <div #chartContainer id="chartContainer"> </div>
-        <div class="l-left">
-          <div #chartContainer1 id="chartContainer1"> </div>
+        <div class="l-data__container">
+          <div #chartContainer id="chartContainer"> </div>
+          <div class="l-left">
+            <div #chartContainer1 id="chartContainer1"> </div>
 
-          <div class="l-form">
-            <div class="l-form__label"> 总量： </div>
-            <div class="l-form__content"> {{ renderData?.memory_size ?? '' }}G </div>
-          </div>
-          <div class="l-form">
-            <div class="l-form__label"> 空闲： </div>
-            <div class="l-form__content"> {{ memoryUnused }}G </div>
-          </div>
+            <div class="l-form">
+              <div class="l-form__label"> 总量： </div>
+              <div class="l-form__content"> {{ renderData?.memory_size ?? '' }}G </div>
+            </div>
+            <div class="l-form">
+              <div class="l-form__label"> 空闲： </div>
+              <div class="l-form__content"> {{ memoryUnused }}G </div>
+            </div>
 
-          <div #chartContainer2 id="chartContainer2"> </div>
+            <div #chartContainer2 id="chartContainer2"> </div>
 
-          <div class="l-form">
-            <div class="l-form__label"> 利用率： </div>
-            <div class="l-form__content"> {{ cpuRate }}% </div>
+            <div class="l-form">
+              <div class="l-form__label"> 利用率： </div>
+              <div class="l-form__content"> {{ cpuRate }}% </div>
+            </div>
           </div>
         </div>
       </div>
