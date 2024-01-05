@@ -99,47 +99,77 @@ export class StartupService implements OnDestroy {
     this.aclService.setFull(true);
     // Menu data, https://ng-alain.com/theme/menu
 
-    // 控制基础的mode状态 更新tab栏
-    this.modeSubject$.pipe(skip(1), distinct()).subscribe(missionType => {
-      switch (missionType) {
-        case MissionTypeEnum.CV:
-          this.menuService.clear();
-
-          this.menuService.add([
-            {
-              text: '智能感知模型训练',
-              group: true,
-              hideInBreadcrumb: true,
-              children: [
-                { text: '训练任务管理', link: '/model/cv/config', icon: { type: 'icon', value: 'project' } },
-                { text: '系统状态监控', link: '/model/cv/monitor', icon: { type: 'icon', value: 'monitor' } },
-                { text: '训练结果分析', link: '/model/cv/result', icon: { type: 'icon', value: 'fund' } }
-              ]
-            }
-          ]);
-          break;
-
-        case MissionTypeEnum.RL:
-          this.menuService.clear();
-
-          this.menuService.add([
-            {
-              text: '智能决策模型训练',
-              group: true,
-              hideInBreadcrumb: true,
-              children: [
-                { text: '训练任务管理', link: '/model/rl/config', icon: { type: 'icon', value: 'project' } },
-                { text: '系统状态监控', link: '/model/rl/monitor', icon: { type: 'icon', value: 'monitor' } },
-                { text: '训练结果分析', link: '/model/rl/result', icon: { type: 'icon', value: 'fund' } }
-              ]
-            }
-          ]);
-          break;
-
-        default:
-          throw new Error('Wrong mission type!');
+    this.menuService.add([
+      {
+        text: '训练目录',
+        group: true,
+        hideInBreadcrumb: true,
+        children: [
+          {
+            text: '智能决策模型训练',
+            group: true,
+            icon: { type: 'icon', value: 'slack' },
+            children: [
+              { text: '训练参数配置', link: '/model/rl/config', icon: { type: 'icon', value: 'project' } },
+              { text: '系统状态监控', link: '/model/rl/monitor', icon: { type: 'icon', value: 'monitor' } },
+              { text: '训练结果分析', link: '/model/rl/result', icon: { type: 'icon', value: 'fund' } }
+            ]
+          },
+          {
+            text: '智能感知模型训练',
+            group: true,
+            icon: { type: 'icon', value: 'code-sandbox' },
+            children: [
+              { text: '训练参数配置', link: '/model/cv/config', icon: { type: 'icon', value: 'project' } },
+              { text: '系统状态监控', link: '/model/cv/monitor', icon: { type: 'icon', value: 'monitor' } },
+              { text: '训练结果分析', link: '/model/cv/result', icon: { type: 'icon', value: 'fund' } }
+            ]
+          }
+        ]
       }
-    });
+    ]);
+
+    // 控制基础的mode状态 更新tab栏
+    // this.modeSubject$.pipe(skip(1), distinct()).subscribe(missionType => {
+    //   switch (missionType) {
+    //     case MissionTypeEnum.CV:
+    //       this.menuService.clear();
+
+    //       this.menuService.add([
+    //         {
+    //           text: '智能感知模型训练',
+    //           group: true,
+    //           hideInBreadcrumb: true,
+    //           children: [
+    //             { text: '训练任务管理', link: '/model/cv/config', icon: { type: 'icon', value: 'project' } },
+    //             { text: '系统状态监控', link: '/model/cv/monitor', icon: { type: 'icon', value: 'monitor' } },
+    //             { text: '训练结果分析', link: '/model/cv/result', icon: { type: 'icon', value: 'fund' } }
+    //           ]
+    //         }
+    //       ]);
+    //       break;
+
+    //     case MissionTypeEnum.RL:
+    //       this.menuService.clear();
+
+    //       this.menuService.add([
+    //         {
+    //           text: '智能决策模型训练',
+    //           group: true,
+    //           hideInBreadcrumb: true,
+    //           children: [
+    //             { text: '训练任务管理', link: '/model/rl/config', icon: { type: 'icon', value: 'project' } },
+    //             { text: '系统状态监控', link: '/model/rl/monitor', icon: { type: 'icon', value: 'monitor' } },
+    //             { text: '训练结果分析', link: '/model/rl/result', icon: { type: 'icon', value: 'fund' } }
+    //           ]
+    //         }
+    //       ]);
+    //       break;
+
+    //     default:
+    //       throw new Error('Wrong mission type!');
+    //   }
+    // });
 
     // Can be set page suffix title, https://ng-alain.com/theme/title
     this.titleService.suffix = app.name;
