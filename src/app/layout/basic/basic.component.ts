@@ -32,6 +32,8 @@ export class LayoutBasicComponent implements OnInit, OnDestroy {
     this.missionTypeSubscription = this.startupService.modeSubject$.pipe(distinct()).subscribe(missionType => {
       this.type = missionType;
     });
+    this.settings.setLayout('collapsed', true);
+    console.log(this.settings.getLayout());
   }
 
   ngOnDestroy(): void {

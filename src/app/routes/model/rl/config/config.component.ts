@@ -10,6 +10,7 @@ import { ModelRLConfigViewComponent } from './view/view.component';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
 import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-model-rl-config',
@@ -69,6 +70,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
     {
       title: '状态',
       width: '90px',
+      render: 'status-badge',
+      index: 'status',
       format: (record: IMission<IRLConfig>) => {
         const status = record.status;
 
@@ -85,13 +88,22 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
+    {
+      title: '创建时间',
+      index: 'created',
+      format: (record: IMission<IRLConfig>) => {
+        return format(new Date(record.created), 'yyyy-MM-dd HH:mm');
+      },
+      width: '180px'
+    },
     {
       title: '操作',
       width: '200px',
       buttons: [
         {
           text: '编辑',
+          icon: 'edit',
+          className: ['st-btn', 'st-btn_edit'],
           click: (record: IMission<IRLConfig>) => {
             this.modal
               .createStatic(
@@ -119,6 +131,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '执行',
+          icon: 'caret-right',
+          className: ['st-btn', 'st-btn_active'],
           click: (record: IMission<IRLConfig>) => {
             this.msgSrv.success('开始执行');
             setTimeout(() => {
@@ -140,6 +154,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '任务监控',
+          className: ['st-btn', 'st-btn_monitor'],
+          icon: 'fund',
           click: (record: IMission<IRLConfig>) => {
             this.modal
               .createStatic(
@@ -171,6 +187,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '复制任务',
+          icon: 'copy',
+          className: ['st-btn', 'st-btn_copy'],
           click: (record: IMission<IRLConfig>) => {
             this.modelConfigService.copyRLMission(record.id).subscribe(newMission => {
               this.searchStream$.next({ ...this.searchStream$.value });
@@ -181,7 +199,8 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         },
         {
           text: '删除任务',
-          className: 'text-error',
+          icon: 'delete',
+          className: ['st-btn', 'st-btn_delete'],
           click: (record: IMission<IRLConfig>) => {
             this.modalSrv.confirm({
               nzTitle: '删除确认',

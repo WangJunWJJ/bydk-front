@@ -10,6 +10,7 @@ import { ModelCVResultEditComponent } from './edit/edit.component';
 import { ModelCVResultViewComponent } from './view/view.component';
 import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-model-cv-result',
@@ -59,6 +60,8 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
     {
       title: '状态',
       width: '90px',
+      render: 'status-badge',
+      index: 'status',
       format: (record: IMission<ICVConfig>) => {
         const status = record.status;
 
@@ -75,13 +78,22 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
+    {
+      title: '创建时间',
+      index: 'created',
+      format: (record: IMission<ICVConfig>) => {
+        return format(new Date(record.created), 'yyyy-MM-dd HH:mm');
+      },
+      width: '180px'
+    },
     {
       title: '操作',
       width: '260px',
       buttons: [
         {
           text: '训练结果',
+          icon: 'file-protect',
+          className: ['st-btn', 'st-btn_result'],
           click: (record: IMission<ICVConfig>) => {
             this.modal
               .createStatic(
@@ -112,6 +124,8 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
         },
         {
           text: '复制任务',
+          icon: 'copy',
+          className: ['st-btn', 'st-btn_copy'],
           click: (record: IMission<ICVConfig>) => {
             this.modelConfigService.copyCVMission(record.id).subscribe(newMission => {
               this.msgSrv.success('复制成功');
@@ -119,7 +133,32 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
           }
         },
         {
+          text: '删除任务',
+          icon: 'delete',
+          className: ['st-btn', 'st-btn_delete'],
+          click: (record: IMission<ICVConfig>) => {
+            this.modalSrv.confirm({
+              nzTitle: '删除确认',
+              nzContent: `删除任务后无法恢复，确认删除吗？`,
+              nzOkText: '确认',
+              nzOkType: 'primary',
+              nzOkDanger: true,
+              nzOnOk: () => {
+                this.modelConfigService.deleteRLMission(record.id).subscribe(newMission => {
+                  this.searchStream$.next({ ...this.searchStream$.value });
+
+                  this.msgSrv.success('删除成功');
+                });
+              },
+              nzCancelText: '取消',
+              nzOnCancel: () => {}
+            });
+          }
+        },
+        {
           text: '下载',
+          icon: 'download',
+          className: ['st-btn', 'st-btn_download'],
           children: [
             {
               text: '下载数据集',
@@ -150,28 +189,6 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
               }
             }
           ]
-        },
-        {
-          text: '删除任务',
-          className: 'text-error',
-          click: (record: IMission<ICVConfig>) => {
-            this.modalSrv.confirm({
-              nzTitle: '删除确认',
-              nzContent: `删除任务后无法恢复，确认删除吗？`,
-              nzOkText: '确认',
-              nzOkType: 'primary',
-              nzOkDanger: true,
-              nzOnOk: () => {
-                this.modelConfigService.deleteRLMission(record.id).subscribe(newMission => {
-                  this.searchStream$.next({ ...this.searchStream$.value });
-
-                  this.msgSrv.success('删除成功');
-                });
-              },
-              nzCancelText: '取消',
-              nzOnCancel: () => {}
-            });
-          }
         }
       ]
     }

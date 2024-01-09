@@ -9,6 +9,7 @@ import { IMission, IRLConfig, MissionStatusEnum } from 'src/app/core/service/pro
 import { ModelRLResultEditComponent } from './edit/edit.component';
 import { ModelRLResultViewComponent } from './view/view.component';
 import { NzModalService } from 'ng-zorro-antd/modal';
+import { format } from 'date-fns';
 
 @Component({
   selector: 'app-model-rl-result',
@@ -58,6 +59,8 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
     {
       title: '状态',
       width: '90px',
+      render: 'status-badge',
+      index: 'status',
       format: (record: IMission<IRLConfig>) => {
         const status = record.status;
 
@@ -74,13 +77,22 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
         }
       }
     },
-    { title: '创建时间', type: 'date', index: 'created', dateFormat: 'yyyy-MM-dd HH:mm', width: '180px' },
+    {
+      title: '创建时间',
+      index: 'created',
+      format: (record: IMission<IRLConfig>) => {
+        return format(new Date(record.created), 'yyyy-MM-dd HH:mm');
+      },
+      width: '180px'
+    },
     {
       title: '操作',
       width: '300px',
       buttons: [
         {
           text: '训练结果',
+          icon: 'file-protect',
+          className: ['st-btn', 'st-btn_result'],
           click: (record: IMission<IRLConfig>) => {
             this.modal
               .createStatic(
@@ -111,6 +123,8 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
         },
         {
           text: '复制任务',
+          icon: 'copy',
+          className: ['st-btn', 'st-btn_copy'],
           click: (record: IMission<IRLConfig>) => {
             this.modelConfigService.copyRLMission(record.id).subscribe(newMission => {
               this.msgSrv.success('复制成功');
@@ -118,22 +132,9 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
           }
         },
         {
-          text: '下载模型',
-          click: (record: IMission<IRLConfig>) => {
-            // 下载功能
-            this.modelConfigService.downloadRLTargetModels(record.id).subscribe(blob => {
-              const url = window.URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = `${record.name}模型.zip`;
-              a.click();
-              window.URL.revokeObjectURL(url);
-            });
-          }
-        },
-        {
           text: '删除任务',
-          className: 'text-error',
+          icon: 'delete',
+          className: ['st-btn', 'st-btn_delete'],
           click: (record: IMission<IRLConfig>) => {
             this.modalSrv.confirm({
               nzTitle: '删除确认',
@@ -150,6 +151,22 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
               },
               nzCancelText: '取消',
               nzOnCancel: () => {}
+            });
+          }
+        },
+        {
+          text: '下载模型',
+          icon: 'download',
+          className: ['st-btn', 'st-btn_download'],
+          click: (record: IMission<IRLConfig>) => {
+            // 下载功能
+            this.modelConfigService.downloadRLTargetModels(record.id).subscribe(blob => {
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `${record.name}模型.zip`;
+              a.click();
+              window.URL.revokeObjectURL(url);
             });
           }
         }

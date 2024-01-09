@@ -7,6 +7,7 @@ import { ModelConfigService } from 'src/app/core/service';
 import { ClusterLogTypeEnum, ISlaveData, PyClusterResponse } from 'src/app/core/service/project/core';
 import { PyClusterService } from 'src/app/core/service/project/pycluster.service';
 import { setDigits } from 'src/app/shared/utils/utils';
+import Decimal from 'decimal.js';
 
 @Component({
   selector: 'app-model-rl-monitor',
@@ -17,9 +18,17 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
   // 容器标签
   @ViewChild('chartContainer')
   chartContainer!: ElementRef;
+  // 仪表盘
+  @ViewChild('chartContainer1')
+  chartContainer1!: ElementRef;
+  @ViewChild('chartContainer2')
+  chartContainer2!: ElementRef;
+
   @ViewChild('scroll', { static: true }) scrollEle!: ElementRef;
 
   chart!: echarts.ECharts;
+  chart1!: echarts.ECharts;
+  chart2!: echarts.ECharts;
   chartCompletedSubject$: BehaviorSubject<boolean> = new BehaviorSubject(false as boolean);
 
   componentDestroyed$: Subject<void> = new Subject();
@@ -27,6 +36,8 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
   renderData!: ISlaveData;
   memoryRate: number = 0;
   cpuRate: number = 0;
+  // 未使用的内存大小
+  memoryUnused: number = 0;
 
   ipTabs = ['全部'];
 
@@ -79,6 +90,8 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
 
   initChart() {
     this.chart = echarts.init(this.chartContainer.nativeElement);
+    this.chart1 = echarts.init(this.chartContainer1.nativeElement);
+    this.chart2 = echarts.init(this.chartContainer2.nativeElement);
     const colors = ['#5470C6', '#EE6666'];
     this.chart.setOption({
       color: colors,
@@ -86,7 +99,7 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
       title: {
         text: '系统状态监控',
         textStyle: {
-          color: 'rgba(24, 228, 177, 0.8)',
+          color: '#1ddbff',
           fontSize: 24
         },
         left: 'center'
@@ -114,7 +127,6 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
         top: '15%',
         bottom: '10%'
       },
-
       xAxis: {
         type: 'category',
         axisTick: {
@@ -239,6 +251,125 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
         }
       ]
     });
+    const size = 15;
+    this.chart1.setOption({
+      title: {
+        text: '内存',
+        textStyle: {
+          color: '#b0fffa',
+          fontSize: 24,
+          fontWeight: 600
+        },
+        left: 'center',
+        bottom: '10px'
+      },
+      series: [
+        {
+          type: 'gauge',
+          axisLine: {
+            lineStyle: {
+              width: size,
+              color: [
+                [0.3, '#67e0e3'],
+                [0.7, '#37a2da'],
+                [1, '#fd666d']
+              ]
+            }
+          },
+          pointer: {
+            itemStyle: {
+              color: 'auto'
+            }
+          },
+          axisTick: {
+            distance: -size,
+            length: 8,
+            lineStyle: {
+              color: '#fff',
+              width: 2
+            }
+          },
+          splitLine: {
+            distance: -size,
+            length: size,
+            lineStyle: {
+              color: '#fff',
+              width: 4
+            }
+          },
+          axisLabel: {
+            color: 'inherit',
+            distance: 5 + size,
+            fontSize: 13
+          },
+          detail: {
+            fontSize: 15,
+            valueAnimation: true,
+            formatter: '{value}%',
+            color: 'inherit'
+          }
+        }
+      ]
+    });
+    this.chart2.setOption({
+      title: {
+        text: 'CPU',
+        textStyle: {
+          color: '#b0fffa',
+          fontSize: 24,
+          fontWeight: 600
+        },
+        left: 'center',
+        bottom: '10px'
+      },
+      series: [
+        {
+          type: 'gauge',
+          axisLine: {
+            lineStyle: {
+              width: size,
+              color: [
+                [0.3, '#67e0e3'],
+                [0.7, '#37a2da'],
+                [1, '#fd666d']
+              ]
+            }
+          },
+          pointer: {
+            itemStyle: {
+              color: 'auto'
+            }
+          },
+          axisTick: {
+            distance: -size,
+            length: 8,
+            lineStyle: {
+              color: '#fff',
+              width: 2
+            }
+          },
+          splitLine: {
+            distance: -size,
+            length: size,
+            lineStyle: {
+              color: '#fff',
+              width: 4
+            }
+          },
+          axisLabel: {
+            color: 'inherit',
+            distance: 5 + size,
+            fontSize: 13
+          },
+          detail: {
+            fontSize: 15,
+            valueAnimation: true,
+            formatter: '{value}%',
+            color: 'inherit'
+          }
+        }
+      ]
+    });
     this.chartCompletedSubject$.next(true);
   }
 
@@ -355,11 +486,37 @@ export class ModelRLMonitorComponent implements OnInit, OnDestroy, AfterViewInit
   renderChart(renderData: ISlaveData) {
     this.memoryRate = Math.floor(renderData.memory_usage[renderData.memory_usage.length - 1] * 100);
     this.cpuRate = Math.floor(renderData.cpu_workload[renderData.cpu_workload.length - 1] * 100);
+    this.memoryUnused = new Decimal(renderData.memory_size)
+      .mul(1 - this.memoryRate / 100)
+      .toDP(1)
+      .toNumber();
 
     this.chart.setOption({
       series: [
         { name: 'CPU', data: renderData.cpu_workload.map(n => n * 100) },
         { name: '内存', data: renderData.memory_usage.map(n => n * 100) }
+      ]
+    });
+    this.chart1.setOption({
+      series: [
+        {
+          data: [
+            {
+              value: this.memoryRate
+            }
+          ]
+        }
+      ]
+    });
+    this.chart2.setOption({
+      series: [
+        {
+          data: [
+            {
+              value: this.cpuRate
+            }
+          ]
+        }
       ]
     });
   }

@@ -1,33 +1,36 @@
 <div class="l-page">
-  <nz-tabset nzCentered>
+  <div class="l-header">
+    <div class="l-header__bar"> </div>
+    <div>训练任务管理</div>
+  </div>
+
+  <nz-tabset nzType="card" nzCentered>
     <nz-tab nzTitle="负载监控">
-      <nz-tabset nzType="card" (nzSelectedIndexChange)="tabChange($event)">
+      <nz-tabset (nzSelectedIndexChange)="tabChange($event)" class="ip-tabs">
         <nz-tab [nzTitle]="tab" *ngFor="let tab of ipTabs"></nz-tab>
       </nz-tabset>
 
       <div class="l-data">
-        <div #chartContainer id="chartContainer"> </div>
-        <div class="l-left">
-          <div class="l-abc">
+        <div class="l-data__container">
+          <div #chartContainer id="chartContainer"> </div>
+          <div class="l-left">
+            <div #chartContainer1 id="chartContainer1"> </div>
+
             <div class="l-form">
-              <div class="l-form__label"> 内存大小 </div>
-              <div class="l-form__content">
-                {{ renderData?.memory_size ?? '' }}
-              </div>
+              <div class="l-form__label"> 总量： </div>
+              <div class="l-form__content"> {{ renderData?.memory_size ?? '' }}G </div>
+            </div>
+            <div class="l-form">
+              <div class="l-form__label"> 空闲： </div>
+              <div class="l-form__content"> {{ memoryUnused }}G </div>
             </div>
 
-            <nz-progress [nzPercent]="memoryRate" nzType="circle" nzStrokeColor="rgb(24, 228, 177)" class="l-process"></nz-progress>
-          </div>
+            <div #chartContainer2 id="chartContainer2"> </div>
 
-          <div class="l-abc">
             <div class="l-form">
-              <div class="l-form__label"> CPU核心数 </div>
-              <div class="l-form__content">
-                {{ renderData?.cpu_count ?? '' }}
-              </div>
+              <div class="l-form__label"> 利用率： </div>
+              <div class="l-form__content"> {{ cpuRate }}% </div>
             </div>
-
-            <nz-progress [nzPercent]="cpuRate" nzType="circle" nzStrokeColor="rgb(24, 228, 177)" class="l-process"></nz-progress>
           </div>
         </div>
       </div>

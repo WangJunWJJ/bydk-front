@@ -65,6 +65,8 @@ import {
   SlackCircleFill,
   SlackOutline,
   SlackSquareFill,
+  FileProtectOutline,
+  CaretRightOutline,
   CodepenOutline
 } from '@ant-design/icons-angular/icons';
 
@@ -130,5 +132,7 @@ export const ICONS_AUTO = [
   SlackCircleFill,
   SlackOutline,
   SlackSquareFill,
+  FileProtectOutline,
+  CaretRightOutline,
   CodepenOutline
 ];

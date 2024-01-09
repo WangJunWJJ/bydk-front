@@ -1,36 +1,39 @@
 :host {
-  .l-page {
-    width: 100%;
-    height: calc(100vh - 64px);
-  }
-
   .l-data {
-    display: flex;
-    justify-content: space-between;
     width: 100%;
-    height: 100%;
-    padding: 0 15px 0 25px;
-  }
+    height: calc(100vh - 280px);
+    overflow-y: auto;
 
-  .l-left {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    justify-content: center;
-    padding-top: 15px;
-
-    .l-abc {
+    &__container {
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      justify-content: space-between;
+      padding: 0 0 0 70px;
+      width: 100%;
+      height: 600px;
     }
   }
 
+  .l-left {
+    flex: 0 0 300px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 70px 0;
+  }
+
+  #chartContainer1 {
+    flex: 0 0 40%;
+    width: 100%;
+  }
+  #chartContainer2 {
+    flex: 0 0 40%;
+    width: 100%;
+  }
   #chartContainer {
-    flex: auto;
-    height: calc(100vh - 240px);
-    margin-top: 15px;
     padding-top: 15px;
+    flex: auto;
+    height: calc(100vh - 290px);
   }
 
   .l-process {
@@ -38,33 +41,33 @@
   }
 
   .l-form {
+    width: 100%;
     display: flex;
+    justify-content: space-between;
     align-items: flex-end;
-    min-height: 28px;
+    color: #b0fffa;
+    font-size: 24px;
+    line-height: 36px;
 
     &__label {
-      margin-right: 10px;
-      color: #69d4c6;
-      font-size: 16px;
-      line-height: 18px;
+      flex: 0 0 55%;
+      text-align: right;
     }
 
     &__content {
-      color: #98ffed;
-      font-size: 24px;
-      line-height: 24px;
+      flex: auto;
+      text-align: left;
     }
   }
 
   .l-log-container {
     display: flex;
     flex-direction: column;
-    gap: 15px;
     width: 100%;
     height: calc(100vh - 200px);
     margin-top: 10px;
     padding-right: 15px;
-    padding-bottom: 15px;
+    padding-bottom: 100px;
     overflow-y: auto;
   }
 
@@ -81,8 +84,46 @@
   }
 
   ::ng-deep {
-    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+    nz-alert {
+      margin-bottom: 8px;
+    }
+
+    .ant-tabs-nav-list div:first-child {
+      border-radius: 6px 0px 0px 6px !important;
+    }
+    .ant-tabs-nav-list div:nth-child(2) {
+      border-radius: 0px 6px 6px 0px !important;
+    }
+    .ant-tabs-tab {
+      background-color: #1a465d;
+      border: solid 1px #1ddbff;
+    }
+
+    .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active {
+      background-color: #0d6d82;
+      box-shadow: inset 0px 0px 12px 0px #18d6ff;
+    }
+    .ant-tabs-top > .ant-tabs-nav::before,
+    .ant-tabs-bottom > .ant-tabs-nav::before,
+    .ant-tabs-top > div > .ant-tabs-nav::before,
+    .ant-tabs-bottom > div > .ant-tabs-nav::before {
+      display: none;
+    }
+    .ant-tabs-card.ant-tabs-top > .ant-tabs-nav .ant-tabs-tab + .ant-tabs-tab {
+      margin-left: 0;
+    }
+    .ant-tabs-top > .ant-tabs-nav,
+    .ant-tabs-bottom > .ant-tabs-nav,
+    .ant-tabs-top > div > .ant-tabs-nav,
+    .ant-tabs-bottom > div > .ant-tabs-nav {
+      margin: 5px;
+    }
+
+    .ant-tabs-tab .ant-tabs-tab-btn {
       color: #98ffed;
+    }
+    .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+      color: #fff;
     }
     .ant-tabs-ink-bar {
       background: #98ffed;
@@ -99,6 +140,62 @@
     // progress 文本样式
     .ant-progress-circle .ant-progress-text {
       color: #98ffed;
+    }
+
+    .ip-tabs {
+      .ant-tabs-nav-wrap {
+        background-color: hsl(201, 80%, 19%);
+        border: solid 1px #1d506d;
+      }
+
+      .ant-tabs-nav-list div:first-child {
+        border-radius: 0 !important;
+      }
+      .ant-tabs-nav-list div:nth-child(2) {
+        border-radius: 0 !important;
+      }
+      .ant-tabs-tab {
+        min-width: 80px;
+        padding: 10px;
+        background-color: transparent;
+        border: none;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .ant-tabs-tab-active {
+        background-color: #152637 !important;
+      }
+      .ant-tabs-tab + .ant-tabs-tab {
+        margin: 0 0 0 5px;
+      }
+
+      .ant-tabs-tab .ant-tabs-tab-btn {
+        color: #98ffed;
+      }
+      .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+        color: #fff;
+      }
+      .ant-tabs-ink-bar {
+        background: transparent;
+      }
+      .ant-tabs-tab:hover {
+        color: #98ffed;
+      }
+      // 选择样式
+      .ant-tabs-card > .ant-tabs-nav .ant-tabs-tab-active,
+      .ant-tabs-card > div > .ant-tabs-nav .ant-tabs-tab-active {
+        background-color: #163c3e;
+      }
+    }
+
+    .ant-alert-with-description .ant-alert-icon {
+      margin-right: 15px;
+      margin-top: auto;
+      margin-bottom: auto;
+      font-size: 34px;
     }
   }
 }
