@@ -26,17 +26,17 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
         type: 'string',
         title: '任务名',
         default: ''
-      },
-      status: {
-        title: '任务状态',
-        type: 'string',
-        default: 'All',
-        enum: [
-          { label: '全部', value: 'All' },
-          { label: '未执行', value: MissionStatusEnum.Init },
-          { label: '运行中', value: MissionStatusEnum.Active }
-        ]
       }
+      // status: {
+      //   title: '任务状态',
+      //   type: 'string',
+      //   default: 'All',
+      //   enum: [
+      //     { label: '全部', value: 'All' },
+      //     { label: '未执行', value: MissionStatusEnum.Init },
+      //     { label: '运行中', value: MissionStatusEnum.Active }
+      //   ]
+      // }
     }
   };
 
@@ -59,7 +59,7 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
     pi: 1,
     ps: 10,
     keyword: '',
-    status: 'All' as MissionStatusEnum | 'All'
+    status: MissionStatusEnum.Init as MissionStatusEnum | 'All'
   });
 
   @ViewChild('st') private readonly st!: STComponent;
@@ -116,10 +116,7 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
                 {
                   modalOptions: {
                     nzMaskClosable: false,
-                    nzKeyboard: false,
-                    nzOnCancel: () => {
-                      this.searchStream$.next({ ...this.searchStream$.value });
-                    }
+                    nzKeyboard: false
                   },
                   size: window.innerWidth * 0.8
                 }
@@ -127,62 +124,10 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
               .subscribe(() => {
                 this.searchStream$.next({ ...this.searchStream$.value });
               });
-          },
-          iif: (record: IMission<ICVConfig>) => {
-            return record.status === MissionStatusEnum.Init;
           }
         },
         {
-          text: '执行',
-          icon: 'caret-right',
-          className: ['st-btn', 'st-btn_active'],
-          click: (record: IMission<ICVConfig>) => {
-            this.msgSrv.success('开始执行');
-
-            this.modelConfigService.activeCVMission(record.id).subscribe(() => {
-              // 改变当前任务状态
-              this.searchStream$.next(this.searchStream$.value);
-
-              console.log(this.missionList);
-              this.msgSrv.success('执行成功');
-            });
-          },
-          iif: (record: IMission<ICVConfig>) => {
-            return record.status === MissionStatusEnum.Init;
-          }
-        },
-        {
-          text: '任务监控',
-          className: ['st-btn', 'st-btn_monitor'],
-          icon: 'fund',
-          click: (record: IMission<ICVConfig>) => {
-            this.modal
-              .createStatic(
-                ModelCVConfigViewComponent,
-                {
-                  record: {
-                    id: record.id
-                  }
-                },
-                {
-                  modalOptions: {
-                    nzMaskClosable: false,
-                    nzStyle: { top: '20px' },
-                    nzKeyboard: false
-                  },
-                  size: window.innerWidth * 0.9
-                }
-              )
-              .subscribe(() => {
-                this.searchStream$.next({ ...this.searchStream$.value });
-              });
-          },
-          iif: (record: IMission<ICVConfig>) => {
-            return record.status === MissionStatusEnum.Active;
-          }
-        },
-        {
-          text: '复制任务',
+          text: '复制',
           icon: 'copy',
           className: ['st-btn', 'st-btn_copy'],
           click: (record: IMission<ICVConfig>) => {
@@ -194,7 +139,26 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
           }
         },
         {
-          text: '删除任务',
+          text: '启动',
+          icon: 'caret-right',
+          className: ['st-btn', 'st-btn_active'],
+          click: (record: IMission<ICVConfig>) => {
+            this.msgSrv.success('开始执行');
+
+            this.modelConfigService.activeCVMission(record.id).subscribe(() => {
+              // 改变当前任务状态
+              this.searchStream$.next(this.searchStream$.value);
+
+              console.log(this.missionList);
+              this.msgSrv.success('执行成功');
+
+              // 打开新页面并跳转查看执行中的任务
+              window.open('/#/model/cv/monitor');
+            });
+          }
+        },
+        {
+          text: '删除',
           icon: 'delete',
           className: ['st-btn', 'st-btn_delete'],
           click: (record: IMission<ICVConfig>) => {
@@ -205,7 +169,7 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
               nzOkType: 'primary',
               nzOkDanger: true,
               nzOnOk: () => {
-                this.modelConfigService.deleteRLMission(record.id).subscribe(newMission => {
+                this.modelConfigService.deleteCVMission(record.id).subscribe(newMission => {
                   this.searchStream$.next({ ...this.searchStream$.value });
 
                   this.msgSrv.success('删除成功');

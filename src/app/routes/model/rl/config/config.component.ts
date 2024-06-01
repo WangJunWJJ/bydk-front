@@ -26,17 +26,17 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         type: 'string',
         title: '任务名',
         default: ''
-      },
-      status: {
-        title: '任务状态',
-        type: 'string',
-        default: 'All',
-        enum: [
-          { label: '全部', value: 'All' },
-          { label: '未执行', value: MissionStatusEnum.Init },
-          { label: '运行中', value: MissionStatusEnum.Active }
-        ]
       }
+      // status: {
+      //   title: '任务状态',
+      //   type: 'string',
+      //   default: 'All',
+      //   enum: [
+      //     { label: '全部', value: 'All' },
+      //     { label: '未执行', value: MissionStatusEnum.Init },
+      //     { label: '运行中', value: MissionStatusEnum.Active }
+      //   ]
+      // }
     }
   };
 
@@ -59,7 +59,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
     pi: 1,
     ps: 10,
     keyword: '',
-    status: 'All' as MissionStatusEnum | 'All'
+    status: MissionStatusEnum.Init as MissionStatusEnum | 'All'
   });
 
   @ViewChild('st') private readonly st!: STComponent;
@@ -124,13 +124,22 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
               .subscribe(() => {
                 this.searchStream$.next({ ...this.searchStream$.value });
               });
-          },
-          iif: (record: IMission<IRLConfig>) => {
-            return record.status === MissionStatusEnum.Init;
           }
         },
         {
-          text: '执行',
+          text: '复制',
+          icon: 'copy',
+          className: ['st-btn', 'st-btn_copy'],
+          click: (record: IMission<IRLConfig>) => {
+            this.modelConfigService.copyRLMission(record.id).subscribe(newMission => {
+              this.searchStream$.next({ ...this.searchStream$.value });
+
+              this.msgSrv.success('复制成功');
+            });
+          }
+        },
+        {
+          text: '启动仿真',
           icon: 'caret-right',
           className: ['st-btn', 'st-btn_active'],
           click: (record: IMission<IRLConfig>) => {
@@ -146,59 +155,38 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
 
               console.log(this.missionList);
               this.msgSrv.success('执行成功');
-            });
-          },
-          iif: (record: IMission<IRLConfig>) => {
-            return record.status === MissionStatusEnum.Init && !this.tempActiveIdSets.has(record.id);
-          }
-        },
-        {
-          text: '任务监控',
-          className: ['st-btn', 'st-btn_monitor'],
-          icon: 'fund',
-          click: (record: IMission<IRLConfig>) => {
-            this.modal
-              .createStatic(
-                ModelRLConfigViewComponent,
-                {
-                  record: {
-                    id: record.id
-                  }
-                },
-                {
-                  modalOptions: {
-                    nzMaskClosable: false,
-                    nzStyle: { top: '20px' },
-                    nzOnCancel: () => {
-                      this.searchStream$.next({ ...this.searchStream$.value });
-                    },
-                    nzKeyboard: false
-                  },
-                  size: window.innerWidth * 0.9
-                }
-              )
-              .subscribe(() => {
-                this.searchStream$.next({ ...this.searchStream$.value });
-              });
-          },
-          iif: (record: IMission<IRLConfig>) => {
-            return record.status === MissionStatusEnum.Active;
-          }
-        },
-        {
-          text: '复制任务',
-          icon: 'copy',
-          className: ['st-btn', 'st-btn_copy'],
-          click: (record: IMission<IRLConfig>) => {
-            this.modelConfigService.copyRLMission(record.id).subscribe(newMission => {
-              this.searchStream$.next({ ...this.searchStream$.value });
 
-              this.msgSrv.success('复制成功');
+              // 打开新页面并跳转查看执行中的任务
+              window.open('/#/model/rl/monitor');
             });
           }
         },
         {
-          text: '删除任务',
+          text: '启动训练',
+          icon: 'caret-right',
+          className: ['st-btn', 'st-btn_active'],
+          click: (record: IMission<IRLConfig>) => {
+            this.msgSrv.success('开始执行');
+            setTimeout(() => {
+              // ?没有触发iif检查机制
+              this.tempActiveIdSets.add(record.id);
+            }, 0);
+
+            this.modelConfigService.activeRLMission(record.id).subscribe(() => {
+              // 改变当前任务状态
+              this.searchStream$.next(this.searchStream$.value);
+
+              console.log(this.missionList);
+              this.msgSrv.success('执行成功');
+
+              // 打开新页面并跳转查看执行中的任务
+              window.open('/#/model/rl/monitor');
+            });
+          }
+        },
+
+        {
+          text: '删除',
           icon: 'delete',
           className: ['st-btn', 'st-btn_delete'],
           click: (record: IMission<IRLConfig>) => {

@@ -25,6 +25,16 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
         type: 'string',
         title: '任务名',
         default: ''
+      },
+      status: {
+        title: '任务状态',
+        type: 'string',
+        default: 'All',
+        enum: [
+          { label: '全部', value: 'All' },
+          { label: '已停止', value: MissionStatusEnum.End },
+          { label: '已完成', value: MissionStatusEnum.Done }
+        ]
       }
     }
   };
@@ -48,7 +58,7 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
     pi: 1,
     ps: 10,
     keyword: '',
-    status: MissionStatusEnum.Done as MissionStatusEnum | 'All'
+    status: 'All' as MissionStatusEnum | 'All'
   });
 
   @ViewChild('st') private readonly st!: STComponent;
@@ -67,8 +77,8 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
         switch (status) {
           case MissionStatusEnum.Init:
             return '未执行';
-          case MissionStatusEnum.Active:
-            return '运行中';
+          case MissionStatusEnum.End:
+            return '已停止';
           case MissionStatusEnum.Done:
             return '已完成';
 
@@ -196,9 +206,12 @@ export class ModelRLResultComponent implements OnInit, OnDestroy {
 
           const condition: missionCondition = {
             pi: searchConfig.pi,
-            ps: searchConfig.ps,
-            status: MissionStatusEnum.Done
+            ps: searchConfig.ps
           };
+
+          if (searchConfig.status !== 'All') {
+            condition.status = searchConfig.status;
+          }
 
           if (searchConfig.keyword !== '') {
             condition.keyword = searchConfig.keyword;

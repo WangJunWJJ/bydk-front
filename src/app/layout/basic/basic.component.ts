@@ -1,4 +1,4 @@
-import { Subscription, distinct, skip } from 'rxjs';
+import { Subscription, distinct, distinctUntilChanged, skip } from 'rxjs';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StartupService } from '@core';
 import { SettingsService, User } from '@delon/theme';
@@ -29,11 +29,10 @@ export class LayoutBasicComponent implements OnInit, OnDestroy {
   constructor(private settings: SettingsService, private startupService: StartupService) {}
 
   ngOnInit(): void {
-    this.missionTypeSubscription = this.startupService.modeSubject$.pipe(distinct()).subscribe(missionType => {
+    this.missionTypeSubscription = this.startupService.modeSubject$.pipe(distinctUntilChanged()).subscribe(missionType => {
       this.type = missionType;
     });
     this.settings.setLayout('collapsed', true);
-    console.log(this.settings.getLayout());
   }
 
   ngOnDestroy(): void {

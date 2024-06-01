@@ -59,6 +59,7 @@ export enum RLModeEnum {
 export enum MissionStatusEnum {
   Init = 'init', // 初始化 提交了任务config 还没有执行
   Active = 'active', // 对提交的任务点击了执行任务
+  End = 'end', // 任务已终止
   Done = 'done' // 任务已结束
 }
 

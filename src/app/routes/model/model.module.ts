@@ -16,6 +16,7 @@ import { ModelRLResultEditComponent } from './rl/result/edit/edit.component';
 import { ModelRLResultComponent } from './rl/result/result.component';
 import { ModelRLResultViewComponent } from './rl/result/view/view.component';
 import { ModelCompUploadComponent } from './components/upload-comp/upload.component';
+import { ModelRLPyClusterMonitorComponent } from './rl/monitor/view/view.component';
 
 const COMPONENTS: Array<Type<void>> = [
   ModelCVConfigComponent,
@@ -34,6 +35,7 @@ const COMPONENTS_NOROUNT: Array<Type<void>> = [
   ModelRLConfigViewComponent,
   ModelRLResultEditComponent,
   ModelRLResultViewComponent,
+  ModelRLPyClusterMonitorComponent,
   ModelCompUploadComponent
 ];
 

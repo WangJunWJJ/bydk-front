@@ -14,7 +14,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'config', pathMatch: 'full' },
       { path: 'config', component: ModelCVConfigComponent, data: { title: '训练任务管理' } },
-      { path: 'monitor', component: ModelCVMonitorComponent, data: { title: '系统状态监控' } },
+      { path: 'monitor', component: ModelCVMonitorComponent, data: { title: '训练任务监控' } },
       { path: 'result', component: ModelCVResultComponent, data: { title: '训练结果分析' } }
     ]
   },
@@ -23,7 +23,7 @@ const routes: Routes = [
     children: [
       { path: '', redirectTo: 'config', pathMatch: 'full' },
       { path: 'config', component: ModelRLConfigComponent, data: { title: '训练任务管理' } },
-      { path: 'monitor', component: ModelRLMonitorComponent, data: { title: '系统状态监控' } },
+      { path: 'monitor', component: ModelRLMonitorComponent, data: { title: '训练任务监控' } },
       { path: 'result', component: ModelRLResultComponent, data: { title: '训练结果分析' } }
     ]
   }

@@ -1,0 +1,77 @@
+<div class="modal-header">
+  <div class="modal-title"
+    >采集监控 <span *ngIf="missionName">-&nbsp;{{ missionName }}</span></div
+  >
+</div>
+
+<!-- <div class="l-header">
+    <div class="l-header__bar"> </div>
+    <div>训练任务管理</div>
+  </div> -->
+
+<div class="l-data">
+  <div class="l-data__container">
+    <div #chartContainer id="chartContainer"> </div>
+    <div class="l-left">
+      <div #chartContainer1 id="chartContainer1"> </div>
+
+      <div class="l-form">
+        <div class="l-form__label"> 总量： </div>
+        <div class="l-form__content"> {{ renderData?.memory_size ?? '' }}G </div>
+      </div>
+      <div class="l-form">
+        <div class="l-form__label"> 空闲： </div>
+        <div class="l-form__content"> {{ memoryUnused }}G </div>
+      </div>
+
+      <div #chartContainer2 id="chartContainer2"> </div>
+
+      <div class="l-form">
+        <div class="l-form__label"> 利用率： </div>
+        <div class="l-form__content"> {{ cpuRate }}% </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <nz-tabset nzType="card" nzCentered>
+    <nz-tab nzTitle="负载监控">
+      <nz-tabset (nzSelectedIndexChange)="tabChange($event)" class="ip-tabs">
+        <nz-tab [nzTitle]="tab" *ngFor="let tab of ipTabs"></nz-tab>
+      </nz-tabset>
+
+    </nz-tab>
+    <nz-tab nzTitle="日志查询">
+      <form nz-form se-container #f="ngForm" nzLayout="inline">
+        <se label="日志类型">
+          <nz-select [ngModel]="logStream$.value.type" style="width: 100px" name="type" (ngModelChange)="ngSelectChange($event)">
+            <nz-option [nzLabel]="option.label" [nzValue]="option.value" *ngFor="let option of logOptions"></nz-option>
+          </nz-select>
+        </se>
+      </form>
+
+      <div class="l-log-container" (scroll)="onScroll($event)" #scroll>
+        <ng-container *ngFor="let log of logs">
+          <nz-alert
+            nzType="warning"
+            [nzMessage]="log.time"
+            [nzDescription]="log.content"
+            nzShowIcon
+            *ngIf="log.type == 'warning'"
+          ></nz-alert>
+          <nz-alert nzType="info" [nzMessage]="log.time" [nzDescription]="log.content" nzShowIcon *ngIf="log.type == 'info'"></nz-alert>
+          <nz-alert nzType="error" [nzMessage]="log.time" [nzDescription]="log.content" nzShowIcon *ngIf="log.type == 'error'"></nz-alert>
+          <nz-alert
+            nzType="success"
+            [nzMessage]="log.time"
+            [nzDescription]="log.content"
+            [nzIconType]="'tool'"
+            nzShowIcon
+            *ngIf="log.type == 'debug'"
+          ></nz-alert>
+        </ng-container>
+        <nz-spin nzSimple style="margin: 0 auto" *ngIf="nextFlag"></nz-spin>
+        <nz-alert nzType="success" [nzMessage]="'已到底'" *ngIf="isAllLoading"></nz-alert>
+      </div>
+    </nz-tab>
+  </nz-tabset> -->

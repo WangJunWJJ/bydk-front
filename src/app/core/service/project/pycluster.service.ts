@@ -11,13 +11,13 @@ export class PyClusterService {
   constructor(private httpClient: HttpClient) {}
 
   /**
-   * 返回Cluster数据
+   * 返回Cluster数据 根据任务id
    *
    * @return {*}
    * @memberof PyClusterService
    */
-  getClusterData() {
-    return this.httpClient.get<PyClusterResponse>(`${MONITOR_URL}/heartbeat/main`);
+  getClusterData(monitorUrl: string) {
+    return this.httpClient.get<PyClusterResponse>(`${monitorUrl}/heartbeat/main`);
   }
 
   /**
@@ -26,8 +26,8 @@ export class PyClusterService {
    * @return {*}
    * @memberof PyClusterService
    */
-  getSlaveData(ip: string) {
-    return this.httpClient.get<ISlaveData>(`${MONITOR_URL}/heartbeat/${ip}`);
+  getSlaveData(monitorUrl: string, ip: string) {
+    return this.httpClient.get<ISlaveData>(`${monitorUrl}/heartbeat/${ip}`);
   }
 
   /**
@@ -38,9 +38,9 @@ export class PyClusterService {
    * @return {*}
    * @memberof PyClusterService
    */
-  getClusterLog(pi: number, type: ClusterLogTypeEnum) {
+  getClusterLog(monitorUrl: string, pi: number, type: ClusterLogTypeEnum) {
     return this.httpClient.get<Array<{ content: string; time: string; type: string }>>(
-      `${MONITOR_URL}/log/more?type=${type}&offset=${20 * (pi - 1)}`
+      `${monitorUrl}/log/more?type=${type}&offset=${20 * (pi - 1)}`
     );
   }
 
@@ -50,7 +50,7 @@ export class PyClusterService {
    * @return {*}
    * @memberof PyClusterService
    */
-  clearLog() {
-    return this.httpClient.get(`${MONITOR_URL}/log/clear`);
+  clearLog(monitorUrl: string) {
+    return this.httpClient.get(`${monitorUrl}/log/clear`);
   }
 }
