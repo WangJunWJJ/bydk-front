@@ -16,12 +16,23 @@ export enum MissionTypeEnum {
  * @enum {number}
  */
 export enum RLAlgorithmEnum {
-  dqn = 'dqn',
-  ppo = 'ppo',
-  a2c = 'a2c',
-  maddpg = 'maddpg',
-  qmix = 'qmix',
-  dac = 'dac'
+  DQN = 'DQN',
+  PPO = 'PPO',
+  A2C = 'A2C',
+  MADDPG = 'MADDPG',
+  QMIX = 'QMIX',
+  DAC = 'DAC'
+}
+
+/**
+ * 网络类型
+ *
+ * @export
+ * @enum {number}
+ */
+export enum RLModelEnum {
+  DNN = 'DNN',
+  RNN = 'RNN'
 }
 
 /**
@@ -31,23 +42,34 @@ export enum RLAlgorithmEnum {
  * @enum {number}
  */
 export enum CVAlgorithmEnum {
-  fgsm = 'fgsm',
-  ifgsm = 'ifgsm',
-  mifgsm = 'mifgsm',
-  advgan = 'advgan',
-  patch = 'patch'
+  FGSM = 'FGSM',
+  IFGSM = 'IFGSM',
+  MIFGSM = 'MIFGSM',
+  advGAN = 'advGAN',
+  Patch = 'Patch'
 }
 
 /**
- * RL config中的mode 三选一
+ * 视觉任务分类
  *
  * @export
  * @enum {number}
  */
-export enum RLModeEnum {
-  deploy = 'deploy',
-  ser = 'ser',
-  dev = 'dev'
+export enum CVTypeEnum {
+  classification = 'classification', // 目标分类
+  detection = 'detection' // 目标检测
+}
+
+/**
+ * 训练任务类型
+ *
+ * @export
+ * @enum {number}
+ */
+export enum CVTaskTypeEnum {
+  train = 'train', // 模型生成
+  sample = 'sample', // 样本生成
+  adv_train = 'adv_train' // 对抗训练
 }
 
 /**

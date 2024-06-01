@@ -1,5 +1,5 @@
-import { MissionTypeEnum } from './enum';
-import { CVAlgorithmEnum, ImportDataTypeEnum, MissionStatusEnum, RLAlgorithmEnum, RLModeEnum } from '.';
+import { CVTaskTypeEnum, CVTypeEnum, MissionTypeEnum, RLModelEnum } from './enum';
+import { CVAlgorithmEnum, ImportDataTypeEnum, MissionStatusEnum, RLAlgorithmEnum } from '.';
 
 /**
  * 用户自定义配置信息（扩展）
@@ -17,6 +17,24 @@ interface IYamlFile {
  * @interface ICVConfig
  */
 export interface ICVConfig {
+  // 必填
+  // task_name: string; // 任务名
+  // cv_type: CVTypeEnum; // 视觉任务分类
+  // task_type: CVTaskTypeEnum; // 训练任务类型
+  // algorithm_type: CVAlgorithmEnum; // 对抗样本生成算法
+  // config_path: string; // 配置文件路径
+  // log_path: string; // 任务训练日志路径
+
+  // target_model_path: string; // 训练模型保存路径
+  // train_data_path: string; // 训练样本存放路径
+  // test_data_path: string; // 测试样本存放路径
+  // original_data_path: string; // 原始对抗样本路径
+  // adv_data_path: string; // 生成对抗样本路径
+  // patch_dir: string; // 目标检测贴图路径
+  // original_model_path: string; // 原始智能感知模型路径
+  // advGAN_path: string; // advGAN模型路径
+  // weather_augmentations: boolean; //	是否加入天气干扰
+  // other_config?: string; // 自定义配置
   path: string; //	配置文件存储路径(工程路径之下)
   model: CVAlgorithmEnum; //	算法类型（有限种类中选择）
   clean_train_data_dir: string; //	路径信息
@@ -39,22 +57,17 @@ export interface ICVConfig {
  * @interface IRLConfig
  */
 export interface IRLConfig {
-  path: string; //	配置文件存储路径(工程路径之下)
-  algorithm: RLAlgorithmEnum; //	算法类型(六种RL算法中选择)
-  algorithm_type: boolean; //	是否on-policy
-  mode?: RLModeEnum; //	deploy/ser/dev 三选一，
-  server_num: number; // 整型
-  collection_env_num: number; // 整型
-  max_episode_length: number; // 整型
-  worker_num: number; // 整型
-  env_num: number; // 整型
-  batch_size: number; // 整型
-  memory_size?: number; // 整型
-  init_step_count?: number; // 整型
-  samples_per_insert: number; // float
-  learning_rate: number; // float
-  render: boolean; //	是否渲染
-  target_mode_dir: string; //	路径信息
+  task_name: string; // 任务名
+  config_path: string; // 配置文件路径
+  model_path: string; // 模型保存路径
+  log_path: string; // 训练日志路径
+  collection_node_num: number; // 采集节点数量
+  node_collection_num: number; // 单节点并行采集环境数量
+  evaluation_num: number; // 评估环境数量
+  store_node_num: number; // 存储节点数量
+  decision_algorithm?: RLAlgorithmEnum; // 决策算法
+  model_type?: RLModelEnum; // 网络类型
+  other_config?: string; // 用户自定义配置信息（扩展）
 }
 
 /**

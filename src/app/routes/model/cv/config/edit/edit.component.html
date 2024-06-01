@@ -14,8 +14,8 @@
     <se [label]="labels.model.cn" required col="2" optionalHelp="属性名: model">
       <nz-select [(ngModel)]="formData.model" name="model" style="width: 100%">
         <ng-container *ngFor="let model of cvModelAlgorithms">
-          <nz-option [nzLabel]="'AdvGAN'" [nzValue]="model" *ngIf="model == 'advgan'"></nz-option>
-          <nz-option [nzLabel]="model.toUpperCase()" [nzValue]="model" *ngIf="model != 'advgan'"></nz-option>
+          <nz-option [nzLabel]="'AdvGAN'" [nzValue]="model" *ngIf="model == 'advGAN'"></nz-option>
+          <nz-option [nzLabel]="model.toUpperCase()" [nzValue]="model" *ngIf="model != 'advGAN'"></nz-option>
         </ng-container>
       </nz-select>
     </se>

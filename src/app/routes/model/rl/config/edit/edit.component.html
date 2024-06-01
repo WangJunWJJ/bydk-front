@@ -6,118 +6,84 @@
 
 <div style="width: 100%; margin: 0 auto" *ngIf="formData">
   <form nz-form se-container="2" #f="ngForm" [gutter]="2" [labelWidth]="210">
-    <se [label]="labels.name.cn" required optionalHelp="属性名: name" col="2">
-      <input type="text" nz-input [(ngModel)]="formData.name" name="name" required placeholder="请输入任务名称" />
-    </se>
-    <se [label]="" col="2"> </se>
-
-    <se [label]="labels.path.cn" required col="2" optionalHelp="属性名: path">
-      <input type="text" nz-input [(ngModel)]="formData.path" name="path" required placeholder="请输入路径" />
+    <se [label]="labels.task_name.cn" required [optionalHelp]="labels.task_name.en" col="2">
+      <input type="text" nz-input [(ngModel)]="formData.task_name" name="task_name" placeholder="请输入任务名称" />
     </se>
 
-    <se [label]="labels.target_mode_dir.cn" col="2" required optionalHelp="属性名: target_mode_dir">
-      <input type="text" nz-input [(ngModel)]="formData.target_mode_dir" name="target_mode_dir" required placeholder="请输入路径" />
+    <se [label]="labels.model_path.cn" required col="2" [optionalHelp]="labels.model_path.en">
+      <input type="text" nz-input [(ngModel)]="formData.model_path" name="model_path" placeholder="请输入生成模型路径" />
     </se>
 
-    <se [label]="labels.algorithm.cn" required col="2" optionalHelp="属性名: algorithm">
-      <nz-select [(ngModel)]="formData.algorithm" style="width: 100%" name="algorithm">
-        <nz-option [nzLabel]="model.toUpperCase()" [nzValue]="model" *ngFor="let model of rlModelAlgorithms"></nz-option>
+    <se [label]="labels.config_path.cn" required col="2" [optionalHelp]="labels.config_path.en">
+      <input type="text" nz-input [(ngModel)]="formData.config_path" name="config_path" placeholder="请输入配置代码路径" />
+    </se>
+
+    <se [label]="labels.log_path.cn" required col="2" [optionalHelp]="labels.log_path.en">
+      <input type="text" nz-input [(ngModel)]="formData.log_path" name="log_path" placeholder="请输入训练日志路径" />
+    </se>
+
+    <se [label]="labels.collection_node_num.cn" required col="2" [optionalHelp]="labels.collection_node_num.en">
+      <nz-input-number
+        style="width: 100%"
+        [(ngModel)]="formData.collection_node_num"
+        [nzPrecision]="0"
+        [nzStep]="1"
+        [nzMin]="1"
+        [nzMax]="20"
+        name="collection_node_num"
+      ></nz-input-number>
+    </se>
+
+    <se [label]="labels.node_collection_num.cn" required col="2" [optionalHelp]="labels.node_collection_num.en">
+      <nz-input-number
+        style="width: 100%"
+        [(ngModel)]="formData.node_collection_num"
+        [nzPrecision]="0"
+        [nzStep]="1"
+        [nzMin]="1"
+        [nzMax]="16"
+        name="node_collection_num"
+      ></nz-input-number>
+    </se>
+
+    <se [label]="labels.evaluation_num.cn" required col="2" [optionalHelp]="labels.evaluation_num.en">
+      <nz-input-number
+        style="width: 100%"
+        [(ngModel)]="formData.evaluation_num"
+        [nzPrecision]="0"
+        [nzStep]="1"
+        [nzMin]="1"
+        [nzMax]="10"
+        name="evaluation_num"
+      ></nz-input-number>
+    </se>
+
+    <se [label]="labels.store_node_num.cn" required col="2" [optionalHelp]="labels.store_node_num.en">
+      <nz-input-number
+        style="width: 100%"
+        [(ngModel)]="formData.store_node_num"
+        [nzPrecision]="0"
+        [nzStep]="1"
+        [nzMin]="1"
+        [nzMax]="10"
+        name="store_node_num"
+      ></nz-input-number>
+    </se>
+
+    <se [label]="labels.decision_algorithm.cn" col="2" [optionalHelp]="labels.decision_algorithm.en" placeholder="请选择智能算法">
+      <nz-select [nzAllowClear]="true" [(ngModel)]="formData.decision_algorithm" style="width: 100%" name="decision_algorithm">
+        <nz-option [nzLabel]="model" [nzValue]="model" *ngFor="let model of rlModelAlgorithms"></nz-option>
       </nz-select>
     </se>
 
-    <se [label]="labels.mode.cn" col="2" optionalHelp="属性名: mode">
-      <nz-select [(ngModel)]="formData.mode" style="width: 100%" name="mode">
-        <nz-option [nzLabel]="model.label" [nzValue]="model.value" *ngFor="let model of rlModes"></nz-option>
+    <se [label]="labels.model_type.cn" col="2" [optionalHelp]="labels.model_type.en" placeholder="请选择神经网络类型">
+      <nz-select [nzAllowClear]="true" [(ngModel)]="formData.model_type" style="width: 100%" name="model_type">
+        <nz-option [nzLabel]="model" [nzValue]="model" *ngFor="let model of rlModes"></nz-option>
       </nz-select>
     </se>
 
-    <se [label]="labels.algorithm_type.cn" required col="2" optionalHelp="属性名: algorithm_type">
-      <nz-select [(ngModel)]="formData.algorithm_type" style="width: 100%" name="algorithm_type">
-        <nz-option [nzLabel]="option.label" [nzValue]="option.value" *ngFor="let option of algorithmTypeOptions"></nz-option>
-      </nz-select>
-    </se>
-    <se [label]="labels.render.cn" required col="2" optionalHelp="属性名: render">
-      <nz-select [(ngModel)]="formData.render" style="width: 100%" name="render">
-        <nz-option [nzLabel]="option.label" [nzValue]="option.value" *ngFor="let option of booleanOptions"></nz-option>
-      </nz-select>
-    </se>
-
-    <se [label]="labels.server_num.cn" col="2" required optionalHelp="属性名: server_num">
-      <nz-input-number
-        style="width: 100%"
-        [(ngModel)]="formData.server_num"
-        [nzPrecision]="0"
-        [nzStep]="1"
-        name="server_num"
-      ></nz-input-number>
-    </se>
-    <se [label]="labels.collection_env_num.cn" col="2" required optionalHelp="属性名: collection_env_num">
-      <nz-input-number
-        style="width: 100%"
-        [(ngModel)]="formData.collection_env_num"
-        [nzStep]="1"
-        [nzPrecision]="0"
-        name="collection_env_num"
-      ></nz-input-number>
-    </se>
-    <se [label]="labels.max_episode_length.cn" col="2" required optionalHelp="属性名: max_episode_length">
-      <nz-input-number
-        style="width: 100%"
-        [(ngModel)]="formData.max_episode_length"
-        [nzStep]="1"
-        [nzPrecision]="0"
-        name="max_episode_length"
-      ></nz-input-number>
-    </se>
-    <se [label]="labels.worker_num.cn" col="2" required optionalHelp="属性名: worker_num">
-      <nz-input-number
-        style="width: 100%"
-        [(ngModel)]="formData.worker_num"
-        [nzStep]="1"
-        [nzPrecision]="0"
-        name="worker_num"
-      ></nz-input-number>
-    </se>
-    <se [label]="labels.env_num.cn" col="2" required optionalHelp="属性名: env_num">
-      <nz-input-number style="width: 100%" [(ngModel)]="formData.env_num" [nzStep]="1" [nzPrecision]="0" name="env_num"></nz-input-number>
-    </se>
-    <se [label]="labels.memory_size.cn" col="2" optionalHelp="属性名: memory_size">
-      <nz-input-number
-        style="width: 100%"
-        [(ngModel)]="formData.memory_size"
-        [nzStep]="1"
-        [nzPrecision]="0"
-        name="memory_size"
-      ></nz-input-number>
-    </se>
-    <se [label]="labels.init_step_count.cn" col="2" optionalHelp="属性名: init_step_count">
-      <nz-input-number
-        style="width: 100%"
-        [(ngModel)]="formData.init_step_count"
-        [nzStep]="1"
-        [nzPrecision]="0"
-        name="init_step_count"
-      ></nz-input-number>
-    </se>
-    <se [label]="labels.batch_size.cn" col="2" optionalHelp="属性名: batch_size">
-      <nz-input-number
-        style="width: 100%"
-        [(ngModel)]="formData.batch_size"
-        [nzStep]="1"
-        [nzPrecision]="0"
-        name="batch_size"
-      ></nz-input-number>
-    </se>
-    <se [label]="labels.samples_per_insert.cn" col="2" optionalHelp="属性名: samples_per_insert">
-      <nz-input-number
-        style="width: 100%"
-        [(ngModel)]="formData.samples_per_insert"
-        name="samples_per_insert"
-        [nzStep]="0.1"
-      ></nz-input-number>
-    </se>
-    <se [label]="labels.learning_rate.cn" col="2" optionalHelp="属性名: learning_rate">
-      <nz-input-number style="width: 100%" [(ngModel)]="formData.learning_rate" [nzStep]="0.1" name="learning_rate"></nz-input-number>
+    <se [label]="labels.other_config.cn" col="2" [optionalHelp]="labels.other_config.en">
+      <input type="text" nz-input [(ngModel)]="formData.other_config" name="other_config" placeholder="请输入自定义配置" />
     </se>
   </form>
 </div>

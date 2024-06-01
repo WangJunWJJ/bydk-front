@@ -5,7 +5,7 @@ import { ModalHelper, _HttpClient } from '@delon/theme';
 import { NzMessageService } from 'ng-zorro-antd/message';
 import { BehaviorSubject, Subject, debounceTime, switchMap, takeUntil } from 'rxjs';
 import { ModelConfigService, missionCondition } from 'src/app/core/service';
-import { ICVConfig, IMission, ImportDataTypeEnum, MissionStatusEnum, MissionTypeEnum } from 'src/app/core/service/project/core';
+import { ICVConfig, IMission, IRLConfig, ImportDataTypeEnum, MissionStatusEnum, MissionTypeEnum } from 'src/app/core/service/project/core';
 import { ModelCompUploadComponent } from '../../components/upload-comp/upload.component';
 import { ModelCVConfigEditComponent } from './edit/edit.component';
 import { ModelCVConfigViewComponent } from './view/view.component';
@@ -66,7 +66,14 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     { title: '任务名', index: 'name' },
     { title: '配置路径', index: 'path' },
-    { title: '算法类型', index: 'config.model', width: '90px' },
+    {
+      title: '算法类型',
+      index: 'config.decision_algorithm',
+      width: '90px',
+      format: (record: IMission<IRLConfig>) => {
+        return record.config.decision_algorithm ?? '未选择';
+      }
+    },
     {
       title: '状态',
       width: '90px',
@@ -127,18 +134,6 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
           }
         },
         {
-          text: '复制',
-          icon: 'copy',
-          className: ['st-btn', 'st-btn_copy'],
-          click: (record: IMission<ICVConfig>) => {
-            this.modelConfigService.copyCVMission(record.id).subscribe(newMission => {
-              this.searchStream$.next({ ...this.searchStream$.value });
-
-              this.msgSrv.success('复制成功');
-            });
-          }
-        },
-        {
           text: '启动',
           icon: 'caret-right',
           className: ['st-btn', 'st-btn_active'],
@@ -158,7 +153,19 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
           }
         },
         {
-          text: '删除',
+          text: '复制任务',
+          icon: 'copy',
+          className: ['st-btn', 'st-btn_copy'],
+          click: (record: IMission<ICVConfig>) => {
+            this.modelConfigService.copyCVMission(record.id).subscribe(newMission => {
+              this.searchStream$.next({ ...this.searchStream$.value });
+
+              this.msgSrv.success('复制成功');
+            });
+          }
+        },
+        {
+          text: '删除任务',
           icon: 'delete',
           className: ['st-btn', 'st-btn_delete'],
           click: (record: IMission<ICVConfig>) => {

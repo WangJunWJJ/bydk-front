@@ -82,7 +82,7 @@ export class ModelCVConfigEditComponent implements OnInit {
       this.formData = {
         name: '',
         path: '', //	配置文件存储路径(工程路径之下)
-        model: CVAlgorithmEnum.fgsm, //	算法类型（有限种类中选择）
+        model: CVAlgorithmEnum.FGSM, //	算法类型（有限种类中选择）
         clean_train_data_dir: '', //	路径信息
         clean_test_data_dir: '', //	路径信息
         adv_train_data_dir: '', //	路径信息

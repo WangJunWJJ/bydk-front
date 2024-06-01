@@ -66,7 +66,14 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     { title: '任务名', index: 'name' },
     { title: '配置路径', index: 'path' },
-    { title: '算法类型', index: 'config.algorithm', width: '90px' },
+    {
+      title: '算法类型',
+      index: 'config.decision_algorithm',
+      width: '90px',
+      format: (record: IMission<IRLConfig>) => {
+        return record.config.decision_algorithm ?? '未选择';
+      }
+    },
     {
       title: '状态',
       width: '90px',

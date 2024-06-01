@@ -133,7 +133,7 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
           }
         },
         {
-          text: '复制',
+          text: '复制任务',
           icon: 'copy',
           className: ['st-btn', 'st-btn_copy'],
           click: (record: IMission<ICVConfig>) => {
@@ -143,7 +143,7 @@ export class ModelCVResultComponent implements OnInit, OnDestroy {
           }
         },
         {
-          text: '删除',
+          text: '删除任务',
           icon: 'delete',
           className: ['st-btn', 'st-btn_delete'],
           click: (record: IMission<ICVConfig>) => {
