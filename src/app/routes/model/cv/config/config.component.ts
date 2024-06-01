@@ -70,8 +70,8 @@ export class ModelCVConfigComponent implements OnInit, OnDestroy {
       title: '算法类型',
       index: 'config.decision_algorithm',
       width: '90px',
-      format: (record: IMission<IRLConfig>) => {
-        return record.config.decision_algorithm ?? '未选择';
+      format: (record: IMission<ICVConfig>) => {
+        return record.config.algorithm_type ?? '未选择';
       }
     },
     {

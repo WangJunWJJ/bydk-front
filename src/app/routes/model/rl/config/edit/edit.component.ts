@@ -24,8 +24,8 @@ export class ModelRLConfigEditComponent implements OnInit {
 
   labels: Record<keyof IRLConfig, { en: string; cn: string }> = {
     task_name: { en: '属性名: task_name', cn: '训练任务名称' },
+    config_path: { en: '属性名: config_path', cn: '配置文件路径' },
     model_path: { en: '属性名: model_path', cn: '生成模型路径' },
-    config_path: { en: '属性名: config_path', cn: '配置代码路径' },
     log_path: { en: '属性名: log_path', cn: '训练日志路径' },
     collection_node_num: { en: '属性名: collection_node_num', cn: '采集节点数量' },
     node_collection_num: { en: '属性名: node_collection_num', cn: '采集环境数量' },
@@ -103,13 +103,13 @@ export class ModelRLConfigEditComponent implements OnInit {
     });
 
     if (this.record.id === null) {
-      this.modelConfigService.createRLMission(newFormData as IRLConfig & { name: string }).subscribe(() => {
+      this.modelConfigService.createRLMission(newFormData).subscribe(() => {
         this.msgSrv.success('创建成功');
 
         this.modal.destroy(true);
       });
     } else {
-      this.modelConfigService.updateRLMission(this.record.id, newFormData as IRLConfig & { name: string }).subscribe(() => {
+      this.modelConfigService.updateRLMission(this.record.id, newFormData).subscribe(() => {
         this.msgSrv.success('更新成功');
 
         this.modal.destroy(true);

@@ -18,36 +18,23 @@ interface IYamlFile {
  */
 export interface ICVConfig {
   // 必填
-  // task_name: string; // 任务名
-  // cv_type: CVTypeEnum; // 视觉任务分类
-  // task_type: CVTaskTypeEnum; // 训练任务类型
-  // algorithm_type: CVAlgorithmEnum; // 对抗样本生成算法
-  // config_path: string; // 配置文件路径
-  // log_path: string; // 任务训练日志路径
+  task_name: string; // 任务名
+  cv_type: CVTypeEnum; // 视觉任务分类
+  task_type: CVTaskTypeEnum; // 训练任务类型
+  algorithm_type?: CVAlgorithmEnum; // 对抗样本生成算法
+  config_path: string; // 配置文件路径
+  log_path: string; // 任务训练日志路径
 
-  // target_model_path: string; // 训练模型保存路径
-  // train_data_path: string; // 训练样本存放路径
-  // test_data_path: string; // 测试样本存放路径
-  // original_data_path: string; // 原始对抗样本路径
-  // adv_data_path: string; // 生成对抗样本路径
-  // patch_dir: string; // 目标检测贴图路径
-  // original_model_path: string; // 原始智能感知模型路径
-  // advGAN_path: string; // advGAN模型路径
-  // weather_augmentations: boolean; //	是否加入天气干扰
-  // other_config?: string; // 自定义配置
-  path: string; //	配置文件存储路径(工程路径之下)
-  model: CVAlgorithmEnum; //	算法类型（有限种类中选择）
-  clean_train_data_dir: string; //	路径信息
-  clean_test_data_dir: string; //	路径信息
-  adv_train_data_dir: string; //	路径信息
-  adv_test_data_dir: string; //	路径信息
-  label_dir: string; //	路径信息
-  patch_dir: string; //	路径信息
-  orig_model_dir: string; //	路径信息
-  target_mode_dir: string; //	路径信息
-  weather_augmentations: string; //	路径信息
-  config_opts_dir: string; //	算法配置信息
-  else_config_info: IYamlFile; // 用户自定义配置信息（扩展）
+  target_model_path?: string; // 训练模型保存路径
+  train_data_path?: string; // 训练样本存放路径
+  test_data_path?: string; // 测试样本存放路径
+  original_data_path?: string; // 原始对抗样本路径
+  adv_data_path?: string; // 生成对抗样本路径
+  patch_dir?: string; // 目标检测贴图路径
+  original_model_path?: string; // 原始智能感知模型路径
+  advGAN_path?: string; // advGAN模型路径
+  weather_augmentations?: boolean; //	是否加入天气干扰
+  other_config?: string; // 自定义配置
 }
 
 /**

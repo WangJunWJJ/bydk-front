@@ -10,12 +10,12 @@
       <input type="text" nz-input [(ngModel)]="formData.task_name" name="task_name" placeholder="请输入任务名称" />
     </se>
 
-    <se [label]="labels.model_path.cn" required col="2" [optionalHelp]="labels.model_path.en">
-      <input type="text" nz-input [(ngModel)]="formData.model_path" name="model_path" placeholder="请输入生成模型路径" />
+    <se [label]="labels.config_path.cn" required col="2" [optionalHelp]="labels.config_path.en">
+      <input type="text" nz-input [(ngModel)]="formData.config_path" name="config_path" placeholder="请输入配置文件路径" />
     </se>
 
-    <se [label]="labels.config_path.cn" required col="2" [optionalHelp]="labels.config_path.en">
-      <input type="text" nz-input [(ngModel)]="formData.config_path" name="config_path" placeholder="请输入配置代码路径" />
+    <se [label]="labels.model_path.cn" required col="2" [optionalHelp]="labels.model_path.en">
+      <input type="text" nz-input [(ngModel)]="formData.model_path" name="model_path" placeholder="请输入生成模型路径" />
     </se>
 
     <se [label]="labels.log_path.cn" required col="2" [optionalHelp]="labels.log_path.en">

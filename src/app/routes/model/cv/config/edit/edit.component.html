@@ -6,75 +6,129 @@
 
 <div style="width: 100%; margin: 0 auto" *ngIf="formData">
   <form nz-form se-container="2" #f="ngForm" [gutter]="2" [labelWidth]="210">
-    <se label="训练任务名称" required optionalHelp="属性名: name" col="2">
-      <input type="text" nz-input [(ngModel)]="formData.name" name="name" required placeholder="请输入任务名称" />
+    <se [label]="labels.task_name.cn" required [optionalHelp]="labels.task_name.en" col="2">
+      <input type="text" nz-input [(ngModel)]="formData.task_name" name="task_name" placeholder="请输入任务名称" />
     </se>
-    <se label=""> </se>
 
-    <se [label]="labels.model.cn" required col="2" optionalHelp="属性名: model">
-      <nz-select [(ngModel)]="formData.model" name="model" style="width: 100%">
-        <ng-container *ngFor="let model of cvModelAlgorithms">
-          <nz-option [nzLabel]="'AdvGAN'" [nzValue]="model" *ngIf="model == 'advGAN'"></nz-option>
-          <nz-option [nzLabel]="model.toUpperCase()" [nzValue]="model" *ngIf="model != 'advGAN'"></nz-option>
-        </ng-container>
+    <se [label]="labels.config_path.cn" required col="2" [optionalHelp]="labels.config_path.en">
+      <input type="text" nz-input [(ngModel)]="formData.config_path" name="config_path" placeholder="请输入配置文件路径" />
+    </se>
+
+    <se [label]="labels.cv_type.cn" required col="2" [optionalHelp]="labels.cv_type.en">
+      <nz-select [(ngModel)]="formData.cv_type" style="width: 100%" name="cv_type" (ngModelChange)="changeCVType($event)">
+        <nz-option [nzLabel]="'目标分类'" [nzValue]="'classification'"></nz-option>
+        <nz-option [nzLabel]="'目标检测'" [nzValue]="'detection'"></nz-option>
       </nz-select>
     </se>
-    <se [label]="labels.path.cn" required col="2" optionalHelp="属性名: path">
-      <input type="text" nz-input [(ngModel)]="formData.path" name="path" required placeholder="请输入路径" />
+
+    <se [label]="labels.task_type.cn" required col="2" [optionalHelp]="labels.task_type.en">
+      <nz-select [(ngModel)]="formData.task_type" style="width: 100%" name="task_type">
+        <nz-option [nzLabel]="'模型生成'" [nzValue]="'train'"></nz-option>
+        <nz-option [nzLabel]="'样本生成'" [nzValue]="'sample'"></nz-option>
+        <nz-option [nzLabel]="'对抗训练'" [nzValue]="'adv_train'"></nz-option>
+      </nz-select>
     </se>
 
-    <se [label]="labels.clean_train_data_dir.cn" col="2" required optionalHelp="属性名: clean_train_data_dir">
-      <input
-        type="text"
-        nz-input
-        [(ngModel)]="formData.clean_train_data_dir"
-        name="clean_train_data_dir"
-        required
-        placeholder="请输入路径"
-      />
+    <se [label]="labels.algorithm_type.cn" [required]="formData.task_type == 'sample'" col="2" [optionalHelp]="labels.algorithm_type.en">
+      <nz-select
+        [(ngModel)]="formData.algorithm_type"
+        style="width: 100%"
+        name="algorithm_type"
+        [nzAllowClear]="formData.task_type != 'sample'"
+      >
+        <nz-option [nzLabel]="'FGSM'" [nzValue]="'FGSM'" *ngIf="formData.cv_type == 'classification'"></nz-option>
+        <nz-option [nzLabel]="'IFGSM'" [nzValue]="'IFGSM'" *ngIf="formData.cv_type == 'classification'"></nz-option>
+        <nz-option [nzLabel]="'MIFGSM'" [nzValue]="'MIFGSM'" *ngIf="formData.cv_type == 'classification'"></nz-option>
+        <nz-option [nzLabel]="'advGAN'" [nzValue]="'advGAN'" *ngIf="formData.cv_type == 'classification'"></nz-option>
+        <nz-option [nzLabel]="'Patch'" [nzValue]="'Patch'" *ngIf="formData.cv_type == 'detection'"></nz-option>
+      </nz-select>
     </se>
 
-    <se [label]="labels.clean_test_data_dir.cn" col="2" required optionalHelp="属性名: clean_test_data_dir">
-      <input type="text" nz-input [(ngModel)]="formData.clean_test_data_dir" name="clean_test_data_dir" required placeholder="请输入路径" />
+    <se [label]="labels.log_path.cn" required col="2" [optionalHelp]="labels.log_path.en">
+      <input type="text" nz-input [(ngModel)]="formData.log_path" name="log_path" placeholder="请输入训练日志路径" />
     </se>
 
-    <se [label]="labels.adv_train_data_dir.cn" col="2" required optionalHelp="属性名: adv_train_data_dir">
-      <input type="text" nz-input [(ngModel)]="formData.adv_train_data_dir" name="adv_train_data_dir" required placeholder="请输入路径" />
+    <se
+      [label]="labels.target_model_path.cn"
+      required
+      col="2"
+      [optionalHelp]="labels.target_model_path.en"
+      *ngIf="formData.task_type == 'train' || formData.task_type == 'adv_train'"
+    >
+      <input type="text" nz-input [(ngModel)]="formData.target_model_path" name="target_model_path" placeholder="请输入生成模型路径" />
     </se>
-
-    <!-- <se [label]="labels.adv_test_data_dir.cn" col="2" required optionalHelp="属性名: adv_test_data_dir">
-      <input type="text" nz-input [(ngModel)]="formData.adv_test_data_dir" name="adv_test_data_dir" required placeholder="请输入路径" />
-    </se> -->
-
-    <se [label]="labels.label_dir.cn" col="2" required optionalHelp="属性名: label_dir">
-      <input type="text" nz-input [(ngModel)]="formData.label_dir" name="label_dir" required placeholder="请输入路径" />
+    <se
+      [label]="labels.train_data_path.cn"
+      required
+      col="2"
+      [optionalHelp]="labels.train_data_path.en"
+      *ngIf="formData.task_type == 'train' || formData.task_type == 'adv_train'"
+    >
+      <input type="text" nz-input [(ngModel)]="formData.train_data_path" name="train_data_path" placeholder="请输入训练样本路径" />
     </se>
-
-    <se [label]="labels.patch_dir.cn" col="2" required optionalHelp="属性名: patch_dir">
-      <input type="text" nz-input [(ngModel)]="formData.patch_dir" name="patch_dir" required placeholder="请输入路径" />
+    <se
+      [label]="labels.test_data_path.cn"
+      required
+      col="2"
+      [optionalHelp]="labels.test_data_path.en"
+      *ngIf="formData.task_type == 'train' || formData.task_type == 'adv_train'"
+    >
+      <input type="text" nz-input [(ngModel)]="formData.test_data_path" name="test_data_path" placeholder="请输入测试样本路径" />
     </se>
-
-    <se [label]="labels.orig_model_dir.cn" col="2" required optionalHelp="属性名: orig_model_dir">
-      <input type="text" nz-input [(ngModel)]="formData.orig_model_dir" name="orig_model_dir" required placeholder="请输入路径" />
+    <se
+      [label]="labels.original_data_path.cn"
+      required
+      col="2"
+      [optionalHelp]="labels.original_data_path.en"
+      *ngIf="formData.task_type == 'sample'"
+    >
+      <input type="text" nz-input [(ngModel)]="formData.original_data_path" name="original_data_path" placeholder="请输入原始样本路径" />
     </se>
-    <se [label]="labels.target_mode_dir.cn" col="2" required optionalHelp="属性名: target_mode_dir">
-      <input type="text" nz-input [(ngModel)]="formData.target_mode_dir" name="target_mode_dir" required placeholder="请输入路径" />
+    <se [label]="labels.adv_data_path.cn" required col="2" [optionalHelp]="labels.adv_data_path.en" *ngIf="formData.task_type == 'sample'">
+      <input type="text" nz-input [(ngModel)]="formData.adv_data_path" name="adv_data_path" placeholder="请输入对抗样本路径" />
     </se>
-
-    <se [label]="labels.weather_augmentations.cn" col="2" required optionalHelp="属性名: weather_augmentations">
-      <input
-        type="text"
-        nz-input
-        [(ngModel)]="formData.weather_augmentations"
-        name="weather_augmentations"
-        required
-        placeholder="请输入路径"
-      />
+    <se
+      [label]="labels.patch_dir.cn"
+      required
+      col="2"
+      [optionalHelp]="labels.patch_dir.en"
+      *ngIf="formData.cv_type == 'detection' && formData.task_type == 'sample'"
+    >
+      <input type="text" nz-input [(ngModel)]="formData.patch_dir" name="patch_dir" placeholder="请输入迷彩贴图路径" />
     </se>
-
-    <!-- <se [label]="labels.config_opts_dir.cn" col="2" required optionalHelp="属性名: config_opts_dir">
-      <input type="text" nz-input [(ngModel)]="formData.config_opts_dir" name="config_opts_dir" required placeholder="请输入路径" />
-    </se> -->
+    <se
+      [label]="labels.original_model_path.cn"
+      required
+      col="2"
+      [optionalHelp]="labels.original_model_path.en"
+      *ngIf="formData.task_type == 'sample'"
+    >
+      <input type="text" nz-input [(ngModel)]="formData.original_model_path" name="original_model_path" placeholder="请输入原始模型路径" />
+    </se>
+    <se
+      [label]="labels.advGAN_path.cn"
+      required
+      col="2"
+      [optionalHelp]="labels.advGAN_path.en"
+      *ngIf="formData.cv_type == 'classification' && formData.algorithm_type == 'advGAN'"
+    >
+      <input type="text" nz-input [(ngModel)]="formData.advGAN_path" name="advGAN_path" placeholder="请输入GAN模型路径" />
+    </se>
+    <se
+      [label]="labels.weather_augmentations.cn"
+      required
+      col="2"
+      [optionalHelp]="labels.weather_augmentations.en"
+      *ngIf="formData.task_type == 'train' || formData.task_type == 'adv_train'"
+    >
+      <nz-select [(ngModel)]="formData.weather_augmentations" style="width: 100%" name="weather_augmentations">
+        <nz-option [nzLabel]="'是'" [nzValue]="true"></nz-option>
+        <nz-option [nzLabel]="'否'" [nzValue]="false"></nz-option>
+      </nz-select>
+    </se>
+    <se [label]="labels.other_config.cn" col="2" [optionalHelp]="labels.other_config.en">
+      <input type="text" nz-input [(ngModel)]="formData.other_config" name="other_config" placeholder="请输入自定义配置" />
+    </se>
   </form>
 </div>
 <div class="modal-footer">

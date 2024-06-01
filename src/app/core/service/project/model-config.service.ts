@@ -198,7 +198,7 @@ export class ModelConfigService {
    * @return {*}
    * @memberof ModelConfigService
    */
-  createCVMission(cvConfig: ICVConfig & { name: string }) {
+  createCVMission(cvConfig: ICVConfig) {
     return this.httpClient.post<IMission<ICVConfig>>(`${BE_URL}/cv/config`, cvConfig, { headers: { rltoken: this.getToken() } });
   }
 
@@ -209,7 +209,7 @@ export class ModelConfigService {
    * @return {*}
    * @memberof ModelConfigService
    */
-  updateCVMission(id: string, cvConfig: ICVConfig & { name: string }) {
+  updateCVMission(id: string, cvConfig: ICVConfig) {
     return this.httpClient.put<IMission<ICVConfig>>(`${BE_URL}/cv/config/${id}`, cvConfig, {
       headers: { rltoken: this.getToken() }
     });
@@ -389,7 +389,7 @@ export class ModelConfigService {
    * @return {*}
    * @memberof ModelConfigService
    */
-  createRLMission(cvConfig: IRLConfig & { name: string }) {
+  createRLMission(cvConfig: IRLConfig) {
     return this.httpClient.post<IMission<IRLConfig>>(`${BE_URL}/rl/config`, cvConfig, { headers: { rltoken: this.getToken() } });
   }
 
@@ -400,7 +400,7 @@ export class ModelConfigService {
    * @return {*}
    * @memberof ModelConfigService
    */
-  updateRLMission(id: string, cvConfig: IRLConfig & { name: string }) {
+  updateRLMission(id: string, cvConfig: IRLConfig) {
     return this.httpClient.put<IMission<IRLConfig>>(`${BE_URL}/rl/config/${id}`, cvConfig, {
       headers: { rltoken: this.getToken() }
     });

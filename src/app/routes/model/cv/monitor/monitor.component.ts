@@ -67,7 +67,14 @@ export class ModelCVMonitorComponent implements OnInit, OnDestroy {
   columns: STColumn[] = [
     { title: '任务名', index: 'name' },
     { title: '配置路径', index: 'path' },
-    { title: '算法类型', index: 'config.algorithm', width: '90px' },
+    {
+      title: '算法类型',
+      index: 'config.decision_algorithm',
+      width: '90px',
+      format: (record: IMission<ICVConfig>) => {
+        return record.config.algorithm_type ?? '未选择';
+      }
+    },
     {
       title: '状态',
       width: '90px',
