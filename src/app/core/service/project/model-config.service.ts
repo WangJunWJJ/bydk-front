@@ -424,6 +424,23 @@ export class ModelConfigService {
   }
 
   /**
+   * 启动仿真
+   *
+   * @param {string} id
+   * @return {*}
+   * @memberof ModelConfigService
+   */
+  activeRLMissionSimulation(id: string) {
+    return this.httpClient.post<IMission<IRLConfig>>(
+      `${BE_URL}/rl/config/active-simulation`,
+      {
+        id
+      },
+      { headers: { rltoken: this.getToken() } }
+    );
+  }
+
+  /**
    * 关闭任务结果 重新激活时间
    *
    * @param {string} id

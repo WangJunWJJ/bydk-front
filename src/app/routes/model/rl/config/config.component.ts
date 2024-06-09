@@ -148,23 +148,15 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
         {
           text: '启动仿真',
           icon: 'caret-right',
-          className: ['st-btn', 'st-btn_active'],
+          className: ['st-btn', 'st-btn_monitor'],
           click: (record: IMission<IRLConfig>) => {
             this.msgSrv.success('开始执行');
-            setTimeout(() => {
-              // ?没有触发iif检查机制
-              this.tempActiveIdSets.add(record.id);
-            }, 0);
 
-            this.modelConfigService.activeRLMission(record.id).subscribe(() => {
+            this.modelConfigService.activeRLMissionSimulation(record.id).subscribe(() => {
               // 改变当前任务状态
               this.searchStream$.next(this.searchStream$.value);
 
-              console.log(this.missionList);
-              this.msgSrv.success('执行成功');
-
-              // 打开新页面并跳转查看执行中的任务
-              window.open('/#/model/rl/monitor');
+              this.msgSrv.success('执行仿真成功');
             });
           }
         },
