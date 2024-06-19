@@ -113,26 +113,29 @@ export class ModelCVMonitorComponent implements OnInit, OnDestroy {
           icon: 'edit',
           className: ['st-btn', 'st-btn_edit'],
           click: (record: IMission<ICVConfig>) => {
-            this.modal
-              .createStatic(
-                ModelCVPyClusterMonitorComponent,
-                {
-                  record: {
-                    id: record.id,
-                    mission: record
-                  }
-                },
-                {
-                  modalOptions: {
-                    nzMaskClosable: false,
-                    nzKeyboard: false
+            this.modelConfigService.getCVMonitorUrl(record.id).subscribe(url => {
+              this.modal
+                .createStatic(
+                  ModelCVPyClusterMonitorComponent,
+                  {
+                    record: {
+                      id: record.id,
+                      mission: record,
+                      monitorUrl: url
+                    }
                   },
-                  size: window.innerWidth * 0.8
-                }
-              )
-              .subscribe(() => {
-                this.searchStream$.next({ ...this.searchStream$.value });
-              });
+                  {
+                    modalOptions: {
+                      nzMaskClosable: false,
+                      nzKeyboard: false
+                    },
+                    size: window.innerWidth * 0.8
+                  }
+                )
+                .subscribe(() => {
+                  this.searchStream$.next({ ...this.searchStream$.value });
+                });
+            });
           }
         },
         {

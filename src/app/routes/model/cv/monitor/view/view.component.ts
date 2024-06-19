@@ -21,6 +21,7 @@ export class ModelCVPyClusterMonitorComponent implements OnInit, OnDestroy, Afte
   record!: {
     id: string;
     mission: IMission<ICVConfig>;
+    monitorUrl: string;
   };
   // 容器标签
   @ViewChild('chartContainer')
@@ -399,7 +400,7 @@ export class ModelCVPyClusterMonitorComponent implements OnInit, OnDestroy, Afte
               return timer(0, 1000).pipe(
                 takeUntil(this.componentDestroyed$),
                 switchMap(_ => {
-                  const monitorUrl = `http://${this.record.mission.monitorUrl as string}`;
+                  const monitorUrl = this.record.monitorUrl;
                   if (config === null) {
                     return this.pyClusterService.getClusterData(monitorUrl);
                   } else {
@@ -469,7 +470,7 @@ export class ModelCVPyClusterMonitorComponent implements OnInit, OnDestroy, Afte
         takeUntil(this.componentDestroyed$),
         switchMap(config => {
           this.nextFlag = true; // 开始加载
-          return this.pyClusterService.getClusterLog(`http://${this.record.mission.monitorUrl as string}`, config.pi, config.type);
+          return this.pyClusterService.getClusterLog(this.record.monitorUrl, config.pi, config.type);
         })
       )
       .subscribe(data => {
