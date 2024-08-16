@@ -150,7 +150,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
           icon: 'caret-right',
           className: ['st-btn', 'st-btn_monitor'],
           click: (record: IMission<IRLConfig>) => {
-            this.msgSrv.success('开始执行');
+            // this.msgSrv.success('开始执行');
 
             this.modelConfigService.activeRLMissionSimulation(record.id).subscribe(() => {
               // 改变当前任务状态
