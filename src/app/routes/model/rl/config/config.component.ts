@@ -156,7 +156,7 @@ export class ModelRLConfigComponent implements OnInit, OnDestroy {
               // 改变当前任务状态
               this.searchStream$.next(this.searchStream$.value);
 
-              this.msgSrv.success('执行仿真成功');
+              this.msgSrv.success('此任务无需手动启动仿真');
             });
           }
         },
